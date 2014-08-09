@@ -72,6 +72,8 @@ function INEED.TRADE_SKILL_SHOW()
 end
 function INEED.TRADE_SKILL_CLOSE()
 end
+function INEED.TRADE_SKILL_UPDATE()
+end
 function INEED.MAIL_SEND_INFO_UPDATE()
 	INEED.mailInfo = {}
 	INEED.mailInfo.mailTo = SendMailNameEditBox:GetText()
