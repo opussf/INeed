@@ -1,13 +1,13 @@
 INeed
 =====
 
-This addon is a shopping list, item fulfillment addon.
+This addon is a shopping list, item fulfillment addon for World of Warcraft.
 
-Idea:
+## Idea:
 The initial idea here was to track items that a player 'needs' for one reason or another,
 that is not already tracked elsewhere.
 
-Problem to solve:
+## Problem to solve:
 Some professions need many items to craft a single item. Some of those items may take days to gather.
 This would let someone create a shopping list of items that are needed.
 
@@ -36,7 +36,7 @@ The interface is: "INeed <this item> <quantity>"
 /ineed remove <charName>-<realmName> -- removes tracking of all items for a specific character
 ```
 
-Goals:
+## Goals:
 * Easy to start tracking items
 * Show info with the item (tooltip)
 * Show tracking info
@@ -45,7 +45,8 @@ Goals:
 * An alert to a player logging that another character needs something in your inv
 
 ```
-Versions:
+
+## Versions:
 0.10    Crontab feature scrapped.
         Create a "toMake" field for items made from an enchant(profession)
         -- not listed in fulfillment list
