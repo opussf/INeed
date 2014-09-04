@@ -44,9 +44,8 @@ The interface is: "INeed <this item> <quantity>"
 * The ability to see a shopping list of items
 * An alert to a player logging that another character needs something in your inv
 
-```
-
 ## Versions:
+```
 0.10    Crontab feature scrapped.
         Create a "toMake" field for items made from an enchant(profession)
         -- not listed in fulfillment list
