@@ -22,6 +22,7 @@ Some items are vendor sold, and this will try to purchase the needed items when 
 
 
 The interface is: "INeed <this item> <quantity>"
+```
 /ineed <itemLink>       -- needs 1 of item
 /ineed <itemLink> 120   -- needs 120 of item
 /ineed <itemLink> 0     -- needs 0 of item (will clear tracking)
@@ -33,6 +34,7 @@ The interface is: "INeed <this item> <quantity>"
 /ineed account 1g       -- sets account to 1 Gold
 /ineed account 1g20s5c  -- sets account to 1 Gold, 20 Silver, and 5 Copper
 /ineed remove <charName>-<realmName> -- removes tracking of all items for a specific character
+```
 
 Goals:
 * Easy to start tracking items
@@ -42,7 +44,7 @@ Goals:
 * The ability to see a shopping list of items
 * An alert to a player logging that another character needs something in your inv
 
-
+```
 Versions:
 0.10    Crontab feature scrapped.
         Create a "toMake" field for items made from an enchant(profession)
@@ -68,3 +70,4 @@ Versions:
 		Also hacked together a unittesting frame work
 
 0.01	Initial work, command line works, tracking works, alert message on fulfilment, auto purchase
+```
