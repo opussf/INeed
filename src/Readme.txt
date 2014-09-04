@@ -74,43 +74,8 @@ ToDO:
     -- [ICON] 5/10 Item
 ^^^ Open next to Mail panel
 
-* Scan items if they are Soulbound.  Don't show for other toons if it is.
-
-
-* Share with guild members
-* Also scan guild bank
-
 * Record and separate player's faction (no cross faction mail)
 * Add an "IN BAGS" step to fulfillment.
-
-
-* Create schedule to add items
-    -- @daily c:daily
-    -- @daily item:1234 200
-    -- @"<event name>" item:1234 20
-        ^^ Need to figure out what event is on the calendar
-    --  http://www.wowwiki.com/API_CalendarGetDayEvent
-    --  http://www.wowwiki.com/API_CalendarGetEventInfo
-    --  "CALENDAR_OPEN_EVENT"
-
-    --  http://www.wowwiki.com/API_CalendarGetDate
-        ^^ no parameters
-        ^^ returns: weekday, month, day, year
-* crons are global and per-character
-INEED_playercrontab = {
-    ["item:74661"] = {
-        ["cronString"] = "@daily",
-        ["quantity"] = 1,
-        ["next"] = (timestamp),
-    }
-}
-^^^ Daily resets after 3am server time  -- need to get server time
-    hours,minutes = GetGameTime();
-^^^ Perform add if now is after timestamp
-^^^ Check every minute
-^^^ @daily, @hourly, @midnight
-^^^ @"calendar event" - only triggers once per occurance of the event you are logged in for.
-INEED.cron
 
 * Recipe links:
     -- http://www.wowwiki.com/API_GetTradeSkillNumReagents
@@ -144,8 +109,7 @@ INEED.cron
 * Options panel
     -- Account value - editable
     --
-* Need to delete a char, or rename
-    -- Done
+
 
 http://wowprogramming.com/utils/xmlbrowser/live/FrameXML/OptionsPanelTemplates.xml
 
