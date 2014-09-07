@@ -21,8 +21,8 @@
 
 	<target name="changelog" description="Creates a changelog">
 		<mkdir dir="${working.dir}"/>
-		<exec executable="svn" dir=".">
-			<arg line="log -vgl 10"/>
+		<exec executable="git" dir=".">
+			<arg line="log --graph --pretty=format:'%h %ci - %d %s &lt;%an&gt;' master.."/>
 			<redirector output="${working.dir}/changelog.txt"/>
 		</exec>
 	</target>
