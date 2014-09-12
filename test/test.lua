@@ -138,15 +138,19 @@ function test.testItemUpdated_SetsTimeStamp()
 	assertEquals( time(), INEED_data["7073"]["testRealm"]["testName"].updated )
 end
 function test.testCommand_Blank()
+	-- These are here basicly to assure that the command does not error
 	INEED.command( "" )
 end
 function test.testCommand_Help()
+	-- These are here basicly to assure that the command does not error
 	INEED.command( "help" )
 end
 function test.testCommand_Options()
+	-- These are here basicly to assure that the command does not error
 	INEED.command( "options" )
 end
 function test.testAccountInfo_NoParameter_WithNoValue()
+	-- These are here basicly to assure that the command does not error
 	-- Does not change account info
 	INEED.command( "account" )
 	assertIsNil( INEED_account.balance )
