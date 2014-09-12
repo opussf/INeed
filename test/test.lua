@@ -405,6 +405,17 @@ function test.testSendMail_MAIL_SEND_INFO_UPDATE_itemSet()
 	SendMailNameEditBox:SetText( "test-realm" )
 
 end
+-------
+-- Tests for doing global goals
+-------
+function test.testGlobal_newItem_nooneTracking()
+end
+function test.testGlobal_newItem_oneTracking()
+end
+function test.testGlobal_newItem_twoTracking()
+end
+function test.testGlobal_newItem_manyTracking()
+end
 
 --[[
 -- Tests for adding items for repeat (cron)
