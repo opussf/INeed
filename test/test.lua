@@ -436,34 +436,62 @@ function test.testGlobal_newItem_oneTrackingIt_sameRealm_sameFaction()
 	fail("To write")
 end
 function test.testGlobal_newItem_oneTrackingIt_sameRealm_diffFaction()
+	print("testGlobal_newItem_oneTrackingIt_sameRealm_diffFaction")
+	INEED_data["7073"] = {
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
+	}
+	myInventory["7073"] = 1
+	INEED.UNIT_INVENTORY_CHANGED()
+	fail("To write")
 end
 function test.testGlobal_newItem_oneTrackingIt_diffRealm_sameFaction()
+	print("testGlobal_newItem_oneTrackingIt_diffRealm_sameFaction")
+	INEED_data["7073"] = {
+		["testRealm2"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
+	}
+	myInventory["7073"] = 1
+	INEED.UNIT_INVENTORY_CHANGED()
+	fail("To write")
 end
 function test.testGlobal_newItem_oneTrackingIt_diffRealm_diffFaction()
+	print("testGlobal_newItem_oneTrackingIt_diffRealm_diffFaction")
+	INEED_data["7073"] = {
+		["testRealm2"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
+	}
+	myInventory["7073"] = 1
+	INEED.UNIT_INVENTORY_CHANGED()
+	fail("To write")
 end
-
-
-
 function test.testGlobal_newItem_twoTrackingIt()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10 } },
-		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10 }, -- del
-							 ["otherTestName2"]={ ['needed']=10 } },
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10 },
+						["yetAnotherTestName"]={ ['needed']=10 } },
 	}
+	myInventory["7073"] = 1
+	INEED.UNIT_INVENTORY_CHANGED()
+
+	fail("To write")
 end
 function test.testGlobal_newItem_manyTrackingIt()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10 } },
-		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10 }, -- del
-							 ["otherTestName2"]={ ['needed']=10 } },
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10 },
+						["yetAnotherTestName"]={ ['needed']=10 },
+						["third"]={ ['needed']=10 }, }
 	}
+	myInventory["7073"] = 1
+	INEED.UNIT_INVENTORY_CHANGED()
+	fail("To write")
 end
 function test.testGlobal_newItem_IAndOthersTracking()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10 } },
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10 },
+						["testName"]={ ['needed']=10} },
 		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10 }, -- del
 							 ["otherTestName2"]={ ['needed']=10 } },
 	}
+	myInventory["7073"] = 1
+	INEED.UNIT_INVENTORY_CHANGED()
+	fail("To write")
 end
 
 
