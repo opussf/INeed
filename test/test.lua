@@ -412,14 +412,60 @@ end
 -------
 -- Tests for doing global goals
 -------
-function test.testGlobal_newItem_nooneTracking()
+--[[
+	INEED_data["7073"] = {
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
+		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
+							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance"} },
+	}
+
+]]
+function test.testGlobal_newItem_nooneTrackingIt()
+	-- this really should not do anything extra.
+	myInventory["7073"] = 1
+	INEED.UNIT_INVENTORY_CHANGED()
+	assertIsNil( INEED_data["7073"] )
 end
-function test.testGlobal_newItem_oneTracking()
+function test.testGlobal_newItem_oneTrackingIt_sameRealm_sameFaction()
+	print("One is tracking: -----------------")
+	INEED_data["7073"] = {
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
+	}
+	myInventory["7073"] = 1
+	INEED.UNIT_INVENTORY_CHANGED()
+	fail("To write")
 end
-function test.testGlobal_newItem_twoTracking()
+function test.testGlobal_newItem_oneTrackingIt_sameRealm_diffFaction()
 end
-function test.testGlobal_newItem_manyTracking()
+function test.testGlobal_newItem_oneTrackingIt_diffRealm_sameFaction()
 end
+function test.testGlobal_newItem_oneTrackingIt_diffRealm_diffFaction()
+end
+
+
+
+function test.testGlobal_newItem_twoTrackingIt()
+	INEED_data["7073"] = {
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10 } },
+		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10 }, -- del
+							 ["otherTestName2"]={ ['needed']=10 } },
+	}
+end
+function test.testGlobal_newItem_manyTrackingIt()
+	INEED_data["7073"] = {
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10 } },
+		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10 }, -- del
+							 ["otherTestName2"]={ ['needed']=10 } },
+	}
+end
+function test.testGlobal_newItem_IAndOthersTracking()
+	INEED_data["7073"] = {
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10 } },
+		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10 }, -- del
+							 ["otherTestName2"]={ ['needed']=10 } },
+	}
+end
+
 
 --[[
 -- Tests for adding items for repeat (cron)
