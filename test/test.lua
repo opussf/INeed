@@ -538,7 +538,7 @@ function test.testGlobal_newItem_twoTrackingItTwoFaction_setsTotal()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
-	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
+	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Horde"].total )
 end
 function test.testGlobal_newItem_manyTrackingItSingleFaction_setsNeeded()
 	INEED_data["7073"] = {
@@ -570,7 +570,7 @@ function test.testGlobal_newItem_IAndOthersTracking()
 	}
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	fail("To write")
+	assertIsNil( INEED.othersNeed )  -- don't track for others if you need
 end
 function test.testGlobal_previousItem_preserves_othersNeed()
 	INEED_data["7073"] = {
@@ -582,7 +582,6 @@ function test.testGlobal_previousItem_preserves_othersNeed()
 	INEED.UNIT_INVENTORY_CHANGED()
 	myInventory["7777"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-
 	assertEquals( 1, INEED.othersNeed["7073"]["testReal"]["Alliance"].total )
 	-- 	INEED.othersNeed["7073"]["testRealm"]["Alliance"] = { ["needed"]=20, ['total']= 1 }
 
