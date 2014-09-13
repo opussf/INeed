@@ -189,7 +189,7 @@ function INEED.PLAYER_ENTERING_WORLD() -- Variables should be loaded here
 end
 function INEED.BAG_UPDATE()
 	local itemFulfilled = false   -- has an item been fulfilled yet?
-	for itemID, _ in pairs(INEED_data) do
+	for itemID, _ in pairs(INEED_data) do  -- loop over the stored data structure
 		local iHaveNum = GetItemCount( itemID, true ) -- include bank
 		local _, itemLink = GetItemInfo( itemID )
 		if itemLink and INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] then
@@ -233,6 +233,18 @@ function INEED.BAG_UPDATE()
 				INEED.clearData()
 				itemFulfilled = true
 			end
+		elseif itemLink then  -- valid item, and it is needed by someone (if it got here, it is not needed by current player - anymore )
+			INEED.Print("Others also need: "..itemLink)
+			INEED.othersNeed = INEED.othersNeed or {}
+			local otherCount = {}
+			for realm, _ in pairs( INEED_data[itemID] ) do  -- loop over the realms
+				for name, _ in pairs( INEED_data[itemID][realm] ) do  -- loop over the names in the realms
+					--otherCount[]
+				end
+			end
+
+
+
 --[[
 		elseif itemLink and INEED_data[itemID][INEED.realm] then
 			local names = {}
