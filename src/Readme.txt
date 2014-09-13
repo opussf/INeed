@@ -113,5 +113,41 @@ ToDO:
 
 http://wowprogramming.com/utils/xmlbrowser/live/FrameXML/OptionsPanelTemplates.xml
 
+----------------
+Global totals
+----------------
+This should allow the addon to show progress for items needed by other characters.
+-- Note:  No mailboxes in the Pandarian start zone, so ignore any item needed by a character that does not have a faction.
 
+For an item you need, only show your progress.
+10 / 15 (+1) [Special Item]
+-- Signal complete
+
+For an item that you do not need, show global progress.
+10 / 20 (+1) [Special Item]
+-- Signal complete here too.
+(Note: as of now, if you need 10, and everyone else needs 10, it will track your 10 and self-clear your need, and start tracking others. /sad)
+
+
+(Do I want to change the addon to continue to track the item if others still need it too?)
+(How to keep a character from giving away items that you need, but have completed, yet you continue to gather?)
+
+-- Ideas?
+* What is the usage of this addon?
+    -- Self, Gathering goal (daily material requirements - 180 ghost ore)
+    -- Self, crafting recipie (need 5x, 5y, and 15z to craft 5a) - need on all (see feature to make these crafting goals)
+    -- Self, autopurchase (need 5 x, vendor sells, autopurchase)
+    -- Self, pre-plan for which gear I 'need' from a dungeon, or raid, or from a token.
+       ^^ See reminder that you need(ed) it, to allow you to roll need
+    -- Self, currency cannot be traded, so no global fulfillment here, just tracking for a goal
+       ^^ Archelogy - can complete a puzzle, or do a daily gathering (quest?)
+       ^^ Item Upgrades need an amount to upgrade with.
+    -- Others, Steve needs 5x, I don't need x, I just got 2x, send them to Steve
+    -- Others, Steve needs 5x, I have 5x in my bank, send to Steve
+    -- Others, Steve needs [account bound gear], show that I now have it, and send it to Steve
+    -- Others, Steve and Sally need 5x and 10x of an item, try to gather 15x for them.
+    -- Self and Others, I and Steve need 5x and 5x of this item.
+
+* if others need an item too, don't clear your goal, set it as fulfilled, show total needed?
+* Need to filter based on BoE, Soulbound, or BoA.
 
