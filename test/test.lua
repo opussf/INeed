@@ -550,7 +550,6 @@ function test.testGlobal_newItem_manyTrackingItSingleFaction_setsNeeded()
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 30, INEED.othersNeed["7073"]["testRealm"]["Alliance"].needed )
 end
-
 function test.testGlobal_newItem_manyTrackingItSingleFaction_setsTotal()
 	INEED_data["7073"] = {
 		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
@@ -583,9 +582,28 @@ function test.testGlobal_previousItem_preserves_othersNeed()
 	myInventory["7777"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 1, INEED.othersNeed["7073"]["testReal"]["Alliance"].total )
-	-- 	INEED.othersNeed["7073"]["testRealm"]["Alliance"] = { ["needed"]=20, ['total']= 1 }
-
 end
+function test.testGlobal_previousItem_manyTrackingItSingleFaction_setsTotal()
+	INEED_data["7073"] = {
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
+						["yetAnotherName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
+						["third"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" }, }
+	}
+	myInventory["7073"] = 1
+	INEED.UNIT_INVENTORY_CHANGED()
+	assertEquals( 4, INEED.othersNeed["7073"]["testReal"]["Alliance"].total )
+end
+function test.testGlobal_previousItem_manyTrackingItSingleFaction_setsTotal_withInMail()
+	INEED_data["7073"] = {
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance", ['inMail']=1 },
+						["yetAnotherName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
+						["third"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" }, }
+	}
+	myInventory["7073"] = 1
+	INEED.UNIT_INVENTORY_CHANGED()
+	assertEquals( 5, INEED.othersNeed["7073"]["testReal"]["Alliance"].total )
+end
+
 
 
 --[[
