@@ -423,6 +423,7 @@ end
 ]]
 function test.testGlobal_newItem_nooneTrackingIt()
 	-- this really should not do anything extra.
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertIsNil( INEED_data["7073"] )
@@ -431,6 +432,7 @@ function test.testGlobal_newItem_oneTrackingIt_sameRealm_sameFaction_setsNeeded(
 	INEED_data["7073"] = {
 		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 10, INEED.othersNeed["7073"]["testRealm"]["Alliance"].needed )
@@ -439,6 +441,7 @@ function test.testGlobal_newItem_oneTrackingIt_sameRealm_sameFaction_setsTotal()
 	INEED_data["7073"] = {
 		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
@@ -448,6 +451,7 @@ function test.testGlobal_newItem_oneTrackingIt_sameRealm_diffFaction_setsNeeded(
 	INEED_data["7073"] = {
 		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 10, INEED.othersNeed["7073"]["testRealm"]["Horde"].needed )
@@ -458,6 +462,7 @@ function test.testGlobal_newItem_oneTrackingIt_sameRealm_diffFaction_setsTotal()
 	INEED_data["7073"] = {
 		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Horde"].total )
@@ -468,6 +473,7 @@ function test.testGlobal_newItem_oneTrackingIt_diffRealm_sameFaction_setsNeeded(
 	INEED_data["7073"] = {
 		["testRealm2"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 10, INEED.othersNeed["7073"]["testRealm2"]["Alliance"].needed )
@@ -478,6 +484,7 @@ function test.testGlobal_newItem_oneTrackingIt_diffRealm_sameFaction_setsTotal()
 	INEED_data["7073"] = {
 		["testRealm2"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 1, INEED.othersNeed["7073"]["testRealm2"]["Alliance"].total )
@@ -488,6 +495,7 @@ function test.testGlobal_newItem_oneTrackingIt_diffRealm_diffFaction_setsNeeded(
 	INEED_data["7073"] = {
 		["testRealm2"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 10, INEED.othersNeed["7073"]["testRealm2"]["Horde"].needed )
@@ -498,6 +506,7 @@ function test.testGlobal_newItem_oneTrackingIt_diffRealm_diffFaction_setsTotal()
 	INEED_data["7073"] = {
 		["testRealm2"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 1, INEED.othersNeed["7073"]["testRealm2"]["Horde"].total )
@@ -507,6 +516,7 @@ function test.testGlobal_newItem_twoTrackingItSingleFaction_setsNeeded()
 		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["yetAnotherName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 20, INEED.othersNeed["7073"]["testRealm"]["Alliance"].needed )
@@ -516,6 +526,7 @@ function test.testGlobal_newItem_twoTrackingItSingleFaction_setsTotal()
 		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["yetAnotherName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
@@ -525,6 +536,7 @@ function test.testGlobal_newItem_twoTrackingItTwoFaction_setsNeeded()
 		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["yetAnotherName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 10, INEED.othersNeed["7073"]["testRealm"]["Alliance"].needed )
@@ -535,6 +547,7 @@ function test.testGlobal_newItem_twoTrackingItTwoFaction_setsTotal()
 		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["yetAnotherName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
@@ -546,6 +559,7 @@ function test.testGlobal_newItem_manyTrackingItSingleFaction_setsNeeded()
 						["yetAnotherName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["third"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, }
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 30, INEED.othersNeed["7073"]["testRealm"]["Alliance"].needed )
@@ -556,6 +570,7 @@ function test.testGlobal_newItem_manyTrackingItSingleFaction_setsTotal()
 						["yetAnotherName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["third"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, }
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
@@ -567,6 +582,7 @@ function test.testGlobal_newItem_IAndOthersTracking()
 		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, -- del
 							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertIsNil( INEED.othersNeed )  -- don't track for others if you need
@@ -591,6 +607,7 @@ function test.testGlobal_previousItem_manyTrackingItSingleFaction_setsTotal()
 						["yetAnotherName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
 						["third"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" }, }
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 4, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
@@ -601,67 +618,10 @@ function test.testGlobal_previousItem_manyTrackingItSingleFaction_setsTotal_with
 						["yetAnotherName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
 						["third"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" }, }
 	}
+	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 5, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
 end
-
-
-
---[[
--- Tests for adding items for repeat (cron)
-function test.testAddItem_ItemStr_DailyRepeat()
-	-- Note, for this test, I've set >1 assert.
-	-- While not normally a good idea...
-	INEED.command( "item:74661 @daily" )
-	assertEquals( "daily", INEED_playercrontab["item:74661"]["cronString"] )
-	assertEquals( 1, INEED_playercrontab["item:74661"]["quantity"] )
-end
-function test.testAddItem_ItemStr_DailyRepeat_WithQuantity()
-	INEED.command( "item:74661 2 @daily" )
-	assertEquals( 2, INEED_playercrontab["item:74661"]["quantity"] )
-end
-function test.testAddItem_ItemStr_RepeatString()
-	INEED.command( "item:74661 @'Darkmoon Faire'")
-	assertEquals( "'darkmoon faire'", INEED_playercrontab["item:74661"]["cronString"] )
-end
-function test.testAddItem_ItemStr_GenericSchedule()
-	INEED.command( "item:74661 @* * * * *" )
-	assertEquals( "* * * * *", INEED_playercrontab["item:74661"]["cronString"] )
-end
-function test.testAddItem_ItemStr_ItemAdded()
-	INEED.command( "item:74661 @* * * * *" )
-	assertEquals( 1, INEED_data["74661"]["testRealm"]["testName"].needed )
-end
-function test.notestAddItem_ItemStr_RegisteredInCrontab()
-	INEED.command( "item:74661 @* * * * *" )
-	nextTS = (math.floor(time()/60)+1)*60   -- Assuming TS started on the minute, and ignoring drift
-	assertTrue( INEED.crontab[ nextTS ], "There should be an entry in this table" )
-end
-]]
--- Tests for processing crontab entries
---[[
-function test.testCron_Process()
-	INEED.command( "item:74661 @* * * * *" )
-	myInventory["74661"] = 1
-	INEED.UNIT_INVENTORY_CHANGED()  -- this should actually clear the item
-	myInventory["74661"] = 0
-	INEED.UNIT_INVENTORY_CHANGED()
-	for TS, _ in INEED.crontab do
-		print("TS: "..TS)
-	end
-	fail("Still need to finish test")
-end
-function test.testCron_TimeStamp()
-	print(time())
-	print(time()%60)
-	last = math.floor(time()/60)
-	print("Last: "..last*60)
-	next = (last + 1) * 60
-	print("Next: "..next)
-
-	fail("Meh")
-end
-]]--
 
 test.run()
