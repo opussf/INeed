@@ -419,8 +419,25 @@ end
 		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance"} },
 	}
+	INEED.othersNeed = {
+		["7073"] = {
+			["testRealm"] = {
+				["Alliance"] = { ['total'] = 0, ['needed'] = 30 },
+			},
+		},
+	}
 
 ]]
+function test.testGlobal_filterMyTrackingInfoFromOthersNeed()
+	INEED_data["7073"] = {
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
+						["testName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
+		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, -- del
+							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
+	}
+	INEED.makeOthersNeed()
+	assertIsNil( INEED_data )
+end
 function test.testGlobal_newItem_nooneTrackingIt()
 	-- this really should not do anything extra.
 	INEED.makeOthersNeed()
