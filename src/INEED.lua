@@ -234,15 +234,22 @@ function INEED.BAG_UPDATE()
 				itemFulfilled = true
 			end
 		elseif itemLink then  -- valid item, and it is needed by someone (if it got here, it is not needed by current player - anymore )
-			INEED.Print("Others also need: "..itemLink)
-			INEED.othersNeed = INEED.othersNeed or {}
-			local otherCount = {}
+			--INEED.Print("Others also need: "..itemLink)  -- prints entire damn list
+			INEED.othersNeed = { [itemID]={} }
+			--local otherCount = { [itemID] = { } }
 			for realm, _ in pairs( INEED_data[itemID] ) do  -- loop over the realms
-				for name, _ in pairs( INEED_data[itemID][realm] ) do  -- loop over the names in the realms
-					--otherCount[]
+				INEED.othersNeed[itemID][realm] = {}
+				for name, data in pairs( INEED_data[itemID][realm] ) do  -- loop over the names in the realms
+					INEED.othersNeed[itemID][realm][data.faction] =
+							INEED.othersNeed[itemID][realm][data.faction] and INEED.othersNeed[itemID][realm][data.faction]
+							or { ['needed'] = 0, ['total'] = iHaveNum }
+					INEED.othersNeed[itemID][realm][data.faction].needed =
+							INEED.othersNeed[itemID][realm][data.faction].needed + data.needed
+					INEED.othersNeed[itemID][realm][data.faction].total =
+							INEED.othersNeed[itemID][realm][data.faction].total + data.total + (data.inMail and data.inMail or 0)
+					--print(data.faction.." itemID: "..itemID.." -- "..data.total.."+"..(data.inMail and data.inMail or 0).." / "..data.needed)
 				end
 			end
-
 
 
 --[[
