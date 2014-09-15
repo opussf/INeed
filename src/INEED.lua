@@ -238,7 +238,7 @@ function INEED.BAG_UPDATE()
 			end
 		elseif itemLink and INEED.othersNeed[itemID] and INEED.othersNeed[itemID][INEED.realm] and INEED.othersNeed[itemID][INEED.realm][INEED.faction] then
 			-- valid item, and it is needed by someone (if it got here, it is not needed by current player - anymore )
-			print("========\nBoooohahahaha\n========")
+
 			local gained = iHaveNum - INEED.othersNeed[itemID][INEED.realm][INEED.faction].mine
 			if gained ~= 0 then
 				INEED.othersNeed[itemID][INEED.realm][INEED.faction].mine = iHaveNum
