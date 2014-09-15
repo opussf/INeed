@@ -436,7 +436,7 @@ function test.testGlobal_filterMyTrackingInfoFromOthersNeed()
 							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 	}
 	INEED.makeOthersNeed()
-	assertIsNil( INEED_data )
+	assertEquals( 10, INEED.othersNeed["7073"]["testRealm"]["Alliance"].needed )
 end
 function test.testGlobal_newItem_nooneTrackingIt()
 	-- this really should not do anything extra.
