@@ -174,7 +174,10 @@ function INEED.ADDON_LOADED()
 	--GameTooltip.SetCurrencyToken = INEED.hookSetCurrencyToken
 
 	-- Load Options panel
-	INEED.OptionsPanel_Reset();
+	INEED.OptionsPanel_Reset()
+
+	-- Build data structure to track what other players need.
+	INEED.makeOthersNeed()
 
 	INEED.Print("Loaded")
 end
@@ -234,38 +237,6 @@ function INEED.BAG_UPDATE()
 				itemFulfilled = true
 			end
 		elseif itemLink then  -- valid item, and it is needed by someone (if it got here, it is not needed by current player - anymore )
-			--INEED.Print("Others also need: "..itemLink)  -- prints entire damn list
-			INEED.othersNeed = { [itemID]={} }
-			--local otherCount = { [itemID] = { } }
-			for realm, _ in pairs( INEED_data[itemID] ) do  -- loop over the realms
-				INEED.othersNeed[itemID][realm] = {}
-				for name, data in pairs( INEED_data[itemID][realm] ) do  -- loop over the names in the realms
-					INEED.othersNeed[itemID][realm][data.faction] =
-							INEED.othersNeed[itemID][realm][data.faction] and INEED.othersNeed[itemID][realm][data.faction]
-							or { ['needed'] = 0, ['total'] = iHaveNum }
-					INEED.othersNeed[itemID][realm][data.faction].needed =
-							INEED.othersNeed[itemID][realm][data.faction].needed + data.needed
-					INEED.othersNeed[itemID][realm][data.faction].total =
-							INEED.othersNeed[itemID][realm][data.faction].total + data.total + (data.inMail and data.inMail or 0)
-					--print(data.faction.." itemID: "..itemID.." -- "..data.total.."+"..(data.inMail and data.inMail or 0).." / "..data.needed)
-				end
-			end
-
-
---[[
-		elseif itemLink and INEED_data[itemID][INEED.realm] then
-			local names = {}
-			local printNames = false
-			for name, data in pairs( INEED_data[itemID][INEED.realm] ) do
-				if data.faction == INEED.faction then
-					tinsert( names, name )
-					printNames = true
-				end
-			end
-			if printNames then
-				INEED.Print( string.format( "%s also needed by %s", itemLink, table.concat( names, ", " ) ) )
-			end
-]]
 		end
 	end
 
@@ -365,6 +336,30 @@ end
 function INEED.OnUpdate()
 end
 -- Non Event functions
+function INEED.makeOthersNeed()
+	-- This parses the saved data to determine what other players need.
+	-- Call this at ADDON_LOADED and probably MAIL_SEND_SUCCESS?
+	INEED.othersNeed = { }
+	for itemID, _ in pairs(INEED_data) do  -- loop over the stored data structure
+		local iHaveNum = GetItemCount( itemID, true ) -- include bank
+		INEED.othersNeed[itemID] = {}
+		for realm, _ in pairs( INEED_data[itemID] ) do
+			INEED.othersNeed[itemID][realm] = {}
+			for name, data in pairs( INEED_data[itemID][realm] ) do
+				if not ((realm == INEED.realm) and (name == INEED.name)) then
+					INEED.othersNeed[itemID][realm][data.faction] =
+							INEED.othersNeed[itemID][realm][data.faction] and INEED.othersNeed[itemID][realm][data.faction]
+							or { ['needed'] = 0, ['total'] = 0, ['mine'] = iHaveNum }
+					INEED.othersNeed[itemID][realm][data.faction].needed =
+							INEED.othersNeed[itemID][realm][data.faction].needed + data.needed
+					INEED.othersNeed[itemID][realm][data.faction].total =
+							INEED.othersNeed[itemID][realm][data.faction].total + data.total + (data.inMail and data.inMail or 0)
+				end
+			end
+		end
+	end
+
+end
 function INEED.itemFulfilledAnnouce()
 	if INEED_options.audibleSuccess then
 		if INEED_options.doEmote and INEED_options.emote then
