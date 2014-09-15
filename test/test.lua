@@ -422,7 +422,7 @@ end
 	INEED.othersNeed = {
 		["7073"] = {
 			["testRealm"] = {
-				["Alliance"] = { ['total'] = 0, ['needed'] = 30 },
+				["Alliance"] = { ['total'] = 0, ['needed'] = 30, ['mine'] = 1 },
 			},
 		},
 	}
@@ -447,7 +447,7 @@ function test.testGlobal_newItem_nooneTrackingIt()
 end
 function test.testGlobal_newItem_oneTrackingIt_sameRealm_sameFaction_setsNeeded()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" } },
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
@@ -456,7 +456,7 @@ function test.testGlobal_newItem_oneTrackingIt_sameRealm_sameFaction_setsNeeded(
 end
 function test.testGlobal_newItem_oneTrackingIt_sameRealm_sameFaction_setsTotal()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" } },
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
@@ -477,7 +477,7 @@ function test.testGlobal_newItem_oneTrackingIt_sameRealm_diffFaction_setsTotal()
 	-- This is done as a reminder, or if the item is 'account bound' and can be sent across factions
 	print("testGlobal_newItem_oneTrackingIt_sameRealm_diffFaction")
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Horde" } },
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
@@ -499,12 +499,12 @@ function test.testGlobal_newItem_oneTrackingIt_diffRealm_sameFaction_setsTotal()
 	-- This is done as a reminder, or if the item is 'account bound' and can be sent across realms
 	print("testGlobal_newItem_oneTrackingIt_diffRealm_sameFaction")
 	INEED_data["7073"] = {
-		["testRealm2"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
+		["testRealm2"]={ ["otherTestName"]={ ['needed']=10, ['total']=2, ['faction']="Alliance" } },
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 1, INEED.othersNeed["7073"]["testRealm2"]["Alliance"].total )
+	assertEquals( 2, INEED.othersNeed["7073"]["testRealm2"]["Alliance"].total )
 end
 function test.testGlobal_newItem_oneTrackingIt_diffRealm_diffFaction_setsNeeded()
 	-- This is done as a reminder, or if the item is 'account bound' and can be sent across realms and factions
@@ -521,7 +521,7 @@ function test.testGlobal_newItem_oneTrackingIt_diffRealm_diffFaction_setsTotal()
 	-- This is done as a reminder, or if the item is 'account bound' and can be sent across realms and factions
 	print("testGlobal_newItem_oneTrackingIt_diffRealm_diffFaction")
 	INEED_data["7073"] = {
-		["testRealm2"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
+		["testRealm2"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Horde" } },
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
@@ -540,7 +540,7 @@ function test.testGlobal_newItem_twoTrackingItSingleFaction_setsNeeded()
 end
 function test.testGlobal_newItem_twoTrackingItSingleFaction_setsTotal()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
 						["yetAnotherName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 	}
 	INEED.makeOthersNeed()
@@ -561,14 +561,14 @@ function test.testGlobal_newItem_twoTrackingItTwoFaction_setsNeeded()
 end
 function test.testGlobal_newItem_twoTrackingItTwoFaction_setsTotal()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
-						["yetAnotherName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
+						["yetAnotherName"]={ ['needed']=10, ['total']=2, ['faction']="Horde" } },
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
-	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Horde"].total )
+	assertEquals( 2, INEED.othersNeed["7073"]["testRealm"]["Horde"].total )
 end
 function test.testGlobal_newItem_manyTrackingItSingleFaction_setsNeeded()
 	INEED_data["7073"] = {
@@ -594,6 +594,20 @@ function test.testGlobal_newItem_manyTrackingItSingleFaction_setsTotal()
 end
 function test.testGlobal_newItem_IAndOthersTracking()
 	INEED_data["7073"] = {
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
+						["testName"]={ ['needed']=10, ['total']=2, ['faction']="Alliance" } },
+		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=4, ['faction']="Alliance" }, -- del
+							 ["otherTestName2"]={ ['needed']=10, ['total']=8, ['faction']="Alliance" } },
+	}
+	INEED.makeOthersNeed()
+	myInventory["7073"] = 1
+	INEED.UNIT_INVENTORY_CHANGED()
+	assertEquals( 1, INEED.othersNeed['7073']['testRealm']['Alliance'].total )
+	assertEquals( 12, INEED.othersNeed['7073']['otherTestRealm']['Alliance'].total )
+
+end
+function test.testGlobal_newItem_setsMine()
+	INEED_data["7073"] = {
 		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["testName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, -- del
@@ -602,22 +616,8 @@ function test.testGlobal_newItem_IAndOthersTracking()
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertIsNil( INEED.othersNeed )  -- don't track for others if you need
+	assertEquals( 52, INEED.othersNeed["7073"]["testRealm"]["Alliance"].mine )
 end
---[[  Is this really needed?
-function test.testGlobal_previousItem_preserves_othersNeed()
-	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
-						["testName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
-		},
-	}
-	myInventory["7073"] = 1
-	INEED.UNIT_INVENTORY_CHANGED()
-	myInventory["7777"] = 1
-	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
-end
-]]
 function test.testGlobal_previousItem_manyTrackingItSingleFaction_setsTotal()
 	INEED_data["7073"] = {
 		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
@@ -627,7 +627,7 @@ function test.testGlobal_previousItem_manyTrackingItSingleFaction_setsTotal()
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 4, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
+	assertEquals( 3, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
 end
 function test.testGlobal_previousItem_manyTrackingItSingleFaction_setsTotal_withInMail()
 	INEED_data["7073"] = {
@@ -638,7 +638,7 @@ function test.testGlobal_previousItem_manyTrackingItSingleFaction_setsTotal_with
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 5, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
+	assertEquals( 4, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
 end
 
 test.run()
