@@ -236,7 +236,32 @@ function INEED.BAG_UPDATE()
 				INEED.clearData()
 				itemFulfilled = true
 			end
-		elseif itemLink then  -- valid item, and it is needed by someone (if it got here, it is not needed by current player - anymore )
+		elseif itemLink and INEED.othersNeed[itemID] and INEED.othersNeed[itemID][INEED.realm] and INEED.othersNeed[itemID][INEED.realm][INEED.faction] then
+			-- valid item, and it is needed by someone (if it got here, it is not needed by current player - anymore )
+			print("========\nBoooohahahaha\n========")
+			local gained = iHaveNum - INEED.othersNeed[itemID][INEED.realm][INEED.faction].mine
+			if gained ~= 0 then
+				INEED.othersNeed[itemID][INEED.realm][INEED.faction].mine = iHaveNum
+				if INEED_options.showProgress or INEED_options.printProgress then
+					local progressString = string.format("%i/%i %s%s",
+							(INEED.othersNeed[itemID][INEED.realm][INEED.faction].total
+								+ (INEED.othersNeed[itemID][INEED.realm][INEED.faction].inMail and INEED.othersNeed[itemID][INEED.realm][INEED.faction].inMail or 0)
+								+ iHaveNum),
+							INEED.othersNeed[itemID][INEED.realm][INEED.faction].needed,
+							(INEED_options.includeChange
+								and string.format("(%s%+i%s) ", ((gained > 0) and COLOR_GREEN or COLOR_RED), gained, COLOR_END)
+								or ""),
+							itemLink)
+					if INEED_options.showProgress then
+						UIErrorsFrame:AddMessage( progressString, 1.0, 1.0, 0.1, 1.0 )
+					end
+--					if INEED_options.printProgress and
+--							(INEED_data[itemID][INEED.realm][INEED.name].total < INEED_data[itemID][INEED.realm][INEED.name].needed ) then
+--						INEED.Print( progressString )
+--					end
+
+				end
+			end
 		end
 	end
 
