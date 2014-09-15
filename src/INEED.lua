@@ -197,7 +197,7 @@ function INEED.BAG_UPDATE()
 		local _, itemLink = GetItemInfo( itemID )
 		if itemLink and INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] then
 			INEED_data[itemID][INEED.realm][INEED.name].faction = INEED.faction -- force update incase faction is changed
-			--INEED.Print("I have a record for item "..itemLink)
+			--INEED.("I have a record for item "..itemLink)
 			local gained = iHaveNum - INEED_data[itemID][INEED.realm][INEED.name].total
 			if INEED_data[itemID][INEED.realm][INEED.name].total ~= iHaveNum then
 				--INEED.Print("Recorded does not equal what I have")
@@ -236,7 +236,10 @@ function INEED.BAG_UPDATE()
 				INEED.clearData()
 				itemFulfilled = true
 			end
-		elseif itemLink and INEED.othersNeed[itemID] and INEED.othersNeed[itemID][INEED.realm] and INEED.othersNeed[itemID][INEED.realm][INEED.faction] then
+		elseif itemLink and INEED.othersNeed
+						and INEED.othersNeed[itemID]
+						and INEED.othersNeed[itemID][INEED.realm]
+						and INEED.othersNeed[itemID][INEED.realm][INEED.faction] then
 			-- valid item, and it is needed by someone (if it got here, it is not needed by current player - anymore )
 
 			local gained = iHaveNum - INEED.othersNeed[itemID][INEED.realm][INEED.faction].mine
