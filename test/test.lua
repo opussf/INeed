@@ -583,14 +583,14 @@ function test.testGlobal_newItem_manyTrackingItSingleFaction_setsNeeded()
 end
 function test.testGlobal_newItem_manyTrackingItSingleFaction_setsTotal()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
-						["yetAnotherName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
-						["third"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, }
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
+						["yetAnotherName"]={ ['needed']=10, ['total']=2, ['faction']="Alliance" },
+						["third"]={ ['needed']=10, ['total']=4, ['faction']="Alliance" }, }
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
+	assertEquals( 7, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
 end
 function test.testGlobal_newItem_IAndOthersTracking()
 	INEED_data["7073"] = {
