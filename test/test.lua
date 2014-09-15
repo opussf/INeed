@@ -475,7 +475,6 @@ function test.testGlobal_newItem_oneTrackingIt_sameRealm_diffFaction_setsNeeded(
 end
 function test.testGlobal_newItem_oneTrackingIt_sameRealm_diffFaction_setsTotal()
 	-- This is done as a reminder, or if the item is 'account bound' and can be sent across factions
-	print("testGlobal_newItem_oneTrackingIt_sameRealm_diffFaction")
 	INEED_data["7073"] = {
 		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Horde" } },
 	}
@@ -486,7 +485,6 @@ function test.testGlobal_newItem_oneTrackingIt_sameRealm_diffFaction_setsTotal()
 end
 function test.testGlobal_newItem_oneTrackingIt_diffRealm_sameFaction_setsNeeded()
 	-- This is done as a reminder, or if the item is 'account bound' and can be sent across realms
-	print("testGlobal_newItem_oneTrackingIt_diffRealm_sameFaction")
 	INEED_data["7073"] = {
 		["testRealm2"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 	}
@@ -497,7 +495,6 @@ function test.testGlobal_newItem_oneTrackingIt_diffRealm_sameFaction_setsNeeded(
 end
 function test.testGlobal_newItem_oneTrackingIt_diffRealm_sameFaction_setsTotal()
 	-- This is done as a reminder, or if the item is 'account bound' and can be sent across realms
-	print("testGlobal_newItem_oneTrackingIt_diffRealm_sameFaction")
 	INEED_data["7073"] = {
 		["testRealm2"]={ ["otherTestName"]={ ['needed']=10, ['total']=2, ['faction']="Alliance" } },
 	}
@@ -508,7 +505,6 @@ function test.testGlobal_newItem_oneTrackingIt_diffRealm_sameFaction_setsTotal()
 end
 function test.testGlobal_newItem_oneTrackingIt_diffRealm_diffFaction_setsNeeded()
 	-- This is done as a reminder, or if the item is 'account bound' and can be sent across realms and factions
-	print("testGlobal_newItem_oneTrackingIt_diffRealm_diffFaction")
 	INEED_data["7073"] = {
 		["testRealm2"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
 	}
@@ -519,7 +515,6 @@ function test.testGlobal_newItem_oneTrackingIt_diffRealm_diffFaction_setsNeeded(
 end
 function test.testGlobal_newItem_oneTrackingIt_diffRealm_diffFaction_setsTotal()
 	-- This is done as a reminder, or if the item is 'account bound' and can be sent across realms and factions
-	print("testGlobal_newItem_oneTrackingIt_diffRealm_diffFaction")
 	INEED_data["7073"] = {
 		["testRealm2"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Horde" } },
 	}
