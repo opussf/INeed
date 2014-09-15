@@ -123,6 +123,7 @@ function INEED.MAIL_SEND_SUCCESS()
 			end
 		end
 	end
+	INEED.makeOthersNeed()
 end
 function INEED.MAIL_CLOSED()
 	--INEED.Print("Mail Frame CLOSED")
@@ -369,15 +370,16 @@ function INEED.makeOthersNeed()
 	-- Call this at ADDON_LOADED and probably MAIL_SEND_SUCCESS?
 	INEED.othersNeed = { }
 	for itemID, _ in pairs(INEED_data) do  -- loop over the stored data structure
-		local iHaveNum = GetItemCount( itemID, true ) -- include bank
+		local iHaveNum = GetItemCount( itemID, true ) or 0 -- include bank
 		INEED.othersNeed[itemID] = {}
 		for realm, _ in pairs( INEED_data[itemID] ) do
 			INEED.othersNeed[itemID][realm] = {}
 			for name, data in pairs( INEED_data[itemID][realm] ) do
-				if not ((realm == INEED.realm) and (name == INEED.name)) then
+				local faction = INEED_data[itemID][realm][name].faction or ""
+				if data.faction and not ((realm == INEED.realm) and (name == INEED.name)) then
 					INEED.othersNeed[itemID][realm][data.faction] =
-							INEED.othersNeed[itemID][realm][data.faction] and INEED.othersNeed[itemID][realm][data.faction]
-							or { ['needed'] = 0, ['total'] = 0, ['mine'] = iHaveNum }
+							(INEED.othersNeed[itemID][realm][data.faction] and INEED.othersNeed[itemID][realm][data.faction]
+							or { ['needed'] = 0, ['total'] = 0, ['mine'] = iHaveNum })
 					INEED.othersNeed[itemID][realm][data.faction].needed =
 							INEED.othersNeed[itemID][realm][data.faction].needed + data.needed
 					INEED.othersNeed[itemID][realm][data.faction].total =
