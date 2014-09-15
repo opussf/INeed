@@ -247,7 +247,7 @@ function INEED.BAG_UPDATE()
 			if gained ~= 0 then
 				INEED.othersNeed[itemID][INEED.realm][INEED.faction].mine = iHaveNum
 				if INEED_options.showProgress or INEED_options.printProgress then
-					local progressString = string.format("%i/%i %s%s",
+					local progressString = string.format("-=%i/%i %s%s=-",
 							(INEED.othersNeed[itemID][INEED.realm][INEED.faction].total
 								+ (INEED.othersNeed[itemID][INEED.realm][INEED.faction].inMail and INEED.othersNeed[itemID][INEED.realm][INEED.faction].inMail or 0)
 								+ iHaveNum),
