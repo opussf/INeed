@@ -176,9 +176,6 @@ function INEED.ADDON_LOADED()
 	-- Load Options panel
 	INEED.OptionsPanel_Reset()
 
-	-- Build data structure to track what other players need.
-	INEED.makeOthersNeed()
-
 	INEED.Print("Loaded")
 end
 function INEED.MAIL_SHOW()
@@ -188,6 +185,9 @@ end
 function INEED.PLAYER_ENTERING_WORLD() -- Variables should be loaded here
 	--INEED_Frame:RegisterEvent("UNIT_INVENTORY_CHANGED")
 	INEED_Frame:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	-- Build data structure to track what other players need.
+	INEED.makeOthersNeed()
+
 	--INEED.test()
 end
 function INEED.BAG_UPDATE()
