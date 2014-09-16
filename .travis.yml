@@ -6,3 +6,4 @@ addons:
   artifacts:
     paths:
       - $(ls $HOME/target/*.zip | tr "\n" ":")
+    debug: true
