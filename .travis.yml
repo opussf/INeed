@@ -1,4 +1,8 @@
 language: lua
 before_install:
-    - sudo apt-get install lua5.1
-script: ant package
+  - sudo apt-get install lua5.1
+script: ant clean package
+addons:
+  artifacts:
+    paths:
+      - $(ls $HOME/target/*.zip | tr "\n" ":")
