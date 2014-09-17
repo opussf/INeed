@@ -1,6 +1,8 @@
 INeed
 =====
 
+[![Build Status](https://travis-ci.org/opussf/INeed.svg?branch=master)](https://travis-ci.org/opussf/INeed)
+
 This addon is a shopping list, item fulfillment addon for World of Warcraft.
 
 ## Idea:
