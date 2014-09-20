@@ -18,10 +18,19 @@ end
 function INEED_OFFLINE.setCounts()
 	INEED_OFFLINE.metaData = {}
 	local itemCount = 0
+	local realmCount = 0
+	local realms = {}
 	for itemID, _ in pairs( INEED_data ) do
 		itemCount = itemCount + 1
+		for realm, _ in pairs( INEED_data[itemID] ) do
+			realms[realm] = 1
+		end
+	end
+	for k, v in pairs( realms ) do
+		realmCount = realmCount + 1
 	end
 	INEED_OFFLINE.metaData.itemCount = itemCount
+	INEED_OFFLINE.metaData.realmCount = realmCount
 end
 
 INEED_OFFLINE.dofile( INEED_OFFLINE.dataFile )
