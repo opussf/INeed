@@ -12,7 +12,7 @@ end
 function test.testOffline_setCounts_items()
 	test.beforeOffline()
 	INEED_OFFLINE.setCounts()
-	assertEquals( 1, INEED_OFFILE.metaData.itemCount )
+	assertEquals( 1, INEED_OFFLINE.metaData.itemCount )
 end
 function test.testOffline_setCount_realms()
 	test.beforeOffline()
