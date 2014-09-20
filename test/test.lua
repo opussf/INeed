@@ -4,6 +4,7 @@ addonData = { ["version"] = "1.0",
 }
 
 require "wowTest"
+require "test_offline"
 
 test.outFileName = "testOut.xml"
 
@@ -19,6 +20,7 @@ package.path = "../src/?.lua;'" .. package.path
 require "INEED"
 require "INEEDUI"
 require "INEEDOptions"
+require "INEED_Offline"
 
 
 -- addon setup
