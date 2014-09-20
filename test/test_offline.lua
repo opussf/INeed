@@ -11,22 +11,27 @@ end
 
 function test.testOffline_setCounts_items()
 	test.beforeOffline()
+	INEED_OFFLINE.setCounts()
 	assertEquals( 1, INEED_OFFILE.metaData.itemCount )
 end
 function test.testOffline_setCount_realms()
 	test.beforeOffline()
+	INEED_OFFLINE.setCounts()
 	assertEquals( 2, INEED_OFFLINE.metaData.realmCount )
 end
 function test.testOffline_setCount_players()
 	test.beforeOffline()
+	INEED_OFFLINE.setCounts()
 	assertEquals( 5, INEED_OFFLINE.metaData.playerCount )
 end
 function test.testOffline_setCount_oldestAdded()
 	test.beforeOffline()
+	INEED_OFFLINE.setCounts()
 	assertEquals( 1405487303, INEED_OFFLINE.metaData.oldestAdded )
 end
 function test.testOffline_setCount_oldestUpdated()
 	test.beforeOffline()
+	INEED_OFFLINE.setCounts()
 	assertEquals( 1405487303, INEED_OFFLINE.metaData.oldestUpdated )
 end
 --[[
