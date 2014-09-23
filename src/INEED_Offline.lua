@@ -19,11 +19,15 @@ function INEED_OFFLINE.setCounts()
 	INEED_OFFLINE.metaData = {}
 	local itemCount = 0
 	local realmCount = 0
+	local oldestUpdate = time()
 	local realms = {}
 	for itemID, _ in pairs( INEED_data ) do
 		itemCount = itemCount + 1
 		for realm, _ in pairs( INEED_data[itemID] ) do
 			realms[realm] = 1
+			for name, data in pairs( INEED_data[itemID][realm] ) do
+				oldestUpdate = min( oldestUpdate, tonumber(data.updated) )
+			end
 		end
 	end
 	for k, v in pairs( realms ) do
@@ -31,6 +35,7 @@ function INEED_OFFLINE.setCounts()
 	end
 	INEED_OFFLINE.metaData.itemCount = itemCount
 	INEED_OFFLINE.metaData.realmCount = realmCount
+	INEED_OFFLINE.metaData.oldestUpdate = oldestUpdate
 end
 
 INEED_OFFLINE.dofile( INEED_OFFLINE.dataFile )

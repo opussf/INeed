@@ -27,7 +27,7 @@ end
 function test.testOffline_setCount_oldestAdded()
 	test.beforeOffline()
 	INEED_OFFLINE.setCounts()
-	assertEquals( 1405487303, INEED_OFFLINE.metaData.oldestAdded )
+	assertEquals( 1405487303, INEED_OFFLINE.metaData.oldestAdded, "oldestAdded not set")
 end
 function test.testOffline_setCount_oldestUpdated()
 	test.beforeOffline()
