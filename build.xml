@@ -14,6 +14,9 @@
 	<property name="working.dir" location="${target.dir}/working"/>
 	<property name="report.dir" location="${target.dir}/reports"/>
 
+	<condition property="test.check">
+		<available file="${test.dir}/test.lua" type="file"/>
+	</condition>
 
 	<target name="clean" description="Cleans old builds">
 		<delete dir="target" verbose="true"/>
@@ -47,6 +50,10 @@
 				basedir="${working.dir}"
 				includes="${ant.project.name}/**"/>
 		<delete dir="${package.dir}" verbose="false"/>
+		<checksum file="${target.dir}/${project.zip}"
+				  property="zip.md5" />
+		<echo message="${zip.md5}" />
+
 	</target>
 
 	<target name="web.deploy" description="deploys the web site">
@@ -73,7 +80,7 @@
 		</copy>
 	</target>
 
-	<target name="test" description="run unit tests">
+	<target name="test" description="run unit tests" if="test.check">
 		<mkdir  dir="${report.dir}"/>
 		<exec executable="lua" dir="test" resultproperty="testResult">
 			<arg value="test.lua"/>
