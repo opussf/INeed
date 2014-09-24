@@ -368,7 +368,7 @@ end
 function INEED.makeOthersNeed()
 	-- This parses the saved data to determine what other players need.
 	-- Call this at ADDON_LOADED and probably MAIL_SEND_SUCCESS?
-	INEED.Print("-=-=-=-=-  makeOthersNeed  -=-=-=-=-=-")
+	--INEED.Print("-=-=-=-=-  makeOthersNeed  -=-=-=-=-=-")
 	INEED.othersNeed = { }
 	for itemID, _ in pairs(INEED_data) do  -- loop over the stored data structure
 		local iHaveNum = GetItemCount( itemID, true ) or 0 -- include bank

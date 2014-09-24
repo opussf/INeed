@@ -656,7 +656,7 @@ function test.testGlobal_dontTrackInGlobalWhatINeed()
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertIsNil( INEED.othersNeed["7073"] )
+	assertIsNil( INEED.othersNeed["7073"]["testRealm"]["testName"] )
 end
 
 
