@@ -601,6 +601,7 @@ function INEED.command(msg)
 		--INEED.Print("cl:"..cmd.." p:"..(param or "nil"))
 		--param, targetString = INEED.parseTarget( param )
 		INEED.addItem( cmd, tonumber(param) )
+		INEED.makeOthersNeed()
 		--[[
 		if targetString then
 			INEED.addTarget( cmd, tonumber(param), targetString )
