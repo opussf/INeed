@@ -63,6 +63,9 @@ end
 
 -- intercept the lua's print function
 --print = test.print
+--io.write = test.print
+--out = test.print
+
 
 function test.toXML()
 	if test.outFileName then
