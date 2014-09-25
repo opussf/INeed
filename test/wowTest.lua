@@ -65,6 +65,9 @@ end
 --print = test.print
 --io.write = test.print
 --out = test.print
+-------
+--http://cegui.org.uk/wiki/Redirecting_Lua_Output
+--http://lua-users.org/lists/lua-l/2008-10/msg00369.html
 
 
 function test.toXML()
