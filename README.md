@@ -6,8 +6,7 @@ INeed
 This addon is a shopping list, item fulfillment addon for World of Warcraft.
 
 ## Idea:
-The initial idea here was to track items that a player 'needs' for one reason or another,
-that is not already tracked elsewhere.
+The initial idea here was to track items that a player 'needs' for one reason or another, that is not already tracked elsewhere.
 
 ## Problem to solve:
 Some professions need many items to craft a single item. Some of those items may take days to gather.
@@ -16,14 +15,12 @@ This would let someone create a shopping list of items that are needed.
 Show which of your alts need how many of that item (tooltip).
 
 Some items are vendor sold, and this will try to purchase the needed items when available for sale.
-(This will be an option, possibly setting a max purchase price)
-(Something like a spending account could also be setup for this. IE, give INeed 10G, as soon as it spends 10G
-  for items, it will only alert the user that it found an item for sale, but will not purchase. This would be
-  turned off by simply setting this to 0G, setting it to a negative value would make it unlimited -- if desired)
+Auto purchasing items is controlled by the amount stored in the INeed account.
+IE, give INeed 10G, as soon as it spends 10G for items, it will only alert the user that it found an item for sale, but will not purchase.
+This would be turned off by simply setting this to 0G.
 
-
-
-The interface is: "INeed <this item> <quantity>"
+The interface is: "/INeed &lt;this item&gt; &lt;quantity&gt;".
+Optional iterface is "/in".
 ```
 /ineed <itemLink>       -- needs 1 of item
 /ineed <itemLink> 120   -- needs 120 of item
