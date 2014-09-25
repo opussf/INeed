@@ -43,6 +43,76 @@ Optional iterface is "/in".
 * The ability to see a shopping list of items
 * An alert to a player logging that another character needs something in your inv
 
+## How to use:
+Using a macro to set some daily requirement, or goal makes it easier to remember what you have done, or need to do.
+
+Some macro ideas:
+
+### Daily
+* Alchemy (also has daily need for crystal vials)
+```
+#showtooltip
+/in item:3371 20
+/cast Alchemy
+/stopmacro [nomod]
+/in item:1645 5
+/in item:19299 5
+/in account +1g
+```
+
+* Tailoring (includes Darkmoon Faire)
+```
+#showtooltips
+/cast Tailoring
+/in item:98619
+/in item:92960
+/in enchant:125551 18
+/use Mote of Harmony
+/stopmacro [nomod]
+/in item:2320
+/in item:2604
+/in item:6260
+/in item:72049
+/in account +1g
+```
+
+### Darkmoon Faire
+
+* General (press a mod key to queue items needed)
+```
+/use item:71978
+/use item:71977
+/use item:72110
+/stopmacro [nomod]
+/in item:30817 5
+/in item:73269 5
+/in item:71635
+/in item:71636
+/in item:71637
+/in item:71638
+/in item:71715
+/in item:71634
+/in account +2s
+```
+
+### Gear sets:
+* Timeless Leather
+```
+/in item:102278 -- boots
+/in item:102280 -- helm
+/in item:102279 -- gloves
+/in item:102282 -- shoulders
+/in item:102227 -- chestpiece
+/in item:102281 -- Leggings
+/in item:102283 -- belt
+/in item:102322 -- bracers
+```
+
+### Currencies
+```
+/in currency:777  -- Timeless Coins
+```
+
 ## Versions:
 ```
 0.10    Crontab feature scrapped.
@@ -60,13 +130,13 @@ Optional iterface is "/in".
 0.05    Timestamp of when item added.
         Delete a char "/in remove <name>-<rname>
         Nice options panel.
-0.04	Account bug found and fixed.
-		Can now use "account +value" to add a value, or "account -value" to remove a value
-		^^^ Good for adding sum from vendor trash selling, or setting up a daily allowance
-0.03	Putting progress announements to UIErrorFrame
-0.02	Adding in spending account.
-		adding item via item:9999 working
-		Also hacked together a unittesting frame work
+0.04    Account bug found and fixed.
+        Can now use "account +value" to add a value, or "account -value" to remove a value
+        ^^^ Good for adding sum from vendor trash selling, or setting up a daily allowance
+0.03    Putting progress announements to UIErrorFrame
+0.02    Adding in spending account.
+        adding item via item:9999 working
+        Also hacked together a unittesting frame work
 
-0.01	Initial work, command line works, tracking works, alert message on fulfilment, auto purchase
+0.01    Initial work, command line works, tracking works, alert message on fulfilment, auto purchase
 ```
