@@ -648,5 +648,18 @@ function test.testGlobal_missingFactionInData()
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertEquals( 3, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
 end
+function test.testGlobal_dontTrackInGlobalWhatINeed()
+	INEED_data["7073"] = {
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
+						["testName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
+		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, -- del
+							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
+	}
+	INEED.makeOthersNeed()
+	myInventory["7073"] = 1
+	INEED.UNIT_INVENTORY_CHANGED()
+	assertIsNil( INEED.othersNeed["7073"]["testRealm"]["testName"] )
+end
+
 
 test.run()
