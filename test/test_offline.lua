@@ -8,46 +8,45 @@ function test.beforeOffline()
 						["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance", ["added"] = 1405487306, ["updated"] = 1405487305 } },
 	}
 	INEED_OFFLINE.isRunning = false
+	INEED_OFFLINE.setMetaData()
 end
 
-function test.testOffline_setCounts_items()
+function test.testOffline_setMetaData_items()
 	test.beforeOffline()
-	INEED_OFFLINE.setCounts()
 	assertEquals( 1, INEED_OFFLINE.metaData.itemCount )
 end
-function test.testOffline_setCount_realms()
+function test.testOffline_setMetaData_realms()
 	test.beforeOffline()
-	INEED_OFFLINE.setCounts()
 	assertEquals( 2, INEED_OFFLINE.metaData.realmCount )
 end
-function test.testOffline_setCount_players()
+function test.testOffline_setMetaData_players()
 	test.beforeOffline()
-	INEED_OFFLINE.setCounts()
 	assertEquals( 5, INEED_OFFLINE.metaData.playerCount )
 end
-function test.testOffline_setCount_oldestAdded()
+function test.testOffline_setMetaData_oldestAdded()
 	test.beforeOffline()
-	INEED_OFFLINE.setCounts()
 	assertEquals( 1405487302, INEED_OFFLINE.metaData.oldestAdded )
 end
-function test.testOffline_setCount_oldestUpdated()
+function test.testOffline_setMetaData_oldestUpdated()
 	test.beforeOffline()
-	INEED_OFFLINE.setCounts()
 	assertEquals( 1405487303, INEED_OFFLINE.metaData.oldestUpdated )
 end
+function test.testOffline_setMetaData_realmNames()
+	test.beforeOffline()
+	assertEquals( "otherTestRealm", INEED_OFFLINE.metaData.realmNames[1] )
+	assertEquals( "testRealm", INEED_OFFLINE.metaData.realmNames[2] )
+end
+function test.testOffline_setMetaData_playerNames()
+	test.beforeOffline()
+	assertEquals( "otherTestName-otherTestRealm", INEED_OFFLINE.metaData.playerNames[1] )
+	assertEquals( "otherTestName-testRealm", INEED_OFFLINE.metaData.playerNames[2] )
+end
+function test.testOffline_showStats()
+	-- fail if the showStats fails
+	test.beforeOffline()
+	INEED_OFFLINE.showStats()
+end
 --[[
-function test.testOffline_06()
-	test.beforeOffline()
-	fail("06")
-end
-function test.testOffline_07()
-	test.beforeOffline()
-	fail("07")
-end
-function test.testOffline_08()
-	test.beforeOffline()
-	fail("08")
-end
 function test.testOffline_09()
 	test.beforeOffline()
 	fail("09")
