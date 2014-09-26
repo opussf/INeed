@@ -7,6 +7,7 @@ function test.beforeOffline()
 		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance", ["added"] = 1405487304, ["updated"] = 1405487304 }, -- del
 						["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance", ["added"] = 1405487306, ["updated"] = 1405487305 } },
 	}
+	INEED_OFFLINE.isRunning = false
 end
 
 function test.testOffline_setCounts_items()
