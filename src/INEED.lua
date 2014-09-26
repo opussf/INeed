@@ -628,16 +628,19 @@ function INEED.showList( searchTerm )
 				if ( searchTerm == "me" and name == INEED.name ) or
 						( searchTerm == "realm" and realm == INEED.realm ) or
 						( searchTerm == "all" ) then
-					INEED.Print( itemID..":"..(data.added or "nil added")..":"..(data.updated or "nill updated").." age:"..
-							((data.updated or time()) - (data.added or 0) ) )
+					local itemLink = select( 2, GetItemInfo( itemID ) ) or "item:"..itemID
+					local age = time() - (data.updated and data.updated or data.added)
 					updatedItems[itemID] = updatedItems[itemID]
-							and max( updatedItems[itemID], ( data.updated or data.added or 0) )
-							or ( data.updated or data.added )
+							and max( updatedItems[itemID], age )
+							or age
+					INEED.Print( updatedItems[itemID]..":"..itemLink..":"..(data.added or "nil added")..":"..(data.updated or "nill updated").." age:"..age )
+
 				end
 			end
 		end
 	end
 	table.sort( updatedItems, function(a,b) return b<a end ) -- reverse sort order
+
 	for itemID, _ in pairs( updatedItems ) do
 		for realm, _ in pairs( INEED_data[itemID] ) do
 			for name, data in pairs( INEED_data[itemID][realm] ) do
