@@ -1,0 +1,53 @@
+Sets need for payments daily quest, and for blue reputation items, and Nomi's cooking item.
+Calls Nomi.
+
+/in item:90735
+/in item:80213
+/in item:80214
+/in item:80215
+/in item:80216
+/in item:79264
+/in item:79265
+/in item:79266
+/in item:79267
+/in item:79268
+/use item:86425
+
+=========================================
+Needs a series of seeds, Master Plow, Lesser Charms of Good Fortune, and Warforged Seals.
+
+/in item:89815
+/in item:85216 4
+/in item:79102
+/in item:89328 2
+/in item:80590
+/in item:80591
+/in item:80592
+/in item:80593
+/in item:80594 2
+/in item:80595
+/in item:89326 2
+/in currency:738 50
+/in currency:776 3
+
+=========================================
+Plants seeds in a specific order, uses the Master Plow
+
+/use item:85216
+/use item:89328
+/use item:79102
+/use item:80592
+/use item:80595
+/use item:89329
+/use item:80590
+/use item:80591
+/use item:80593
+/use item:80594
+/use item:85267
+/use item:85268
+/use item:85269
+/use item:89326
+/use:item:85153
+/use item:89815
+
+=========================================
