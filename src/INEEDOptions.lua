@@ -6,6 +6,7 @@ INEED_options = {
 	["emote"] = "CHEER",
 	["playSoundFile"] = false,
 	["soundFile"] = "Sound\\Creature\\BabyMurloc\\BabyMurlocDance.wav",
+	["showGlobal"] = true,
 }
 
 function INEED.OptionsPanel_OnLoad(panel)
