@@ -19,6 +19,7 @@
 		</and>
 	</condition>
 	<property name="version.number" value="${repository.version}"/>
+	<echo>Building: ${version.number}</echo>
 	<!-- end git repo info -->
 
 	<property name="project.zip" value="${ant.project.name}_${version.number}.zip"/>
