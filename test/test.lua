@@ -658,17 +658,6 @@ function test.testGlobal_dontTrackInGlobalWhatINeed()
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertIsNil( INEED.othersNeed["7073"]["testRealm"]["testName"] )
 end
-function test.testGlobal_rebuildOnNeed()
-	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, },
-		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, -- del
-							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
-	}
-	INEED.makeOthersNeed()
-	myInventory["7073"] = 1
-	INEED.UNIT_INVENTORY_CHANGED()
-	INEED.addItem( "|cff9d9d9d|Hitem:7073:0:0:0:0:0:0:0:80:0:0|h[Broken Fang]|h|r", 10 )
-	assertIsNil( INEED.othersNeed["7073"] )
-end
+
 
 test.run()
