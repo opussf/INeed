@@ -100,13 +100,6 @@
 			<arg value="test.lua"/>
 		</exec>
 		<move todir="${report.dir}" file="${test.dir}/testOut.xml"/>
-		<junitreport todir="${report.dir}">
-			<fileset dir="${report.dir}">
-				<include name="testOut.xml"/>
-			</fileset>
-			<report todir="${report.dir}/html"
-					format="noframes"/>
-		</junitreport>
 		<fail message="The tests failed. Please see the output for details.">
 			<condition>
 				<not>
