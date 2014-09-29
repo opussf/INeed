@@ -3,10 +3,24 @@
 	<tstamp/>
 	<property file="build.properties"/>
 	<property environment="env"/>
-
+<!--
 	<property name="env.BUILD_NUMBER" value="LOCAL"/>
 	<property name="build.number" value="${env.BUILD_NUMBER}"/>
 	<property name="version.number" value="${IN.version}.${build.number}"/>
+-->
+	<!--  Pull git repo info -->
+	<exec executable="git" dir="." outputproperty="git.revision" failifexecutionfails="false" errorproperty="">
+		<arg line="describe --tags --always HEAD" />
+	</exec>
+	<condition property="repository.version" value="${git.revision}" else="unknown">
+		<and>
+			<isset property="git.revision"/>
+			<length string="${git.revision}" trim="yes" length="0" when="greater"/>
+		</and>
+	</condition>
+	<property name="version.number" value="${repository.version}"/>
+	<!-- end git repo info -->
+
 	<property name="project.zip" value="${ant.project.name}_${version.number}.zip"/>
 	<property name="test.dir" location="test"/>
 
@@ -86,13 +100,6 @@
 			<arg value="test.lua"/>
 		</exec>
 		<move todir="${report.dir}" file="${test.dir}/testOut.xml"/>
-		<junitreport todir="${report.dir}">
-			<fileset dir="${report.dir}">
-				<include name="testOut.xml"/>
-			</fileset>
-			<report todir="${report.dir}/html"
-					format="noframes"/>
-		</junitreport>
 		<fail message="The tests failed. Please see the output for details.">
 			<condition>
 				<not>

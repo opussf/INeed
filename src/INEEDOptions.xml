@@ -38,9 +38,21 @@
 					<PostClick>INEED.OptionsPanel_CheckButton_PostClick(self,"showProgress")</PostClick>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_PrintProgress" inherits="INEEDOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_ShowGlobalProgress" inherits="INEEDOptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_ShowProgress" relativePoint="BOTTOMLEFT">
+						<Offset><AbsDimension x="0" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self.tooltip = "Show progress if others need an item";</OnLoad>
+					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"showGlobal","Show progress if others need an item");</OnShow>
+					<PostClick>INEED.OptionsPanel_CheckButton_PostClick(self,"showGlobal")</PostClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parent_PrintProgress" inherits="INEEDOptionsCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_ShowGlobalProgress" relativePoint="BOTTOMLEFT">
 						<Offset><AbsDimension x="0" y="0"/></Offset>
 					</Anchor>
 				</Anchors>
