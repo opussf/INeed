@@ -246,7 +246,7 @@ function INEED.BAG_UPDATE()
 			local gained = iHaveNum - INEED.othersNeed[itemID][INEED.realm][INEED.faction].mine
 			if gained ~= 0 then
 				INEED.othersNeed[itemID][INEED.realm][INEED.faction].mine = iHaveNum
-				if INEED_options.showProgress or INEED_options.printProgress then
+				if INEED_options.showGlobal or INEED_options.printProgress then
 					local progressString = string.format("-=%i/%i %s%s=-",
 							(INEED.othersNeed[itemID][INEED.realm][INEED.faction].total
 								+ (INEED.othersNeed[itemID][INEED.realm][INEED.faction].inMail and INEED.othersNeed[itemID][INEED.realm][INEED.faction].inMail or 0)
@@ -256,10 +256,10 @@ function INEED.BAG_UPDATE()
 								and string.format("(%s%+i%s) ", ((gained > 0) and COLOR_GREEN or COLOR_RED), gained, COLOR_END)
 								or ""),
 							itemLink)
-					if INEED_options.showProgress then
+					if INEED_options.showGlobal then
 						UIErrorsFrame:AddMessage( progressString, 1.0, 1.0, 0.1, 1.0 )
 					end
---					if INEED_options.printProgress and
+--					if INEED_options.printProgress and INEED_options.showGlobal and
 --							(INEED_data[itemID][INEED.realm][INEED.name].total < INEED_data[itemID][INEED.realm][INEED.name].needed ) then
 --						INEED.Print( progressString )
 --					end
