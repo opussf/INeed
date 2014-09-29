@@ -18,7 +18,20 @@
 			<length string="${git.revision}" trim="yes" length="0" when="greater"/>
 		</and>
 	</condition>
-	<property name="version.number" value="${repository.version}"/>
+	<!-- find gitbranch -->
+	<exec executable="git" dir="." outputproperty="git.branch" failifexecutionfails="false" errorproperty="">
+		<arg line="rev-parse --abbrev-ref HEAD"/>
+	</exec>
+	<condition property="branch" value="-${git.branch}" else="">
+		<and>
+			<isset property="git.branch"/>
+			<not>
+				<equals arg1="master" arg2="${git.branch}"/>
+			</not>
+		</and>
+	</condition>
+
+	<property name="version.number" value="${repository.version}${branch}"/>
 	<echo>Building: ${version.number}</echo>
 	<!-- end git repo info -->
 
