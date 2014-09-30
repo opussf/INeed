@@ -31,17 +31,27 @@ function INEED_OFFLINE.setMetaData()
 	local realmNames = {}
 	local names = {}
 	local playerNames = {}
+	local itemData = {}    -- sortable table of all the data
 	for itemID, _ in pairs( INEED_data ) do
 		itemCount = itemCount + 1
 		for realm, _ in pairs( INEED_data[itemID] ) do
 			realms[realm] = 1
 			for name, data in pairs( INEED_data[itemID][realm] ) do
-				oldestUpdate = math.min( oldestUpdate, tonumber(data.updated or os.time()) )
-				oldestAdded = math.min( oldestAdded, tonumber(data.added or os.time()) )
+				table.insert( itemData, {	["itemID"] = itemID,
+											["realm"] = realm,
+											["name"] = name,
+											["fullName"] = name.."-"..realm,
+											["added"] = data.added or 0,
+											["updated"] = data.updated or 0,
+										})
+				oldestUpdate = math.min( oldestUpdate, tonumber( data.updated or 0 ) )
+				oldestAdded = math.min( oldestAdded, tonumber( data.added or 0 ) )
 				names[name.."-"..realm] = 1
 			end
 		end
 	end
+	table.sort( itemData, function(a,b) return a.updated<b.updated end )
+
 	for k, v in pairs( realms ) do
 		realmCount = realmCount + 1
 		table.insert(realmNames, k)
@@ -54,13 +64,17 @@ function INEED_OFFLINE.setMetaData()
 	end
 	table.sort(playerNames)
 
-	INEED_OFFLINE.metaData.itemCount = itemCount
-	INEED_OFFLINE.metaData.realmCount = realmCount
-	INEED_OFFLINE.metaData.playerCount = playerCount
+	INEED_OFFLINE.metaData.itemData      = itemData
+	INEED_OFFLINE.metaData.itemCount     = itemCount
+	INEED_OFFLINE.metaData.realmCount    = realmCount
+	INEED_OFFLINE.metaData.playerCount   = playerCount
 	INEED_OFFLINE.metaData.oldestUpdated = oldestUpdate
-	INEED_OFFLINE.metaData.oldestAdded = oldestAdded
-	INEED_OFFLINE.metaData.realmNames = realmNames
-	INEED_OFFLINE.metaData.playerNames = playerNames
+	INEED_OFFLINE.metaData.oldestAdded   = oldestAdded
+	INEED_OFFLINE.metaData.realmNames    = realmNames
+	INEED_OFFLINE.metaData.playerNames   = playerNames
+end
+function INEED_OFFLINE.getStats( )
+	-- return a string of stats
 end
 function INEED_OFFLINE.showStats()
 	print( "Stats:" )
@@ -79,10 +93,15 @@ function INEED_OFFLINE.list( type )
 		showTable = INEED_OFFLINE.metaData.playerNames
 	elseif type == "items" then
 		-- @TODO: build and sort a showTable of the items
-		showTable = {}
+
+		for itemID, _ in pairs( INEED_data ) do
+			table.insert( showTable, string.format("item:%06i", itemID ) )
+		end
+		table.sort( showTable )
 	end
 	for i,item in pairs( showTable ) do
-		print("\t"..item)
+
+		print( string.format( " %3i: %25s", i, item ) )
 	end
 end
 function INEED_OFFLINE.showInfo( type )
