@@ -3,11 +3,8 @@
 	<tstamp/>
 	<property file="build.properties"/>
 	<property environment="env"/>
-<!--
-	<property name="env.BUILD_NUMBER" value="LOCAL"/>
-	<property name="build.number" value="${env.BUILD_NUMBER}"/>
-	<property name="version.number" value="${IN.version}.${build.number}"/>
--->
+	<property name="env.BUILD_NUMBER" value=""/>
+	<property name="build.number" value=""/>
 	<!--  Pull git repo info -->
 	<exec executable="git" dir="." outputproperty="git.revision" failifexecutionfails="false" errorproperty="">
 		<arg line="describe --tags --always HEAD" />
@@ -34,7 +31,7 @@
 		</and>
 	</condition>
 
-	<property name="version.number" value="${repository.version}${branch}"/>
+	<property name="version.number" value="${repository.version}${branch}${build.number}"/>
 	<echo>Building: ${version.number}</echo>
 	<!-- end git repo info -->
 
@@ -56,7 +53,7 @@
 	<target name="changelog" description="Creates a changelog">
 		<mkdir dir="${working.dir}"/>
 		<exec executable="git" dir=".">
-			<arg line="log --graph --pretty=format:'%h %ci - %d %s &lt;%an&gt;' master.."/>
+			<arg line="log --graph --pretty=format:'%h %ci - %d %s &lt;%an&gt;' ${git.tag}.."/>
 			<redirector output="${working.dir}/changelog.txt"/>
 		</exec>
 	</target>
