@@ -631,15 +631,14 @@ function INEED.showList( searchTerm )
 						( searchTerm == "all" ) then
 					INEED.Print( itemID..":"..(data.added or "nil added")..":"..(data.updated or "nill updated").." age:"..
 							((data.updated or time()) - (data.added or 0) ) )
-					updatedItems[itemID] = updatedItems[itemID]
-							and max( updatedItems[itemID], ( data.updated or data.added or 0) )
-							or ( data.updated or data.added )
+					table.insert( updatedItems, { ["itemID"] = itemID, ["added"] = data.added, ["updated"] = (data.updated or data.added) } )
 				end
 			end
 		end
 	end
-	table.sort( updatedItems, function(a,b) return b<a end ) -- reverse sort order
-	for itemID, _ in pairs( updatedItems ) do
+	table.sort( updatedItems, function(a,b) return a.updated<b.updated end ) -- sort by updated
+	for _, item in pairs( updatedItems ) do
+		itemID = item.itemID
 		for realm, _ in pairs( INEED_data[itemID] ) do
 			for name, data in pairs( INEED_data[itemID][realm] ) do
 				if ( searchTerm == "me" and name == INEED.name ) or
