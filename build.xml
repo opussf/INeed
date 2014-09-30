@@ -26,7 +26,10 @@
 		<and>
 			<isset property="git.branch"/>
 			<not>
-				<equals arg1="master" arg2="${git.branch}"/>
+				<or>
+					<equals arg1="${git.branch}" arg2="master"/>
+					<equals arg1="${git.branch}" arg2="HEAD"/>
+				</or>
 			</not>
 		</and>
 	</condition>
