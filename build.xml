@@ -18,7 +18,24 @@
 			<length string="${git.revision}" trim="yes" length="0" when="greater"/>
 		</and>
 	</condition>
-	<property name="version.number" value="${repository.version}"/>
+	<!-- find gitbranch -->
+	<exec executable="git" dir="." outputproperty="git.branch" failifexecutionfails="false" errorproperty="">
+		<arg line="rev-parse --abbrev-ref HEAD"/>
+	</exec>
+	<condition property="branch" value="-${git.branch}" else="">
+		<and>
+			<isset property="git.branch"/>
+			<not>
+				<or>
+					<equals arg1="${git.branch}" arg2="master"/>
+					<equals arg1="${git.branch}" arg2="HEAD"/>
+				</or>
+			</not>
+		</and>
+	</condition>
+
+	<property name="version.number" value="${repository.version}${branch}"/>
+	<echo>Building: ${version.number}</echo>
 	<!-- end git repo info -->
 
 	<property name="project.zip" value="${ant.project.name}_${version.number}.zip"/>
@@ -67,7 +84,6 @@
 		<checksum file="${target.dir}/${project.zip}"
 				  property="zip.md5" />
 		<echo message="${zip.md5}" />
-
 	</target>
 
 	<target name="web.deploy" description="deploys the web site">
