@@ -41,26 +41,30 @@ function test.testOffline_setMetaData_playerNames()
 	assertEquals( "otherTestName-otherTestRealm", INEED_OFFLINE.metaData.playerNames[1] )
 	assertEquals( "otherTestName-testRealm", INEED_OFFLINE.metaData.playerNames[2] )
 end
+function test.testOffline_setMetaData_itemData_realm()
+	test.beforeOffline()
+	assertEquals( "testRealm", INEED_OFFLINE.metaData.itemData[1].realm )
+end
+function test.testOffline_setMetaData_itemData_name()
+	test.beforeOffline()
+	assertEquals( "otherTestName", INEED_OFFLINE.metaData.itemData[1].name )
+end
+function test.testOffline_setMetaData_itemData_fullName()
+	test.beforeOffline()
+	assertEquals( "otherTestName-testRealm", INEED_OFFLINE.metaData.itemData[1].fullName )
+end
+function test.testOffline_setMetaData_itemData_added()
+	test.beforeOffline()
+	assertEquals( 1405487303, INEED_OFFLINE.metaData.itemData[1].added )
+end
+function test.testOffline_setMetaData_itemData_updated()
+	test.beforeOffline()
+	assertEquals( 1405487303, INEED_OFFLINE.metaData.itemData[1].updated )
+end
+
+
 function test.testOffline_showStats()
 	-- fail if the showStats fails
 	test.beforeOffline()
 	INEED_OFFLINE.showStats()
 end
---[[
-function test.testOffline_09()
-	test.beforeOffline()
-	fail("09")
-end
-function test.testOffline_10()
-	test.beforeOffline()
-	fail("10")
-end
-function test.testOffline_11()
-	test.beforeOffline()
-	fail("11")
-end
-function test.testOffline_12()
-	test.beforeOffline()
-	fail("12")
-end
-]]
