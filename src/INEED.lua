@@ -743,6 +743,7 @@ end
 
 function INEED.test()
 	INEEDUIFrame:Hide()
+	INEEDUIFrame:Show()
 --[[
 	INEED.Print("Registering for event")
 	INEED_Frame:RegisterEvent("CALENDAR_UPDATE_EVENT_LIST")
