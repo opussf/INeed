@@ -629,8 +629,6 @@ function INEED.showList( searchTerm )
 				if ( searchTerm == "me" and name == INEED.name ) or
 						( searchTerm == "realm" and realm == INEED.realm ) or
 						( searchTerm == "all" ) then
-					INEED.Print( itemID..":"..(data.added or "nil added")..":"..(data.updated or "nill updated").." age:"..
-							((data.updated or time()) - (data.added or 0) ) )
 					table.insert( updatedItems, { ["itemID"] = itemID, ["added"] = data.added, ["updated"] = (data.updated or data.added) } )
 				end
 			end

@@ -30,6 +30,16 @@ Needs a series of seeds, Master Plow, Lesser Charms of Good Fortune, and Warforg
 /in currency:738 50
 /in currency:776 3
 
+Smaller Set of Seeds (more aimed at farming herbs)
+/in item:89815
+/in item:85216 12
+/in item:80594 2
+/in item:89326 2
+/in currency:738 50
+/in currency:776 3
+
+
+
 =========================================
 Plants seeds in a specific order, uses the Master Plow
 
