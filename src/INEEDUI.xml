@@ -24,7 +24,7 @@
 					<Color r="0.0" g="0.0" b="0.0"/>
 				</Texture>
 			</Layer>
-			<Layer level="ARTWORK">
+			<Layer level="OVERLAY">
 				<FontString name="$parent_TitleText" frameStrata="ARTWORK" inherits="GameFontHighlight" text="INEED">
 					<Size>
 						<AbsDimension x="250" y="14"/>
@@ -39,10 +39,18 @@
 				</FontString>
 			</Layer>
 		</Layers>
+		<Frames>
+			<Button name="$parent_Close" parentKey="close" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset x="-30" y="-8"/>
+					</Anchor>
+				</Anchors>
+			</Button>
+		</Frames>
 		<Scripts>
 			<OnLoad>
 				INEED.UIOnLoad()
-				self:Hide()
 			</OnLoad>
 		</Scripts>
 		<!--
