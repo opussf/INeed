@@ -1,0 +1,4 @@
+Notes.txt
+
+Paper on statistical software / organizing data:
+http://vita.had.co.nz/papers/tidy-data.pdf
