@@ -42,6 +42,9 @@
 			<OnLoad>
 				INEED.UIOnLoad()
 			</OnLoad>
+			<OnUpdate>
+				INEED.UIOnUpdate()
+			</OnUpdate>
 		</Scripts>
 		<!--
 		<Frames>

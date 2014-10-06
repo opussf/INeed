@@ -7,6 +7,7 @@ INEED_options = {
 	["playSoundFile"] = false,
 	["soundFile"] = "Sound\\Creature\\BabyMurloc\\BabyMurlocDance.wav",
 	["showGlobal"] = true,
+	["barCount"] = 6,
 }
 
 function INEED.OptionsPanel_OnLoad(panel)
