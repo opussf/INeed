@@ -5,7 +5,8 @@ function test.beforeOffline()
 						["yetAnotherName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance", ["added"] = 1405487302, ["updated"] = 1405487362 },
 						["third"]={ ['needed']=10, ['total']=1, ['faction']="Alliance", ["added"] = 1405487362, ["updated"] = 1405487422 }, },
 		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance", ["added"] = 1405487304, ["updated"] = 1405487304 }, -- del
-						["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance", ["added"] = 1405487306, ["updated"] = 1405487305 } },
+						["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance", ["added"] = 1405487306, ["updated"] = 1405487305 },
+						["noUpdated"]={ ['needed']=10, ['total']=0, ['faction']="Alliance", ["added"] = 1405487306 } },
 	}
 	INEED_OFFLINE.isRunning = false
 	INEED_OFFLINE.setMetaData()
