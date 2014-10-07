@@ -6,23 +6,26 @@ function test.beforeOffline()
 						["third"]={ ['needed']=10, ['total']=1, ['faction']="Alliance", ["added"] = 1405487362, ["updated"] = 1405487422 }, },
 		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance", ["added"] = 1405487304, ["updated"] = 1405487304 }, -- del
 						["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance", ["added"] = 1405487306, ["updated"] = 1405487305 },
-						["noUpdated"]={ ['needed']=10, ['total']=0, ['faction']="Alliance", ["added"] = 1405487306 } },
+						["noUpdated"]={ ['needed']=10, ['total']=0, ['faction']="Alliance", ["added"] = 1405487307 } },
 	}
 	INEED_OFFLINE.isRunning = false
 	INEED_OFFLINE.setMetaData()
 end
 
 function test.testOffline_setMetaData_items()
+	-- count of items
 	test.beforeOffline()
 	assertEquals( 1, INEED_OFFLINE.metaData.itemCount )
 end
 function test.testOffline_setMetaData_realms()
+	-- count of realms
 	test.beforeOffline()
 	assertEquals( 2, INEED_OFFLINE.metaData.realmCount )
 end
 function test.testOffline_setMetaData_players()
+	-- count of players
 	test.beforeOffline()
-	assertEquals( 5, INEED_OFFLINE.metaData.playerCount )
+	assertEquals( 6, INEED_OFFLINE.metaData.playerCount )
 end
 function test.testOffline_setMetaData_oldestAdded()
 	test.beforeOffline()
