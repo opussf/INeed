@@ -41,11 +41,11 @@ function INEED_OFFLINE.setMetaData()
 											["realm"] = realm,
 											["name"] = name,
 											["fullName"] = name.."-"..realm,
-											["added"] = data.added or 0,
-											["updated"] = data.updated or 0,
+											["added"] = data.added or 1,
+											["updated"] = data.updated or 1,
 										})
-				oldestUpdate = math.min( oldestUpdate, tonumber( data.updated or 0 ) )
-				oldestAdded = math.min( oldestAdded, tonumber( data.added or 0 ) )
+				oldestUpdate = math.min( oldestUpdate, tonumber( data.updated or 1 ) )
+				oldestAdded = math.min( oldestAdded, tonumber( data.added or 1 ) )
 				names[name.."-"..realm] = 1
 			end
 		end
