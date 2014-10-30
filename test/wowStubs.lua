@@ -377,13 +377,13 @@ function TaxiNodeCost( nodeId )
 	-- http://www.wowwiki.com/API_TaxiNodeCost
 	return TaxiNodes[nodeId].cost
 end
-function TaxiNodeName( nodeId )
-	-- http://www.wowwiki.com/API_TaxiNodeName
-	return TaxiNodes[nodeId].name
-end
 function TaxiNodeGetType( nodeId )
 	-- http://www.wowwiki.com/API_TaxiNodeGetType
 	return TaxiNodes[nodeId].type
+end
+function TaxiNodeName( nodeId )
+	-- http://www.wowwiki.com/API_TaxiNodeName
+	return TaxiNodes[nodeId].name
 end
 function UnitClass( who )
 	local unitClasses = {
