@@ -45,6 +45,9 @@ function INEED_OFFLINE.setMetaData()
 											["updated"] = data.updated or 1,
 										})
 				oldestUpdate = math.min( oldestUpdate, tonumber( data.updated or 1 ) )
+				if not data.added then
+					print( itemID.." does not have an added timestamp")
+				end
 				oldestAdded = math.min( oldestAdded, tonumber( data.added or 1 ) )
 				names[name.."-"..realm] = 1
 			end
