@@ -629,12 +629,12 @@ function INEED.showList( searchTerm )
 				if ( searchTerm == "me" and name == INEED.name ) or
 						( searchTerm == "realm" and realm == INEED.realm ) or
 						( searchTerm == "all" ) then
-					table.insert( updatedItems, { ["itemID"] = itemID, ["added"] = data.added, ["updated"] = (data.updated or data.added) } )
+					table.insert( updatedItems, { ["itemID"] = itemID, ["added"] = data.added, ["updated"] = (data.updated or data.added or 1) } )
 				end
 			end
 		end
 	end
-	table.sort( updatedItems, function(a,b) return a.updated<b.updated end ) -- sort by updated
+	table.sort( updatedItems, function(a,b)	return a.updated<b.updated end ) -- sort by updated
 	for _, item in pairs( updatedItems ) do
 		itemID = item.itemID
 		for realm, _ in pairs( INEED_data[itemID] ) do
