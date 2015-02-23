@@ -389,7 +389,6 @@ function INEED.makeOthersNeed()
 			end
 		end
 	end
-
 end
 function INEED.itemFulfilledAnnouce()
 	if INEED_options.audibleSuccess then
