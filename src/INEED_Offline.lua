@@ -15,13 +15,14 @@ INEED_data = {}
 
 function INEED_OFFLINE.file_exists(name)
    local f=io.open(name,"r")
-   if f~=nil then io.close(f) return true else return false end
+   if f then io.close(f) return true else return false end
 end
 function INEED_OFFLINE.dofile( filename )
 	local f = assert( loadfile( filename ) )
 	return f()
 end
 function INEED_OFFLINE.setMetaData()
+	-- This
 	local itemCount = 0
 	local realmCount = 0
 	local playerCount = 0
@@ -98,12 +99,21 @@ function INEED_OFFLINE.list( type )
 		-- @TODO: build and sort a showTable of the items
 
 		for itemID, _ in pairs( INEED_data ) do
-			table.insert( showTable, string.format("item:%06i", itemID ) )
+			totalHave, inMail, totalNeeded, playerCount = 0, 0, 0, 0
+			for realm, _ in pairs(INEED_data[itemID]) do
+				for name, playerInfo in pairs(INEED_data[itemID][realm]) do
+					totalHave = totalHave + playerInfo.total
+					inMail = inMail + (playerInfo.inMail or 0)
+					totalNeeded = totalNeeded + playerInfo.needed
+					playerCount = playerCount + 1
+				end
+			end
+			table.insert( showTable, string.format("item:%06i    %i players have (%3i/%3i)  http://www.wowhead.com/item=%i",
+				itemID, playerCount, totalHave+inMail, totalNeeded, itemID ) )
 		end
 		table.sort( showTable )
 	end
 	for i,item in pairs( showTable ) do
-
 		print( string.format( " %3i: %25s", i, item ) )
 	end
 end
