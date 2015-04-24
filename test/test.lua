@@ -290,13 +290,11 @@ function test.testMerchantShow_DoNotPurchaseUnusableItem()
 	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
 	assertEquals( 10000, INEED_account.balance )  -- purchase should have failed
 end
---[[
 function test.testShowFulfillList_ReturnsExpectedValue()
 	INEED_data["7073"] = { ["testRealm"]={ ["otherTestName"] = { ['needed'] = 10,['faction']='Alliance'} } }
 	INEED_data["7073"]["testRealm"]["otherTestName"].total = 0
 	assertEquals( 52, INEED.showFulfillList() )
 end
-]]
 function test.testShowFulfillList_ReturnsNil()
 	print( "fulfillList returns: "..(INEED.showFulfillList() or "NIL") )
 	assertIsNil( INEED.showFulfillList() )
