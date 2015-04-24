@@ -143,15 +143,32 @@ Frame = {
 		["SetPoint"] = function() end,
 		["UnregisterEvent"] = function(event) Frame.Events.event = nil; end,
 }
-FrameTooltip = {
---		["GetName"] = function(self) return self.name end,
---		["SetOwner"] = function(self, newOwner) end, -- this is only for tooltip frames...
---		["ClearLines"] = function(self) end, -- this is only for tooltip frames...
---		["SetHyperlink"] = function(self, hyperLink) end, -- this is only for tooltip frames...
+FrameGameTooltip = {
+		["GetName"] = function(self) return self.name end,
+		["SetOwner"] = function(self, newOwner) end, -- this is only for tooltip frames...
+		["ClearLines"] = function(self) end, -- this is only for tooltip frames...
+		["SetHyperlink"] = function(self, hyperLink) end, -- this is only for tooltip frames...
+		["init"] = function(frameName)
+			_G[frameName.."TextLeft2"] = CreateFontString(frameName.."TextLeft2")
+			_G[frameName.."TextLeft3"] = CreateFontString(frameName.."TextLeft3")
+			_G[frameName.."TextLeft4"] = CreateFontString(frameName.."TextLeft4")
+		end,
 }
 function CreateFrame( frameType, frameName, parentFrame, inheritFrame )
+--	print("CreateFrame: needing a new frame of type: "..(frameType or "nil"))
+	newFrame = Frame  -- deep copy of this?
+	if frameType and _G["Frame"..frameType] then  -- construct the name of the table to pull from, use _G to reference it.
+		for k, f in pairs(_G["Frame"..frameType]) do  -- add the methods in the sub frame to the returned frame
+			if k == "init" then  -- check to see if the key is 'init', which is a function to run when creating the Frame
+				f(frameName)  -- run the ["init"] function
+			else
+				newFrame[k] = f  -- add the method to the frame
+			end
+		end
+	end
+	frameName = newFrame
 	--http://www.wowwiki.com/API_CreateFrame
-	return Frame
+	return newFrame
 end
 
 function CreateFontString(name,...)
