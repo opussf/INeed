@@ -296,11 +296,27 @@ function test.testShowFulfillList_ReturnsExpectedValue()
 	assertEquals( 52, INEED.showFulfillList() )
 end
 function test.testShowFulfillList_ReturnsNil()
-	print( "fulfillList returns: "..(INEED.showFulfillList() or "NIL") )
+	--print( "fulfillList returns: "..(INEED.showFulfillList() or "NIL") )
 	assertIsNil( INEED.showFulfillList() )
 end
 function test.testShowFulfillList_NoCrossFaction()
 	INEED_data["7073"]={["testRealm"]={["otherTestName"]={['needed']=10,['faction']='Horde',['total']=0,}}}
+	assertIsNil( INEED.showFulfillList() )
+end
+function test.testShowFulfillList_filtersSoulboundItems()
+	-- Someone else needs an item that is soulbound (or bound on pickup)
+	-- ITEM_SOULBOUND="Soulbound"
+	-- ITEM_BIND_ON_PICKUP="Binds when picked up"
+	-- You need some of that item too.
+	-- assert that
+	assertIsNil( INEED.showFulfillList() )
+end
+function test.testShowFulfillList_filersBindOnPickup()
+	-- Someone else needs an item that is soulbound (or bound on pickup)
+	-- ITEM_SOULBOUND="Soulbound"
+	-- ITEM_BIND_ON_PICKUP="Binds when picked up"
+	-- You need some of that item too.
+	-- assert that
 	assertIsNil( INEED.showFulfillList() )
 end
 function test.testRemoveChar_NoName()
