@@ -308,7 +308,7 @@ function test.testShowFulfillList_filtersSoulboundItems()
 	-- ITEM_SOULBOUND="Soulbound"
 	-- ITEM_BIND_ON_PICKUP="Binds when picked up"
 	-- You need some of that item too.
-	-- assert that
+	-- assert that a soul bound item on the same realm and faction is not listed
 	assertIsNil( INEED.showFulfillList() )
 end
 function test.testShowFulfillList_filersBindOnPickup()
@@ -316,7 +316,7 @@ function test.testShowFulfillList_filersBindOnPickup()
 	-- ITEM_SOULBOUND="Soulbound"
 	-- ITEM_BIND_ON_PICKUP="Binds when picked up"
 	-- You need some of that item too.
-	-- assert that
+	-- assert that a BoP item on the same realm and faction is not listed
 	assertIsNil( INEED.showFulfillList() )
 end
 function test.testRemoveChar_NoName()
