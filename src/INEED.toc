@@ -1,6 +1,6 @@
 ## Interface: @INTERFACE@
 ## Title: INeed
-## Notes: List items into an "I need" list. v@VERSION@
+## Notes: List items into an "I need" list. @VERSION@
 ## Author: opussf
 ## Version: @VERSION@
 ## Description: Creates an "I need" list to share with your alts
