@@ -324,8 +324,9 @@ function INEED.MERCHANT_SHOW()
 	--local numItems = GetMerchantNumItems()
 	local purchaseAmount = 0
 	local msgSent = false
-	for i = 0, GetMerchantNumItems() do
-		local itemID = INEED.getItemIdFromLink( GetMerchantItemLink( i ) )
+	for i = 0, GetMerchantNumItems() do  -- Go through the items for sale
+		local itemLink = GetMerchantItemLink( i )
+		local itemID = INEED.getItemIdFromLink( itemLink )
 		if INEED_data[itemID] and
 				INEED_data[itemID][INEED.realm] and
 				INEED_data[itemID][INEED.realm][INEED.name] then
@@ -356,6 +357,26 @@ function INEED.MERCHANT_SHOW()
 				local itemPurchaseAmount = ((purchaseQuantity/quantity) * price)
 				purchaseAmount = purchaseAmount + itemPurchaseAmount
 				INEED_account.balance = INEED_account.balance - itemPurchaseAmount
+			elseif isUsable and price == 0 and currencyCount > 0 then
+				for ci = 1, currencyCount do
+					local _, value, link = GetMerchantItemCostItem( i, ci )
+					local itemID = INEED.getItemIdFromLink( link )
+					if itemID
+							and ((INEED_data[itemID] and INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] and (value > INEED_data[itemID][INEED.realm][INEED.name].needed))
+							or (not INEED_data[itemID]))
+							then
+						print("link: "..link.." itemID: "..(itemID or "nil") )
+						INEED.addItem( link, value )
+					end
+
+					local currencyID = INEED.getCurrencyIdFromLink( link )
+					if currencyID
+							and ((INEED_currency[currencyID] and (value > INEED_currency[currencyID].needed))
+							or (not INEED_currency[currencyID]))
+							then
+						INEED.addItem( link, value )
+					end
+				end
 			end
 		end
 	end
