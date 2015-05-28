@@ -674,6 +674,70 @@ function test.testGlobal_dontTrackInGlobalWhatINeed()
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertIsNil( INEED.othersNeed["7073"]["testRealm"]["testName"] )
 end
+function test.testAddSpecialCurrency_CurrencyNotCurrentlyNeeded()
+	-- If a needed item can be purchased, but needs special currency, auto add the currency if not already needed
+	INEED.addItem( "item:74661 1" )  -- Black Pepper needs Irompaw Token (currency:402 x 1)
+	INEED.accountInfo( 21000 ) -- 2g 10s
+	INEED.MERCHANT_SHOW()      -- trigger purchase
+	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
 
+	assertEquals( 1, INEED_currency["402"].needed )
+end
+function test.testAddSpecialCurrency_CurrencyCurrentlyNeeded()
+	-- If a needed item can be purchased, but needs special currency, Not 100% what I want it to do here.
+	INEED.command( "currency:402 8" )
+	INEED.addItem( "item:74661 1" )  -- Black Pepper needs Irompaw Token (currency:402 x 1)
+	INEED.accountInfo( 21000 ) -- 2g 10s
+	INEED.MERCHANT_SHOW()      -- trigger purchase
+	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
+
+	assertEquals( 8, INEED_currency["402"].needed )
+end
+function test.testAddSpecialCurrencyItem_CurrencyItemNotCurrentlyNeeded()
+	-- If a needed item can be purchased, but needs special currency, auto add the currency if not already needed
+	INEED.addItem( "item:49927 1" )  -- Love Token is purchased with Lovely Charm Bracelet
+	INEED.accountInfo( 21000 ) -- 2g 10s
+	INEED.MERCHANT_SHOW()      -- trigger purchase
+	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
+
+	assertEquals( 1, INEED_data["49927"]["testRealm"]["testName"].needed )
+end
+function test.testAddSpecialCurrencyItem_CurrencyItemCurrentlyNeeded()
+	-- If a needed item can be purchased, but needs special currency, Not 100% what I want it to do here.
+	INEED.command( "item:49916 8" )
+	INEED.addItem( "item:49927 1" )  -- Love Token is purchased with Lovely Charm Bracelet
+	INEED.accountInfo( 21000 ) -- 2g 10s
+	INEED.MERCHANT_SHOW()      -- trigger purchase
+	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
+
+	assertEquals( 8, INEED_data["49916"]["testRealm"]["testName"].needed )
+end
+function test.testAddSpecialCurrency_AlreadyHaveMoreThanNeeded()
+	-- Needing an item that can be purchased with a special currency (not gold)
+	-- Already have more than what is needed
+	myCurrencies = { ["402"] = 5, }
+	INEED.addItem( "item:74661 1" )  -- Black Pepper needs Irompaw Token (currency:402 x 1)
+	INEED.accountInfo( 21000 ) -- 2g 10s
+	INEED.MERCHANT_SHOW()      -- trigger purchase
+	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
+
+	assertIsNil( INEED_currency["402"] )
+end
+function test.testAddSpecialCurrencyItem_AlreadyHaveMoreThanNeeded()
+	myInventory["49916"] = 10
+	INEED.addItem( "item:49927 1" )  -- Love Token is purchased with Lovely Charm Bracelet
+	INEED.accountInfo( 21000 ) -- 2g 10s
+	INEED.MERCHANT_SHOW()      -- trigger purchase
+	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
+
+	assertIsNil( INEED_data["49916"] )
+	myInventory["49916"] = nil
+end
+
+
+
+function test.testAddSpecialCurrencyItem_CurrencyItemCurrentlyNeeded_HaveMoreThanNeeded()
+	-- The needed item costs a special currency (>1)
+end
 
 test.run()
