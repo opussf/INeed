@@ -429,21 +429,6 @@ end
 -------
 -- Tests for doing global goals
 -------
---[[
-	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
-		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
-							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance"} },
-	}
-	INEED.othersNeed = {
-		["7073"] = {
-			["testRealm"] = {
-				["Alliance"] = { ['total'] = 0, ['needed'] = 30, ['mine'] = 1 },
-			},
-		},
-	}
-
-]]
 function test.testGlobal_filterMyTrackingInfoFromOthersNeed()
 	INEED_data["7073"] = {
 		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
