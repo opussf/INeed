@@ -2,6 +2,43 @@
 
 This file explains what feature this branch is for.
 
+## feature/gui
+This will introduce a GUI element to the addon.
+
+Need a GUI for:
+[ ] Item list ( what you need )
+	* show a list of needed items
+	* user interaction includes:
+		+ history (added, last updated, etc.) (via tooltip)
+		+ remove
+
+
+
+
+
+
+
+
+-----
+Keep item actions for each item.
+
+	["79293"] = {
+		["Hyjal"] = {
+			["Kasely"] = {
+				["needed"] = 2,
+				["total"] = 0,
+				["link"] = "item:79293",
+				["faction"] = "Alliance",
+				["added"] = 1399858265,
+				["updated"] = 1399858265,
+				["history"] = {
+					[ts] = 1,
+					[ts] = -1,
+				}
+			},
+		},
+	},
+
 ## Notes:
 
 Code from Auc-Advanced/CorePost.lua
