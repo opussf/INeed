@@ -2,6 +2,12 @@
 
 This file explains what feature this branch is for.
 
+## feature/goalName
+Allow a description string (goalName) to be given to each item as it is added (or re-added).
+
+/in <link> [quantity] [desc]
+
+
 ## Notes:
 
 Code from Auc-Advanced/CorePost.lua
