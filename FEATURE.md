@@ -5,7 +5,51 @@ This file explains what feature this branch is for.
 ## feature/goalName
 Allow a description string (goalName) to be given to each item as it is added (or re-added).
 
-/in <link> [quantity] [desc]
+[ ] Optional description consumes the rest of the given line
+	* /in <link> [quantity] [desc | item]
+		+ quantity is the first numeric (space breaking) value
+		+ desc starts as soon as quantity can not be determined, or is given.
+
+[ ] Is saved in item block as .desc
+	["79293"] = {
+		["Realm"] = {
+			["Name"] = {
+				["desc"] = "desc",
+			},
+		},
+	},
+[ ] Test for item / currency / enchant links and expand links in the desc.
+[ ] Allows item grouping?
+[ ] Adds description to completed message
+	* Also add to progress message?
+[ ] Show in need list
+
+
+
+### Examples
+	/in item:44157 2 Make me one of these
+	/in item:44157 2 2x as nice to have
+	/in item:44157 2 4 times as nice
+	^^^ Both need 2 of item:44157
+
+	/in item:44157 "2 of thise is too many"
+	^^^ " defines start of string, only needs 1 (default value)
+
+	/in item:44157 2x as nice to have
+	^^^ Needs 1 item:44157 (2x is not seen as numeric)
+	^^^ x2 might be seen as special in the future.
+
+	/in item:23784 4 item:44157
+	^^^ Needs 4x item:23784, looks up the link for item:44157 and stores it in the .desc field.
+
+
+## feature/goalName Testing ideas
+
+* no desc works as before (no .desc is added)
+* quantity and text are distinguished
+* "" denote string description, even if starts with a number
+*
+
 
 
 ## Notes:
