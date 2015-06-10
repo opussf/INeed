@@ -7,16 +7,54 @@ This will introduce a GUI element to the addon.
 
 Need a GUI for:
 [ ] Item list ( what you need )
+	* /ineed list
 	* show a list of needed items
+	    + progress
+	    + item link
+	    + small icon
 	* user interaction includes:
 		+ history (added, last updated, etc.) (via tooltip)
 		+ remove
+	* closed with [x] or with '/ineed list' toggle
+	* can be moved, uber simple display for longtime display
 
+[ ] Progress of items
+	* when an item is updated, or added
+	* show items updated in the last 5/10/15 minutes
+	* simple layout (can it be added to the quest item list?)
+		+ progress
+		+ item link
+	* can be dismissed, auto closes (option)
+	* uber simple
 
+[ ] Mail opened (fulfill list)
+	* when a mailbox is opened (and items need to be sent)
+	* show a list of items that can be fulfilled
+		+ item link
+			* "toon name" "ammount can send"
+			[item link] - toon1 5, toon2 6, toon3 7"
+	* dismissed when mailbox closed
+	* anchored to the right of the mailbox
 
+[ ] Profession opened
+	* when a Profession window is opened (delay opening by 1 second)
+	* show a list of items that can be made and for whom
+		+ amount can be made
+		+ item link
+			* "toon name" "amount needed"
+			2x [item link] - toon1 5, toon2 6
+	* dismissed when merchant closed
+	* anchored to the right of the Profession window
 
-
-
+[ ] Merchant opened
+	* when a merchant is opened, open 2 windows
+		+ reciept window (shows all items purchased / sold to this Merchant)
+			* reset when Merchant window closed.
+			* have gold display for account amount
+			* allow drag/drop of gold amount to window
+			* allow edit of gold amount in window
+		+ items needed window
+			* replicate the 'Profession' window, but only items for this toon.
 
 
 -----
