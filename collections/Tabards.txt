@@ -1,0 +1,10 @@
+Alliance Tabards
+/in item:45579
+/in item:45580
+/in item:64882
+/in item:45578
+/in item:45577
+/in item:45574
+/in item:83079
+
+Horde Tabards
