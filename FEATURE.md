@@ -2,6 +2,59 @@
 
 This file explains what feature this branch is for.
 
+## feature/crafting
+This branch is for the crafting feature.
+
+This feature changes how adding an 'enchant:#####' link works.
+The change will no longer blindly add values for both the crafted item, and crafting items, individually.
+It will instead, behave as if you need to build N number of the crafted item.
+
+Currently, needing N of a recipe will add N of the crafted item, and N*m of the needed reagents.
+This is broken since one may already have x of the crafted items, or cannot store all of the items, or it takes a long time to make all the items.
+Also, creating items as you go does not reduce the amount of reagents needed, only the reagents in your inventory.
+
+### Differencs
+The intention here is that by adding 'enchant:#####' x 5 will be handled slightly different than adding an item.
+
+The 'enchant:#####' will have a 'needToMake' value added to the crafted item record.
+A sub table 'reagents' will also be added to record the ratio of reagents to crafted item.
+'needed' will now reflect the sum of the 'total' and 'needToMake'.
+Making an item will decrement the 'needToMake'
+
+A reagent record will be added for that player, with a 'neededFor' record to point to the crafted item.
+
+
+[1] = {
+	[realm] = {
+		[name] = {
+			['needed'] = 9,
+			['total'] = 4,
+			['needToMake'] = 5,
+			['reagents'] = {
+				[2] = {
+					['ratio'] = 2,
+				},
+				[3] = {
+					['ratio'] = 1,
+				},
+				[4] = {
+					['ratio'] = 3,
+				},
+			},
+		},
+	},
+},
+[2] = {
+	[realm] = {
+		[name] = {
+			['needed']
+	}
+}
+}
+
+
+
+
 ## Notes:
 
 Code from Auc-Advanced/CorePost.lua
