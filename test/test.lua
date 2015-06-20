@@ -674,6 +674,40 @@ function test.testGlobal_dontTrackInGlobalWhatINeed()
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertIsNil( INEED.othersNeed["7073"]["testRealm"]["testName"] )
 end
-
+function test.testGetFollowerIdFromLink_withLink()
+	assertEquals( "180",
+			INEED.getFollowerIdFromLink( "|cff1eff00|Hgarrfollower:180:2:90:600:11:0:0:0:53:0:0:0|h[Fiona]|h|r" ) )
+end
+function test.testGetFollowerIdFromLink_withFollowerNum()
+	assertEquals( "180",
+			INEED.getFollowerIdFromLink( "garrfollower:180" ) )
+end
+function test.testAddFollower_FollowerStr()
+	INEED.addItem( "garrfillower:180" )
+	--assertEquals( INEED_garrfollowers["180"] = true )
+	assertTrue( INEED_garrfollowers["180"]["added"] )  -- Don't care about the value, just that it exists
+end
+function test.testAddFollower_FollowerLink()
+	INEED.addItem( "|cff1eff00|Hgarrfollower:180:2:90:600:11:0:0:0:53:0:0:0|h[Fiona]|h|r" )
+	assertTrue( INEED_garrfollowers["180"]["added"] )
+end
+function test.testAddFollower_FollowerStr_updated()
+	INEED.addItem( "garrfillower:180" )
+	--assertEquals( INEED_garrfollowers["180"] = true )
+	assertTrue( INEED_garrfollowers["180"]["updated"] )  -- Don't care about the value, just that it exists
+end
+function test.testAddFollower_FollowerLink_updated()
+	INEED.addItem( "|cff1eff00|Hgarrfollower:180:2:90:600:11:0:0:0:53:0:0:0|h[Fiona]|h|r" )
+	assertTrue( INEED_garrfollowers["180"]["updated"] )
+end
+function test.testAddFollower_FollowerStr_link()
+	INEED.addItem( "garrfillower:180" )
+	--assertEquals( INEED_garrfollowers["180"] = true )
+	assertEquals( "garrfillower:180", INEED_garrfollowers["180"]["link"] )
+end
+function test.testAddFollower_FollowerLink_link()
+	INEED.addItem( "|cff1eff00|Hgarrfollower:180:2:90:600:11:0:0:0:53:0:0:0|h[Fiona]|h|r" )
+	assertEquals( "|cff1eff00|Hgarrfollower:180:2:90:600:11:0:0:0:53:0:0:0|h[Fiona]|h|r", INEED_garrfollowers["180"]["link"] )
+end
 
 test.run()

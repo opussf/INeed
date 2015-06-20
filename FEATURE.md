@@ -1,7 +1,14 @@
 # Feature
 
 ## Followers
-Can this even be done?
+This can be done, will anyone use it?
+
+### Stored Data structure per character
+["180"] = {
+	["added"] = 87236283476,
+	["link"] = "",
+	["updated"] = 982374928374,
+}
 
 ## Unknown link
 Record unknown links used.
