@@ -35,6 +35,7 @@ function test.after()
 	INEED_data = {}
 	INEED_account = {}
 	INEED_currency = {}
+	INEED_garrfollowers = {}
 	INEED.othersNeed = nil  -- this is for global tracking
 end
 function test.testParseCmdItemStr_GetsItemInfo()
@@ -683,7 +684,7 @@ function test.testGetFollowerIdFromLink_withFollowerNum()
 			INEED.getFollowerIdFromLink( "garrfollower:180" ) )
 end
 function test.testAddFollower_FollowerStr()
-	INEED.addItem( "garrfillower:180" )
+	INEED.addItem( "garrfollower:180" )
 	--assertEquals( INEED_garrfollowers["180"] = true )
 	assertTrue( INEED_garrfollowers["180"]["added"] )  -- Don't care about the value, just that it exists
 end
@@ -692,7 +693,7 @@ function test.testAddFollower_FollowerLink()
 	assertTrue( INEED_garrfollowers["180"]["added"] )
 end
 function test.testAddFollower_FollowerStr_updated()
-	INEED.addItem( "garrfillower:180" )
+	INEED.addItem( "garrfollower:180" )
 	--assertEquals( INEED_garrfollowers["180"] = true )
 	assertTrue( INEED_garrfollowers["180"]["updated"] )  -- Don't care about the value, just that it exists
 end
@@ -701,13 +702,24 @@ function test.testAddFollower_FollowerLink_updated()
 	assertTrue( INEED_garrfollowers["180"]["updated"] )
 end
 function test.testAddFollower_FollowerStr_link()
-	INEED.addItem( "garrfillower:180" )
+	INEED.addItem( "garrfollower:180" )
 	--assertEquals( INEED_garrfollowers["180"] = true )
-	assertEquals( "garrfillower:180", INEED_garrfollowers["180"]["link"] )
+	assertEquals( "garrfollower:180", INEED_garrfollowers["180"]["link"] )
 end
 function test.testAddFollower_FollowerLink_link()
 	INEED.addItem( "|cff1eff00|Hgarrfollower:180:2:90:600:11:0:0:0:53:0:0:0|h[Fiona]|h|r" )
 	assertEquals( "|cff1eff00|Hgarrfollower:180:2:90:600:11:0:0:0:53:0:0:0|h[Fiona]|h|r", INEED_garrfollowers["180"]["link"] )
 end
+function test.testRemoveFollower_FollowerStr()
+	INEED_garrfollowers = {["180"] = {["added"] = 123, ["link"] = "link", ["updated"] = 345 } }
+	INEED.addItem( "garrfollower:180", 0 )
+	assertIsNil( INEED_garrfollowers["180"] )
+end
+function test.testRemoveFollower_FollowerLink()
+	INEED_garrfollowers = {["180"] = {["added"] = 123, ["link"] = "link", ["updated"] = 345 } }
+	INEED.addItem( "|cff1eff00|Hgarrfollower:180:2:90:600:11:0:0:0:53:0:0:0|h[Fiona]|h|r", 0 )
+	assertIsNil( INEED_garrfollowers["180"] )
+end
+
 
 test.run()
