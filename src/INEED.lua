@@ -19,6 +19,7 @@ INEED_data = {}
 INEED_currency = {}
 INEED_account = {}
 INEED_unknown = {}
+INEED_garrfollowers = {}
 
 INEED.bindTypes = {
 	[ITEM_SOULBOUND] = "Bound",
@@ -58,6 +59,8 @@ function INEED.OnLoad()
 	INEED_Frame:RegisterEvent("TRADE_SKILL_CLOSE")
 	INEED_Frame:RegisterEvent("TRADE_SKILL_UPDATE")
 	-- ^^^ Fired immediately after TRADE_SKILL_SHOW, after something is created via tradeskill, or anytime the tradeskill window is updated (filtered, tree folded/unfolded, etc.)
+	-- Garrison Followers
+	INEED_Frame:RegisterEvent("GARRISON_FOLLOWER_ADDED")
 end
 function INEED.TRADE_SKILL_SHOW()
 	INEED.Print("TradeSkill window opened.")
@@ -372,6 +375,10 @@ function INEED.MERCHANT_SHOW()
 	BuyMerchantItem(index {, quantity});
 	]]--
 end
+function INEED.GARRISON_FOLLOWER_ADDED(...)
+	local followerID, name, class, displayID, level, quality, isUpgraded, texPrefix, followerType = ...
+
+end
 function INEED.OnUpdate()
 end
 -- Non Event functions
@@ -592,6 +599,22 @@ function INEED.addItem( itemLink, quantity )
 		end
 		return itemLink -- return done
 	end
+	local followerID = INEED.getFollowerIdFromLink( itemLink )
+	if followerID then
+		if quantity >= 1 then -- can only have 1
+			INEED.Print( string.format( "Needing: %s", itemLink ) )
+			INEED_garrfollowers[followerID] = INEED_garrfollowers[followerID] or {}
+			INEED_garrfollowers[followerID]['added'] = INEED_garrfollowers[followerID]['added'] or time()
+			INEED_garrfollowers[followerID]['updated'] = time()
+			INEED_garrfollowers[followerID]['link'] = itemLink
+		elseif quantity == 0 then
+			if INEED_garrfollowers[followerID] then
+				INEED.Print( string.format( "Removing %s from your need list", itemLink ) ) -- change this to a follower link, once it is gotten
+				INEED_garrfollowers[followerID] = nil
+			end
+		end
+		return itemLink
+	end
 	if itemLink then
 		INEED.Print("Unknown link or command: "..string.sub(itemLink, 12))
 		INEED_unknown[time()] = itemLink
@@ -616,6 +639,12 @@ function INEED.getCurrencyIdFromLink( currencyLink )
 	-- currency:402
 	if currencyLink then
 		return strmatch( currencyLink, "currency:(%d*)" )
+	end
+end
+function INEED.getFollowerIdFromLink( followerLink )
+	-- garrfollower:180
+	if followerLink then
+		return strmatch( followerLink, "garrfollower:(%d*)" )
 	end
 end
 function INEED.command(msg)

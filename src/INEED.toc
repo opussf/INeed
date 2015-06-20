@@ -5,7 +5,7 @@
 ## Version: @VERSION@
 ## Description: Creates an "I need" list to share with your alts
 ## SavedVariables: INEED_data INEED_options INEED_events INEED_unknown
-## SavedVariablesPerCharacter: INEED_account INEED_currency
+## SavedVariablesPerCharacter: INEED_account INEED_currency INEED_garrfollowers
 INEED.lua
 INEED.xml
 INEEDUI.lua
