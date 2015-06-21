@@ -18,6 +18,7 @@ INEED = {}
 INEED_data = {}
 INEED_currency = {}
 INEED_account = {}
+INEED_unknown = {}
 
 INEED.bindTypes = {
 	[ITEM_SOULBOUND] = "Bound",
@@ -614,6 +615,7 @@ function INEED.addItem( itemLink, quantity )
 	end
 	if itemLink then
 		INEED.Print("Unknown link or command: "..string.sub(itemLink, 12))
+		INEED_unknown[time()] = itemLink
 		INEED.PrintHelp()
 	end
 end
