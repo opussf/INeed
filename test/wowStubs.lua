@@ -106,6 +106,7 @@ strtolower = string.lower
 time = os.time
 date = os.date
 max = math.max
+min = math.min
 random = math.random
 tinsert = table.insert
 
@@ -141,9 +142,20 @@ ITEM_BIND_ON_PICKUP="Binds when picked up"
 Frame = {
 		["Events"] = {},
 		["Hide"] = function() end,
+		["Show"] = function() end,
 		["RegisterEvent"] = function(event) Frame.Events.event = true; end,
 		["SetPoint"] = function() end,
 		["UnregisterEvent"] = function(event) Frame.Events.event = nil; end,
+		["GetName"] = function(self) return self.framename end,
+		["SetFrameStrata"] = function() end,
+		["SetWidth"] = function(self, value) self.width = value; end,
+		["SetHeight"] = function(self, value) self.height = value; end,
+		["CreateFontString"] = function(self, ...) return(CreateFontString(...)) end,
+
+		["SetMinMaxValues"] = function() end,
+		["SetValue"] = function() end,
+		["SetStatusBarColor"] = function() end,
+
 }
 FrameGameTooltip = {
 		["GetName"] = function(self) return self.name end,

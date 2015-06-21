@@ -282,6 +282,7 @@ function INEED.BAG_UPDATE()
 	if itemFulfilled then
 		INEED.itemFulfilledAnnouce()
 	end
+	INEED.UIListOnUpdate()
 end
 INEED.UNIT_INVENTORY_CHANGED = INEED.BAG_UPDATE
 function INEED.CURRENCY_DISPLAY_UPDATE()

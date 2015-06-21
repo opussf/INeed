@@ -13,6 +13,7 @@ INEED_SplashFrame = { ["Show"] = function() end,
 }
 INEED_Frame = CreateFrame()
 SendMailNameEditBox = CreateFontString("SendMailNameEditBox")
+INEEDUIListFrame = CreateFrame()
 
 -- require the file to test
 package.path = "../src/?.lua;'" .. package.path
@@ -719,10 +720,29 @@ function test.testAddSpecialCurrencyItem_AlreadyHaveMoreThanNeeded()
 	myInventory["49916"] = nil
 end
 
-
-
 function test.testAddSpecialCurrencyItem_CurrencyItemCurrentlyNeeded_HaveMoreThanNeeded()
 	-- The needed item costs a special currency (>1)
 end
+
+--------------
+-- UI Tests --
+--------------
+--[[
+function test.testUI_INEEDBars_ReturnsNumberOfBars_EmptyBarTable_ReturnValue()
+	-- Test the function that assures bars are created.
+	INEED.UIList_bars = {}
+	assertEquals( 1, INEED.UIListAssureBars( INEEDUIListFrame, 1 ) )
+end
+function test.testUI_INEEDBars_ReturnsNumberOfBars_HasBarsAlready_ReturnValue()
+	-- Frame has the number of bars already
+	INEED.UIList_bars = {}  -- figure out what this should look like (to have 2 bars already)
+	assertEquals( 2, INEED.UIListAssureBars( INEEDUIListFrame, 1 ) )
+end
+function test.testUI_INEEDBars_CreatesBars()
+end
+]]
+
+
+
 
 test.run()
