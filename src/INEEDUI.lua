@@ -1,5 +1,5 @@
 -- General functions
-INEED.UIListBarWidth = 390
+INEED.UIListBarWidth = 250
 INEED.UIListBarHeight = 12
 INEED.UIList_bars = {}
 function INEED.UIListAssureBars( barsNeeded )
@@ -19,7 +19,7 @@ function INEED.UIListAssureBars( barsNeeded )
 	for b in pairs(INEED.UIList_bars) do
 		count = count + 1
 	end
-	INEED.Print("Bars I need: "..barsNeeded..". Bars I have: "..count)
+	--INEED.Print("Bars I need: "..barsNeeded..". Bars I have: "..count)
 	if (barsNeeded > count) then
 		for i = count+1, barsNeeded do
 			-- Create a bar
@@ -50,20 +50,44 @@ function INEED.UIListOnLoad()
 end
 function INEED.UIListOnUpdate()
 	-- Create a sorted index table of most recent updated items
+	if (INEED.UIListLastUpdate or 0) + 1 > time() then
+		return -- no need to update
+	end
+	INEED.UIListLastUpdate = time()
+
 	local count = 0
 	local sortedDisplayItems = {}
 
 	-- need progress, link, updated..  for items that I need.
 	for itemID in pairs(INEED_data) do
-		if INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name]
-				and (time() - INEED_data[itemID][INEED.realm][INEED.name].updated < INEED_options["displayUIListDisplaySeconds"]) then
-				-- I need this item, and it has been updated within the update window
+		if INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] then
+			local updatedTS = INEED_data[itemID][INEED.realm][INEED.name].updated or INEED_data[itemID][INEED.realm][INEED.name].added
+			--INEED.Print(itemID..":"..(time()-updatedTS).." <? "..(INEED_options["displayUIListDisplaySeconds"] or "nil") )
+			if ((time() - updatedTS) < (INEED_options["displayUIListDisplaySeconds"] or 0)) then
+					-- I need this item, and it has been updated within the update window
+				table.insert( sortedDisplayItems,
+						{["updated"] = updatedTS,
+						 ["itemPre"] = "item:",
+						 ["id"] = itemID,  -- itemPre..id can be used to get the link.
+						 ["total"] = INEED_data[itemID][INEED.realm][INEED.name].total,
+						 ["needed"] = INEED_data[itemID][INEED.realm][INEED.name].needed,
+						 ["linkStr"] = (select( 2, GetItemInfo( itemID ) ) or "item:"..itemID)
+				})
+				count = count + 1
+			end
+		end
+	end
+	-- process currency
+	for curID in pairs(INEED_currency) do
+		local updatedTS = INEED_currency[curID].updated or INEED_currency[curID].added
+		if ((time() - updatedTS) < (INEED_options["displayUIListDisplaySeconds"] or 0)) then
 			table.insert( sortedDisplayItems,
-					{["updated"] = INEED_data[itemID][INEED.realm][INEED.name].updated or INEED_data[itemID][INEED.realm][INEED.name].added,
-					 ["itemPre"] = "item:",
-					 ["id"] = itemID,  -- itemPre..id can be used to get the link.
-					 ["total"] = INEED_data[itemID][INEED.realm][INEED.name].total,
-					 ["needed"] = INEED_data[itemID][INEED.realm][INEED.name].needed,
+					{["updated"] = updatedTS,
+					 ["itemPre"] = "currency:",
+					 ["id"] = curID,
+					 ["total"] = INEED_currency[curID].total,
+					 ["needed"] = INEED_currency[curID].needed,
+					 ["linkStr"] = (GetCurrencyLink( curID ) or ("currency:"..curID))
 			})
 			count = count + 1
 		end
@@ -71,7 +95,7 @@ function INEED.UIListOnUpdate()
 	-- return early, no need to sort an empty table.
 	if (count == 0) then
 		INEEDUIListFrame:Hide()
-		INEED.Print("Hide List Frame")
+		INEED.Print("Hide List Frame: "..time())
 		return;
 	end
 	INEEDUIListFrame:Show()
@@ -85,20 +109,30 @@ function INEED.UIListOnUpdate()
 
 	for i = 1, barsNeeded do
 		local data = sortedDisplayItems[i]
-		local linkString = select( 2, GetItemInfo( data.itemPre..data.id ) ) or data.itemPre..data.id
+		local linkString = data.linkStr
 		local outStr = string.format( "%i/%i %s", data.total, data.needed, linkString )
 
 		INEED.UIList_bars[i]:SetMinMaxValues( 0, data.needed )
 		INEED.UIList_bars[i]:SetValue( data.total )
 		INEED.UIList_bars[i].text:SetText( outStr )
-		INEED.UIList_bars[i]:SetStatusBarColor( 60, 60, 60 )
+		INEED.UIList_bars[i]:SetStatusBarColor( 0, 0.3, 0.9 )
+
+
 		INEED.UIList_bars[i]:SetFrameStrata("LOW")
 		INEED.UIList_bars[i]:Show()
 	end
 	for barsHide = barsNeeded + 1, barCount do
-		INEED.Print("Hiding: "..barsHide)
-		INEED.UIList_bars[barsHide]:Hide()
+		if INEED.UIList_bars[barsHide]:IsShown() then
+			INEED.Print("Hiding: "..barsHide)
+			INEED.UIList_bars[barsHide]:Hide()
+		end
 	end
+end
+function INEED.UIListOnDragStart()
+	INEEDUIListFrame:StartMoving()
+end
+function INEED.UIListOnDragStop()
+	INEEDUIListFrame:StopMovingOrSizing()
 end
 
 

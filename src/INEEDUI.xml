@@ -4,7 +4,7 @@
 ..\FrameXML\UI.xsd">
 
 	<StatusBar name="INEEDUIListBarTemplate" inherits="TextStatusBar" virtual="true">
-		<Size x="390" y="12" />
+		<Size x="250" y="12" />
 		<BarTexture file="Interface\TargetingFrame\UI-StatusBar" />
 		<BarColor r="0.0" g="0.3" b="0.9" />
 	</StatusBar>
@@ -12,30 +12,16 @@
 		<Color r="1" g="1" b="1" />
 	</FontString>
 
-	<Frame name="INEEDUIListFrame" frameStrata="BACKGROUND" toplevel="false" parent="UIParent" enableMouse="true" movable="false">
-		<Size x="384" y="512"/>
+	<Frame name="INEEDUIListFrame" frameStrata="BACKGROUND" toplevel="false" parent="UIParent" enableMouse="true" movable="true">
+		<Size x="250" y="12"/>
 		<Anchors>
-			<Anchor point="CENTER" relativePoint="CENTER" relativeTo="UIParent"/>
+			<Anchor point="LEFT"/>
 		</Anchors>
 		<Layers>
-			<Layer level="BACKGROUND">
+			<Layer level="MEDIUM">
 				<Texture setAllPoints="true">
-					<Color r="0.0" g="0.0" b="0.0"/>
+					<Color r="0.0" g="0.0" b="0.0" a="0.1"/>
 				</Texture>
-			</Layer>
-			<Layer level="OVERLAY">
-				<FontString name="$parent_TitleText" frameStrata="ARTWORK" inherits="GameFontHighlight" text="INEED">
-					<Size>
-						<AbsDimension x="250" y="14"/>
-					</Size>
-					<Anchors>
-						<Anchor point="TOP" relativePoint="TOP">
-							<Offset>
-								<AbsDimension x="0" y="-4"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
 			</Layer>
 		</Layers>
 		<Scripts>
@@ -45,6 +31,12 @@
 			<OnUpdate>
 				INEED.UIListOnUpdate()
 			</OnUpdate>
+			<OnMouseDown>
+				INEED.UIListOnDragStart()
+			</OnMouseDown>
+			<OnMouseUp>
+				INEED.UIListOnDragStop()
+			</OnMouseUp>
 		</Scripts>
 		<!--
 		<Frames>
