@@ -278,11 +278,10 @@ function INEED.BAG_UPDATE()
 			end
 		end
 	end
-
 	if itemFulfilled then
 		INEED.itemFulfilledAnnouce()
 	end
-	INEED.UIListOnUpdate()
+	INEEDUIListFrame:Show()
 end
 INEED.UNIT_INVENTORY_CHANGED = INEED.BAG_UPDATE
 function INEED.CURRENCY_DISPLAY_UPDATE()
@@ -320,6 +319,7 @@ function INEED.CURRENCY_DISPLAY_UPDATE()
 	if itemFulfilled then
 		INEED.itemFulfilledAnnouce()
 	end
+	INEEDUIListFrame:Show()
 end
 function INEED.MERCHANT_SHOW()
 	-- Event handler.  Autopurchase
@@ -436,6 +436,7 @@ function INEED.showSplash( msg )
 	-- Show the 'success' messages in the middle splash
 	INEED_SplashFrame:Show()
 	INEED_SplashFrame:AddMessage( msg, 1, 1, 1 )
+
 end
 function INEED.clearData()
 	-- this function will look for 'empty' realms and items and clear them
