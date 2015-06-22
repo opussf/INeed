@@ -118,7 +118,7 @@ function INEED.UIListOnUpdate()
 		INEED.UIList_bars[i]:SetStatusBarColor( 0, 0.3, 0.9 )
 
 
-		INEED.UIList_bars[i]:SetFrameStrata("LOW")
+		INEED.UIList_bars[i]:SetFrameStrata("BACKGROUND")
 		INEED.UIList_bars[i]:Show()
 	end
 	for barsHide = barsNeeded + 1, barCount do
