@@ -93,7 +93,7 @@ function INEED.UIListOnUpdate()
 		end
 	end
 	-- return early, no need to sort an empty table.
-	if (count == 0) then
+	if (count == 0 and INEEDUIListFrame:IsShown()) then
 		INEEDUIListFrame:Hide()
 		INEED.Print("Hide List Frame: "..time())
 		return;
