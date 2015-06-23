@@ -716,10 +716,15 @@ function INEED.showList( searchTerm )
 end
 function INEED.itemIsSoulbound( itemLink )
 	-- return 1 or nil to reflect if the item is BOP or bound
-	INEED.scanTip:SetOwner(UIParent, "ANCHOR_NONE")
-	INEED.scanTip:ClearLines()
-	INEED.scanTip:SetHyperlink( itemLink )
-	return INEED.bindTypes[INEED.scanTip2:GetText()] or INEED.bindTypes[INEED.scanTip3:GetText()] or INEED.bindTypes[INEED.scanTip4:GetText()]
+	if itemLink then
+		INEED.scanTip:SetOwner(UIParent, "ANCHOR_NONE")
+		INEED.scanTip:ClearLines()
+		INEED.scanTip:SetHyperlink( itemLink )
+		return INEED.bindTypes[INEED.scanTip2:GetText()] or INEED.bindTypes[INEED.scanTip3:GetText()] or INEED.bindTypes[INEED.scanTip4:GetText()]
+	else
+		INEED.Print("itemIsSoulbound was called wit a 'nil' value.")
+	end
+
 end
 function INEED.showFulfillList()
 	-- returns number of items you can fulfill, or nil if none
