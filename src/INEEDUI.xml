@@ -20,8 +20,23 @@
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture setAllPoints="true">
-					<Color r="0.0" g="0.0" b="0.0" a="0.1"/>
+					<Color r="0.0" g="0.0" b="0.0" a="0.5"/>
 				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<!-- Frame Title -->
+				<FontString name="$parent_TitleText" frameStrata="ARTWORK" inherits="GameFontHighlight" text="INeed">
+					<Size>
+						<AbsDimension x="250" y="14"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP" relativePoint="TOP">
+							<Offset>
+								<AbsDimension x="0" y="-4"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
 			</Layer>
 		</Layers>
 		<Scripts>

@@ -28,7 +28,7 @@ function INEED.UIListAssureBars( barsNeeded )
 			newBar:SetWidth( INEED.UIListBarWidth )
 			newBar:SetHeight( INEED.UIListBarHeight )
 			if (i == 1) then
-				newBar:SetPoint( "TOPLEFT", "INEEDUIListFrame", "TOPLEFT" )
+				newBar:SetPoint( "TOPLEFT", "INEEDUIListFrame_TitleText", "TOPLEFT" )
 			else
 				newBar:SetPoint( "TOPLEFT", INEED.UIList_bars[i-1], "BOTTOMLEFT" )
 			end
@@ -136,45 +136,7 @@ function INEED.UIListOnDragStop()
 end
 
 
---[[
-function FB.UpdateBars()
-	-- Create a sorted index table of data from barData, count the table too
-	local count = 0;
-	local sortedKeys = {};
-	for fac, val in pairs(FB.barData) do
-		table.insert(sortedKeys, {["fac"]=fac, ["maxTS"]=val.maxTS});
-		count = count + 1;
-	end
-	if (count == 0) then
-		FB_Frame:Hide();
-		--FB.Print("Hide Frame");
-		return;
-	end
-	local barCount = FB.AssureBars( count );
-	-- the key to sort on is the maxTS
-	table.sort(sortedKeys, function(a,b) return (a.maxTS>b.maxTS or (a.maxTS==b.maxTS and a.fac<b.fac)); end);
-	local showBars = min(#sortedKeys, FB_options.numBars);
-	FB_Frame:SetHeight(FB.barHeight*showBars);
 
-	for i = 1, showBars do
-		local fac = sortedKeys[i].fac;
-
-		local val = FB.barData[fac];
-		FB.bars[i]:SetMinMaxValues(0, val["barTopValue"]);
-		FB.bars[i]:SetValue(val["barEarnedValue"]);
-		FB.bars[i].text:SetText(val["outStr"]);
-		FB.bars[i]:SetStatusBarColor(val["barColor"]["r"],
-				val["barColor"]["g"], val["barColor"]["b"]);
-		FB.bars[i]:SetFrameStrata("LOW");
-		FB.bars[i]:Show();
-	end
-	for barsHide = showBars+1, barCount do
-		--FB.Print("Hiding: "..barsHide);
-		FB.bars[barsHide]:Hide();
-	end
-
-end
-]]
 --[[
 		b1  n1  c = 3, bn = 3 = min(3,6), bc = 6 = ab(3) -- need to hide 4,5,6
 		b2  n2
