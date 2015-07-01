@@ -527,6 +527,7 @@ function INEED.parseCmd(msg)
 end
 function INEED.addItem( itemLink, quantity )
 	-- returns itemLink of what was added
+	INEEDUIListFrame:Show()
 	quantity = quantity or 1
 	local itemID = INEED.getItemIdFromLink( itemLink )
 	if itemID then
