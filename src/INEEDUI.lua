@@ -1,6 +1,8 @@
 -- General functions
+INEED.UIListHeaderHeight = 16
 INEED.UIListBarWidth = 250
 INEED.UIListBarHeight = 12
+
 INEED.UIList_bars = {}
 function INEED.UIListAssureBars( barsNeeded )
 	-- make sure that there are enough bars to handle the need
@@ -28,7 +30,7 @@ function INEED.UIListAssureBars( barsNeeded )
 			newBar:SetWidth( INEED.UIListBarWidth )
 			newBar:SetHeight( INEED.UIListBarHeight )
 			if (i == 1) then
-				newBar:SetPoint( "TOPLEFT", "INEEDUIListFrame_TitleText", "TOPLEFT" )
+				newBar:SetPoint( "TOPLEFT", "INEEDUIListFrame_TitleText", "BOTTOMLEFT" )
 			else
 				newBar:SetPoint( "TOPLEFT", INEED.UIList_bars[i-1], "BOTTOMLEFT" )
 			end
@@ -105,7 +107,7 @@ function INEED.UIListOnUpdate()
 	local barsNeeded = min(count, INEED_options["barCount"])
 	local barCount = INEED.UIListAssureBars( barsNeeded )
 
-	INEEDUIListFrame:SetHeight( INEED.UIListBarHeight*barsNeeded )
+	INEEDUIListFrame:SetHeight( (INEED.UIListBarHeight*barsNeeded) + INEED.UIListHeaderHeight )
 
 	for i = 1, barsNeeded do
 		local data = sortedDisplayItems[i]
@@ -118,7 +120,7 @@ function INEED.UIListOnUpdate()
 		INEED.UIList_bars[i]:SetStatusBarColor( 0, 0.3, 0.9 )
 
 
-		INEED.UIList_bars[i]:SetFrameStrata("BACKGROUND")
+		INEED.UIList_bars[i]:SetFrameStrata("LOW")
 		INEED.UIList_bars[i]:Show()
 	end
 	for barsHide = barsNeeded + 1, barCount do

@@ -18,11 +18,6 @@
 			<Anchor point="LEFT"/>
 		</Anchors>
 		<Layers>
-			<Layer level="BACKGROUND">
-				<Texture setAllPoints="true">
-					<Color r="0.0" g="0.0" b="0.0" a="0.5"/>
-				</Texture>
-			</Layer>
 			<Layer level="ARTWORK">
 				<!-- Frame Title -->
 				<FontString name="$parent_TitleText" frameStrata="ARTWORK" inherits="GameFontHighlight" text="INeed">
@@ -32,11 +27,16 @@
 					<Anchors>
 						<Anchor point="TOP" relativePoint="TOP">
 							<Offset>
-								<AbsDimension x="0" y="-4"/>
+								<AbsDimension x="0" y="-2"/>
 							</Offset>
 						</Anchor>
 					</Anchors>
 				</FontString>
+			</Layer>
+			<Layer level="BACKGROUND">
+				<Texture setAllPoints="true">
+					<Color r="0.0" g="0.0" b="0.0" a="0.5"/>
+				</Texture>
 			</Layer>
 		</Layers>
 		<Scripts>
