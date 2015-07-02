@@ -25,7 +25,7 @@ function INEED.UIListAssureBars( barsNeeded )
 	if (barsNeeded > count) then
 		for i = count+1, barsNeeded do
 			-- Create a bar
-			INEED.Print("Creating bar# "..i)
+			--INEED.Print("Creating bar# "..i)
 			local newBar = CreateFrame( "StatusBar", "INEED.UIListBar"..i, INEEDUIListFrame, "INEEDUIListBarTemplate" )
 			newBar:SetWidth( INEED.UIListBarWidth )
 			newBar:SetHeight( INEED.UIListBarHeight )
@@ -125,7 +125,7 @@ function INEED.UIListOnUpdate()
 	end
 	for barsHide = barsNeeded + 1, barCount do
 		if INEED.UIList_bars[barsHide]:IsShown() then
-			INEED.Print("Hiding: "..barsHide)
+			--INEED.Print("Hiding: "..barsHide)
 			INEED.UIList_bars[barsHide]:Hide()
 		end
 	end
