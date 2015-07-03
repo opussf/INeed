@@ -1,5 +1,4 @@
-INeed
-=====
+# INeed
 
 [![Build Status](https://travis-ci.org/opussf/INeed.svg?branch=master)](https://travis-ci.org/opussf/INeed)
 

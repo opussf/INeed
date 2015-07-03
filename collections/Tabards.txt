@@ -1,0 +1,21 @@
+Alliance Tabards
+/in item:45579
+/in item:45580
+/in item:64882
+/in item:45578
+/in item:45577
+/in item:45574
+/in item:83079
+
+Alliance Satchels
+/in item:67526
+/in item:67527
+/in item:67532
+/in item:67530
+/in item:67528
+/in item:67531
+/in item:97021
+
+Horde Tabards
+
+Horde Satchels
