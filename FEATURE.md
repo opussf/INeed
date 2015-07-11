@@ -1,5 +1,29 @@
 # Feature
 
+## feature/battlePets
+Track desired pets.
+
+
+speciesID, customName, level, xp, maxXp, displayID, isFavorite, petName, petIcon, petType, creatureID, sourceText, description, isWild, canBattle, tradable, unique = C_PetJournal.GetPetInfoByPetID("petID")
+
+health, maxHealth, attack, speed, rarity = C_PetJournal.GetPetStats("petID")
+
+/dump C_PetJournal.GetPetStats(1450)
+/dump C_PetJournal.GetPetStats("1632")
+
+/dump C_PetJournal.GetPetInfoByPetID("1450")
+/dump C_PetJournal.GetPetInfoByPetID(1450)
+
+/dump C_PetJournal.PetIsSummonable("1450")
+
+http://wow.gamepedia.com/API_C_PetJournal.GetBattlePetLink
+
+1450
+
+
+
+##
+
 Record unknown links used.
 
 
