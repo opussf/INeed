@@ -14,7 +14,7 @@ Alliance Satchels
 /in item:67530
 /in item:67528
 /in item:67531
-/in item:97021
+/in item:97071
 
 Horde Tabards
 
