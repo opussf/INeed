@@ -86,7 +86,7 @@ Keep item actions for each item.
 Allow a description string (goalName) to be given to each item as it is added (or re-added).
 
 [ ] Optional description consumes the rest of the given line
-	* /in <link> [quantity] [desc | item]
+	* /in <link> [quantity] [desc]
 		+ quantity is the first numeric (space breaking) value
 		+ desc starts as soon as quantity can not be determined, or is given.
 
