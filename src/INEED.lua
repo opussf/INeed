@@ -739,6 +739,7 @@ function INEED.showFulfillList()
 				for name, data in pairs(INEED_data[itemID][realm]) do
 					if (name ~= INEED.name) and (data.faction and data.faction == INEED.faction) then -- not you and right faction
 						itemLink = select( 2, GetItemInfo( itemID ) )
+						--if not itemLink then INEED.Print(itemID.." created a nil link.") end
 						isSoulBound = INEED.itemIsSoulbound( itemLink )
 						--INEED.Print( "Looking at "..itemLink..". Which is "..( INEED.itemIsSoulbound( itemLink ) and "soulbound" or "not soulbound" ) )
 						if not isSoulBound then
