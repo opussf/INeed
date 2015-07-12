@@ -742,7 +742,26 @@ function test.testUI_INEEDBars_CreatesBars()
 end
 ]]
 
+--------------------
+-- goalName tests --
+--------------------
+function test.testGoalName_addGoalName_Command()
+	-- add a desc to a newly needed item
+	INEED.command( "item:9799 55 I want this item.")
+	assertEquals( "I want this item.", INEED_data["9799"]["testRealm"]["testName"].desc )
+end
+function test.testGoalName_addGoalName_noGoalName()
+	INEED.command( "item:9799 55")
+	assertIsNil( INEED_data["9799"]["testRealm"]["testName"].desc )
+end
+function test.testGoalName_addGoalName_previouslyAddedItem()
+	INEED.command( "item:9799 55")
+	INEED.command( "item:9799 55 I want this item.")
+	assertEquals( "I want this item.", INEED_data["9799"]["testRealm"]["testName"].desc )
+end
 
 
-
+---------------
+-- Run Tests --
+---------------
 test.run()
