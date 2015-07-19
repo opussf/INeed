@@ -1,0 +1,34 @@
+Account Bound items
+
+Plate:
+	Warrior, Paladin, Death Knight
+
+/in item:127823 -- Girdle
+/in item:127822 -- Spaulders
+/in item:127818 -- Treads
+
+Mail:
+	Hunter, Shaman
+
+/in item:127810 -- Girdle
+/in item:127809 -- Spaulders
+/in item:127807 -- Hood
+/in item:127805 -- Treads
+
+
+Leather:
+	Rogue, Monk, Druid
+
+/in item:127796 -- Spaulders
+/in item:127792 -- Boots
+/in item:
+/in item:
+
+Cloth:
+	Priest, Mage, Warlock
+
+/in item:127783 -- Spaulders
+/in item:127779 -- Treads
+/in item:127784 -- Girdle
+/in item:
+/in item:
