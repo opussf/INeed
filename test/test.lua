@@ -742,7 +742,10 @@ function test.testUI_INEEDBars_CreatesBars()
 end
 ]]
 
-
+--------- Gold Value
+function test.testGoldValue_addNeededValue_gold()
+	INEED.command("25g")
+end
 
 
 test.run()

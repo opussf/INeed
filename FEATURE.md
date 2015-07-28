@@ -5,6 +5,12 @@ Record unknown links used.
 ## feature/goldValue
 Allow the player to need an amount of gold.
 
+/in 25g
+/in 25g 35s
+(Should be able to use the same function as the account command)
+
+Store per toon, or as a global variable?
+
 ## feature/gui
 This will introduce a GUI element to the addon.
 
