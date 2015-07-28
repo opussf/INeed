@@ -2,7 +2,8 @@
 
 Record unknown links used.
 
-
+## feature/goldValue
+Allow the player to need an amount of gold.
 
 ## feature/gui
 This will introduce a GUI element to the addon.
