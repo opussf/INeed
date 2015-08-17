@@ -2,6 +2,7 @@
 
 Record unknown links used.
 
+local link, item, charges, showItemWhenComplete = GetQuestLogSpecialItemInfo(questLogIndex);
 
 
 ## feature/gui
@@ -61,7 +62,6 @@ Need a GUI for:
 		+ items needed window
 			* replicate the 'Profession' window, but only items for this toon.
 
-
 -----
 Keep item actions for each item.
 
@@ -119,8 +119,8 @@ Allow a description string (goalName) to be given to each item as it is added (o
 	^^^ Needs 1 item:44157 (2x is not seen as numeric)
 	^^^ x2 might be seen as special in the future.
 
-	/in item:23784 4 item:44157
-	^^^ Needs 4x item:23784, looks up the link for item:44157 and stores it in the .desc field.
+	/in item:23784 4 item:44157 Need these.
+	^^^ Needs 4x item:23784, 1 of item:44157 and stores "Need these." in the .desc field.
 
 
 ## feature/goalName Testing ideas

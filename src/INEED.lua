@@ -510,8 +510,10 @@ end
 ]]--
 function INEED.parseCmd(msg)
 	if msg then
+		print(msg)
 		local i,c = strmatch(msg, "^(|c.*|r)%s*(%d*)$")
 		if i then  -- i is an item, c is a count or nil
+			print("i: "..i.." c: "..c)
 			return i, c
 		else  -- Not a valid item link
 			msg = string.lower(msg)
