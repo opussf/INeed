@@ -1,7 +1,7 @@
 -----------------------------------------
 -- Author  :  Opussf
 -- Date    :  $Date:$
--- Revision:  $Revision:$
+-- Revision:  @VERSION@
 -----------------------------------------
 -- These are functions from wow that have been needed by addons so far
 -- Not a complete list of the functions.
@@ -55,6 +55,22 @@ Items = {
 	["74661"] = {["name"] = "Black Pepper", ["link"] = "|cffffffff|Hitem:74661:0:0:0:0:0:0:0:90:0:0|h[Black Pepper]|h|r", ["texture"] = ""},
 	["85216"] = {["name"] = "Enigma Seed", ["link"]= "|cffffffff|Hitem:85216:0:0:0:0:0:0:0:90:0:0|h[Enigma Seed]|h|r", ["texture"] = ""},
 	["113596"] = {["name"] = "Vilebreath Mask", ["link"] = "|cffffffff|Hitem:113596:0:0:0:0:0:0:0:90:0:0|h[Vilebreath Mask]|h|r", ["slotPrefix"] = "Head", ["texture"] = ""},
+--[[
+Vilebreath Mask
+Item Level 655
+Binds when picked up
+Head	Cloth
+85 Armor
++211 Intellect
++316 Stamina
++120 Mastery (1.09 @ L100)
++153 Multistrike (2.32% @ L100)
+Durability 100 / 100
+Requires Level 100
+Sell Price: 32 81 73
+Dropped by: Kargath Bladefist
+Drop Chance: 11.48%
+]]
     -- ^^ Need another head item for testing.
     ["999999"] = {["name"] = "Finger Thing", ["link"] = "|cffffffff|Hitem:999999:0:0:0:0:0:0:0:90:0:0|h[Finger Thing|h|r", ["slotPrefix"] = "Finger", ["texture"] = ""},
 }
@@ -97,6 +113,8 @@ TradeSkillItems = {
 EquipmentSets = {
 	{["name"] = "testSet", ["icon"] = "icon", ["items"] = {[1] = "113596"},},
 }
+-- WowToken
+TokenPrice = 123456 -- 12G 34S 45C
 
 -- WOW's function renames
 strmatch = string.match
@@ -824,4 +842,21 @@ function UnitSex( who )
 		["player"] = 3,
 	}
 	return unitSex[who]
+end
+---------  C_WowTokenPublic
+C_WowTokenPublic = {}
+function C_WowTokenPublic.GetCommerceSystemStatus()
+	-- returns
+	-- [1] boolean - unsure
+	-- [2] seconds - minseconds between scans
+	-- [3] 0?
+	return true, 300, 0
+end
+function C_WowTokenPublic.GetCurrentMarketPrice()
+	-- returns the value, and a 2nd number (unknown)
+	return TokenPrice, 5
+end
+function C_WowTokenPublic.UpdateMarketPrice()
+	-- this has the system query the market price, and fire the TOKEN_MARKET_PRICE_UPDATED event
+	-- has no other side effects
 end
