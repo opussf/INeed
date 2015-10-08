@@ -3,6 +3,8 @@
 ## feature/battlePets
 Track desired pets.
 
+The GUID can be derived from the old (numeric) unique pet IDs using petGUID = ("0x%016x"):format(petID).
+
 
 speciesID, customName, level, xp, maxXp, displayID, isFavorite, petName, petIcon, petType, creatureID, sourceText, description, isWild, canBattle, tradable, unique = C_PetJournal.GetPetInfoByPetID("petID")
 
@@ -11,15 +13,21 @@ health, maxHealth, attack, speed, rarity = C_PetJournal.GetPetStats("petID")
 /dump C_PetJournal.GetPetStats(1450)
 /dump C_PetJournal.GetPetStats("1632")
 
+
+C_PetJournal.GetNumPets()
+
+
+
 /dump C_PetJournal.GetPetInfoByPetID("1450")
 /dump C_PetJournal.GetPetInfoByPetID(1450)
 
 /dump C_PetJournal.PetIsSummonable("1450")
 
-http://wow.gamepedia.com/API_C_PetJournal.GetBattlePetLink
 
 1450
 
+http://wow.gamepedia.com/API_C_PetJournal.GetBattlePetLink
+http://wow.gamepedia.com/UPDATE_SUMMONPETS_ACTION
 
 
 ##
