@@ -365,9 +365,8 @@ function INEED.MERCHANT_SHOW()
 					local itemID = INEED.getItemIdFromLink( link )
 					if itemID
 							and ((INEED_data[itemID] and INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] and (value > INEED_data[itemID][INEED.realm][INEED.name].needed))
-							or (not INEED_data[itemID]))
+							or (not ((INEED_data[itemID] and INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] and INEED_data[itemID][INEED.realm][INEED.name].needed >= value))))
 							then
-						print("link: "..link.." itemID: "..(itemID or "nil") )
 						INEED.addItem( link, value )
 					end
 
