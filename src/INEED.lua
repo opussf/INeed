@@ -341,6 +341,8 @@ function INEED.MERCHANT_SHOW()
 			local itemT = INEED_data[itemID][INEED.realm][INEED.name]
 			local neededQuantity = itemT.needed - itemT.total
 			if not msgSent then INEED.Print("This merchant sells items that you need"); msgSent=true; end
+			INEED_data[itemID][INEED.realm][INEED.name].updated = time()
+			INEEDUIListFrame:Show()
 			if isUsable and INEED_account.balance and currencyCount == 0 then  -- I have money to spend, and not a special currency
 				-- How many can I afford at this price.
 				local canAffordQuantity = math.floor(((INEED_account.balance or 0) * quantity) / price)
