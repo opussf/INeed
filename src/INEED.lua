@@ -18,6 +18,7 @@ INEED = {}
 INEED_data = {}
 INEED_currency = {}
 INEED_account = {}
+INEED_unknown = {}
 
 INEED.bindTypes = {
 	[ITEM_SOULBOUND] = "Bound",
@@ -277,10 +278,10 @@ function INEED.BAG_UPDATE()
 			end
 		end
 	end
-
 	if itemFulfilled then
 		INEED.itemFulfilledAnnouce()
 	end
+	INEEDUIListFrame:Show()
 end
 INEED.UNIT_INVENTORY_CHANGED = INEED.BAG_UPDATE
 function INEED.CURRENCY_DISPLAY_UPDATE()
@@ -318,14 +319,16 @@ function INEED.CURRENCY_DISPLAY_UPDATE()
 	if itemFulfilled then
 		INEED.itemFulfilledAnnouce()
 	end
+	INEEDUIListFrame:Show()
 end
 function INEED.MERCHANT_SHOW()
 	-- Event handler.  Autopurchase
 	--local numItems = GetMerchantNumItems()
 	local purchaseAmount = 0
 	local msgSent = false
-	for i = 0, GetMerchantNumItems() do
-		local itemID = INEED.getItemIdFromLink( GetMerchantItemLink( i ) )
+	for i = 0, GetMerchantNumItems() do  -- Go through the items for sale
+		local itemLink = GetMerchantItemLink( i )
+		local itemID = INEED.getItemIdFromLink( itemLink )
 		if INEED_data[itemID] and
 				INEED_data[itemID][INEED.realm] and
 				INEED_data[itemID][INEED.realm][INEED.name] then
@@ -338,6 +341,8 @@ function INEED.MERCHANT_SHOW()
 			local itemT = INEED_data[itemID][INEED.realm][INEED.name]
 			local neededQuantity = itemT.needed - itemT.total
 			if not msgSent then INEED.Print("This merchant sells items that you need"); msgSent=true; end
+			INEED_data[itemID][INEED.realm][INEED.name].updated = time()
+			INEEDUIListFrame:Show()
 			if isUsable and INEED_account.balance and currencyCount == 0 then  -- I have money to spend, and not a special currency
 				-- How many can I afford at this price.
 				local canAffordQuantity = math.floor(((INEED_account.balance or 0) * quantity) / price)
@@ -356,6 +361,25 @@ function INEED.MERCHANT_SHOW()
 				local itemPurchaseAmount = ((purchaseQuantity/quantity) * price)
 				purchaseAmount = purchaseAmount + itemPurchaseAmount
 				INEED_account.balance = INEED_account.balance - itemPurchaseAmount
+			elseif isUsable and price == 0 and currencyCount > 0 then
+				for ci = 1, currencyCount do
+					local _, value, link = GetMerchantItemCostItem( i, ci )
+					local itemID = INEED.getItemIdFromLink( link )
+					if itemID
+							and ((INEED_data[itemID] and INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] and (value > INEED_data[itemID][INEED.realm][INEED.name].needed))
+							or (not ((INEED_data[itemID] and INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] and INEED_data[itemID][INEED.realm][INEED.name].needed >= value))))
+							then
+						INEED.addItem( link, value )
+					end
+
+					local currencyID = INEED.getCurrencyIdFromLink( link )
+					if currencyID
+							and ((INEED_currency[currencyID] and (value > INEED_currency[currencyID].needed))
+							or (not INEED_currency[currencyID]))
+							then
+						INEED.addItem( link, value )
+					end
+				end
 			end
 		end
 	end
@@ -413,6 +437,7 @@ function INEED.showSplash( msg )
 	-- Show the 'success' messages in the middle splash
 	INEED_SplashFrame:Show()
 	INEED_SplashFrame:AddMessage( msg, 1, 1, 1 )
+
 end
 function INEED.clearData()
 	-- this function will look for 'empty' realms and items and clear them
@@ -503,6 +528,7 @@ function INEED.parseCmd(msg)
 end
 function INEED.addItem( itemLink, quantity )
 	-- returns itemLink of what was added
+	INEEDUIListFrame:Show()
 	quantity = quantity or 1
 	local itemID = INEED.getItemIdFromLink( itemLink )
 	if itemID then
@@ -593,6 +619,7 @@ function INEED.addItem( itemLink, quantity )
 	end
 	if itemLink then
 		INEED.Print("Unknown link or command: "..string.sub(itemLink, 12))
+		INEED_unknown[time()] = itemLink
 		INEED.PrintHelp()
 	end
 end
@@ -691,10 +718,15 @@ function INEED.showList( searchTerm )
 end
 function INEED.itemIsSoulbound( itemLink )
 	-- return 1 or nil to reflect if the item is BOP or bound
-	INEED.scanTip:SetOwner(UIParent, "ANCHOR_NONE")
-	INEED.scanTip:ClearLines()
-	INEED.scanTip:SetHyperlink( itemLink )
-	return INEED.bindTypes[INEED.scanTip2:GetText()] or INEED.bindTypes[INEED.scanTip3:GetText()] or INEED.bindTypes[INEED.scanTip4:GetText()]
+	if itemLink then
+		INEED.scanTip:SetOwner(UIParent, "ANCHOR_NONE")
+		INEED.scanTip:ClearLines()
+		INEED.scanTip:SetHyperlink( itemLink )
+		return INEED.bindTypes[INEED.scanTip2:GetText()] or INEED.bindTypes[INEED.scanTip3:GetText()] or INEED.bindTypes[INEED.scanTip4:GetText()]
+	else
+		INEED.Print("itemIsSoulbound was called wit a 'nil' value.")
+	end
+
 end
 function INEED.showFulfillList()
 	-- returns number of items you can fulfill, or nil if none
@@ -708,6 +740,7 @@ function INEED.showFulfillList()
 				for name, data in pairs(INEED_data[itemID][realm]) do
 					if (name ~= INEED.name) and (data.faction and data.faction == INEED.faction) then -- not you and right faction
 						itemLink = select( 2, GetItemInfo( itemID ) )
+						--if not itemLink then INEED.Print(itemID.." created a nil link.") end
 						isSoulBound = INEED.itemIsSoulbound( itemLink )
 						--INEED.Print( "Looking at "..itemLink..". Which is "..( INEED.itemIsSoulbound( itemLink ) and "soulbound" or "not soulbound" ) )
 						if not isSoulBound then
@@ -781,6 +814,7 @@ end
 
 function INEED.test()
 	INEEDUIFrame:Hide()
+	INEEDUIFrame:Show()
 --[[
 	INEED.Print("Registering for event")
 	INEED_Frame:RegisterEvent("CALENDAR_UPDATE_EVENT_LIST")

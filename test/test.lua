@@ -13,6 +13,7 @@ INEED_SplashFrame = { ["Show"] = function() end,
 }
 INEED_Frame = CreateFrame()
 SendMailNameEditBox = CreateFontString("SendMailNameEditBox")
+INEEDUIListFrame = CreateFrame()
 
 -- require the file to test
 package.path = "../src/?.lua;'" .. package.path
@@ -242,9 +243,11 @@ function test.testAccountInfo_SubtractValue_Copper_SubZero()
 	INEED.command( "account -90" )
 	assertIsNil( INEED_account.balance )
 end
-function test.testMerchantShow_NoBalance()
+function test.testMerchantShow_NoBalance_Updated()
 	INEED.addItem( "|cff9d9d9d|Hitem:7073:0:0:0:0:0:0:0:80:0:0|h[Broken Fang]|h|r", 100 ) -- the merchant sells these!
+	INEED_data["7073"]["testRealm"]["testName"].updated = 0
 	INEED.MERCHANT_SHOW()
+	assertEquals( time(), INEED_data["7073"]["testRealm"]["testName"].updated )
 end
 function test.testMerchantShow_AutoPurchaseDecrementsBalance()
 	INEED.accountInfo( 1000000 )  -- sets 100 gold
@@ -429,21 +432,6 @@ end
 -------
 -- Tests for doing global goals
 -------
---[[
-	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
-		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
-							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance"} },
-	}
-	INEED.othersNeed = {
-		["7073"] = {
-			["testRealm"] = {
-				["Alliance"] = { ['total'] = 0, ['needed'] = 30, ['mine'] = 1 },
-			},
-		},
-	}
-
-]]
 function test.testGlobal_filterMyTrackingInfoFromOthersNeed()
 	INEED_data["7073"] = {
 		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
@@ -674,6 +662,89 @@ function test.testGlobal_dontTrackInGlobalWhatINeed()
 	INEED.UNIT_INVENTORY_CHANGED()
 	assertIsNil( INEED.othersNeed["7073"]["testRealm"]["testName"] )
 end
+function test.testAddSpecialCurrency_CurrencyNotCurrentlyNeeded()
+	-- If a needed item can be purchased, but needs special currency, auto add the currency if not already needed
+	INEED.addItem( "item:74661 1" )  -- Black Pepper needs Irompaw Token (currency:402 x 1)
+	INEED.accountInfo( 21000 ) -- 2g 10s
+	INEED.MERCHANT_SHOW()      -- trigger purchase
+	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
+
+	assertEquals( 1, INEED_currency["402"].needed )
+end
+function test.testAddSpecialCurrency_CurrencyCurrentlyNeeded()
+	-- If a needed item can be purchased, but needs special currency, Not 100% what I want it to do here.
+	INEED.command( "currency:402 8" )
+	INEED.addItem( "item:74661 1" )  -- Black Pepper needs Irompaw Token (currency:402 x 1)
+	INEED.accountInfo( 21000 ) -- 2g 10s
+	INEED.MERCHANT_SHOW()      -- trigger purchase
+	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
+
+	assertEquals( 8, INEED_currency["402"].needed )
+end
+function test.testAddSpecialCurrencyItem_CurrencyItemNotCurrentlyNeeded()
+	-- If a needed item can be purchased, but needs special currency, auto add the currency if not already needed
+	INEED.addItem( "item:49927 1" )  -- Love Token is purchased with Lovely Charm Bracelet
+	INEED.accountInfo( 21000 ) -- 2g 10s
+	INEED.MERCHANT_SHOW()      -- trigger purchase
+	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
+
+	assertEquals( 1, INEED_data["49927"]["testRealm"]["testName"].needed )
+end
+function test.testAddSpecialCurrencyItem_CurrencyItemCurrentlyNeeded()
+	-- If a needed item can be purchased, but needs special currency, Not 100% what I want it to do here.
+	INEED.command( "item:49916 8" )
+	INEED.addItem( "item:49927 1" )  -- Love Token is purchased with Lovely Charm Bracelet
+	INEED.accountInfo( 21000 ) -- 2g 10s
+	INEED.MERCHANT_SHOW()      -- trigger purchase
+	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
+
+	assertEquals( 8, INEED_data["49916"]["testRealm"]["testName"].needed )
+end
+function test.testAddSpecialCurrency_AlreadyHaveMoreThanNeeded()
+	-- Needing an item that can be purchased with a special currency (not gold)
+	-- Already have more than what is needed
+	myCurrencies = { ["402"] = 5, }
+	INEED.addItem( "item:74661 1" )  -- Black Pepper needs Irompaw Token (currency:402 x 1)
+	INEED.accountInfo( 21000 ) -- 2g 10s
+	INEED.MERCHANT_SHOW()      -- trigger purchase
+	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
+
+	assertIsNil( INEED_currency["402"] )
+end
+function test.testAddSpecialCurrencyItem_AlreadyHaveMoreThanNeeded()
+	myInventory["49916"] = 10
+	INEED.addItem( "item:49927 1" )  -- Love Token is purchased with Lovely Charm Bracelet
+	INEED.accountInfo( 21000 ) -- 2g 10s
+	INEED.MERCHANT_SHOW()      -- trigger purchase
+	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
+
+	assertIsNil( INEED_data["49916"] )
+	myInventory["49916"] = nil
+end
+
+function test.testAddSpecialCurrencyItem_CurrencyItemCurrentlyNeeded_HaveMoreThanNeeded()
+	-- The needed item costs a special currency (>1)
+end
+
+--------------
+-- UI Tests --
+--------------
+--[[
+function test.testUI_INEEDBars_ReturnsNumberOfBars_EmptyBarTable_ReturnValue()
+	-- Test the function that assures bars are created.
+	INEED.UIList_bars = {}
+	assertEquals( 1, INEED.UIListAssureBars( INEEDUIListFrame, 1 ) )
+end
+function test.testUI_INEEDBars_ReturnsNumberOfBars_HasBarsAlready_ReturnValue()
+	-- Frame has the number of bars already
+	INEED.UIList_bars = {}  -- figure out what this should look like (to have 2 bars already)
+	assertEquals( 2, INEED.UIListAssureBars( INEEDUIListFrame, 1 ) )
+end
+function test.testUI_INEEDBars_CreatesBars()
+end
+]]
+
+
 
 
 test.run()
