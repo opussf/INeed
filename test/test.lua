@@ -726,6 +726,13 @@ function test.testAddSpecialCurrencyItem_CurrencyItemCurrentlyNeeded_HaveMoreTha
 	-- The needed item costs a special currency (>1)
 end
 
+-- archaeology tests
+function test.testArchaeology_Command()
+	INEED.command( "arch" )
+--	assertEquals( 100, assertEquals( 100, INEED_currency["384"].needed ) )
+end
+
+
 --------------
 -- UI Tests --
 --------------

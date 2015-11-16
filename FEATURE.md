@@ -2,6 +2,19 @@
 
 Record unknown links used.
 
+## feature/arch
+This feature will introduce the ability to scan the Archeology tab for projects that are in progress, and add the items to your need list.
+
+The new command will be: '/in arch'
+
+While the original vision is to only add the items to complete current projects, it might also expand to include adding the accelerated items as well.
+
+The 'arch' command will scan all current projects only.
+http://wowprogramming.com/docs/api/GetArchaeologyRaceInfo
+http://wowprogramming.com/docs/api/GetNumArchaeologyRaces
+http://wowprogramming.com/docs/api/GetArtifactProgress
+
+
 
 
 ## feature/gui
