@@ -85,7 +85,9 @@ TaxiNodes = {
 Currencies = {
 	["402"] = { ["name"] = "Ironpaw Token", ["texturePath"] = "", ["weeklyMax"] = 0, ["totalMax"] = 0, isDiscovered = true, ["link"] = "|cff9d9d9d|Hcurrency:402:0:0:0:0:0:0:0:80:0:0|h[Ironpaw Token]|h|r"},
 	["703"] = { ["name"] = "Fictional Currency", ["texturePath"] = "", ["weeklyMax"] = 1000, ["totalMax"] = 4000, isDiscovered = true, ["link"] = "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r"},
+	["384"] = { ["name"] = "Dwarf Archaeology Fragment", ["texturePath"] = "", ["weeklyMax"] = 0, ["totalMax"] = 200, isDiscovered = true, ["link"] = "|cff9d9d9d|Hcurrency:384:0:0:0:0:0:0:0:80:0:0|h[Dwarf Archaeology Fragment]|h|r"},
 }
+ArchaeologyCurrencies = {"999",}
 MerchantInventory = {
 	{["id"] = "7073", ["cost"] = 5000, ["quantity"] = 1, ["isUsable"] = 1},
 	{["id"] = "6742", ["cost"] = 10000, ["quantity"] = 1, ["isUsable"] = 1},
@@ -434,7 +436,7 @@ function GetCurrencyInfo( id ) -- id is string
 	-- returns name, amount, texturePath, earnedThisWeek, weeklyMax, totalMax, isDiscovered
 	if Currencies[id] then
 		local c = Currencies[id]
-		return c["name"], (myCurrencies[id] or 0), "", 0, c["weeklyMax"], c["totalMax"], true
+		return c["name"], (myCurrencies[id] or 0), "", 0, c["weeklyMax"], c["totalMax"], c["isDiscovered"]
 	end
 end
 function GetCurrencyLink( id )
@@ -568,6 +570,42 @@ end
 function GetMoney()
 	return myCopper
 end
+function GetNumArchaeologyRaces()
+	return 1
+--[[
+/run print("Total artifacts"); for x=1,12 do local c=GetNumArtifactsByRace(x); local a =0;
+for y=1,c do local t = select(9, GetArtifactInfoByRace(x, y)); a=a+t;end
+local rn = GetArchaeologyRaceInfo(x); if( c > 1 ) then print(rn .. ": " .. a); end end
+
+
+numRaces = GetNumArchaeologyRaces()
+
+Returns:
+
+    numRaces - The number of Archaeology races in the game (number)
+]]
+end
+function GetArchaeologyRaceInfo( index )
+--[[
+
+raceName, raceTexture, raceItemID, numFragmentsCollected, numFragmentsRequired, maxFragments = GetArchaeologyRaceInfo(raceIndex)
+
+Arguments:
+
+    raceIndex - nil (number, GetNumArchaeologyRaces())
+
+Returns:
+
+    raceName - Name of the race (string)
+    raceTexture - Path to the texture (icon) used by this race in the Archaeology UI (string)
+    raceItemID - The itemID for the Keystone this race uses (number)
+    numFragmentsCollected - Number of collected fragments for this race (number)
+    numFragmentsRequired - Number of fragments required to solve the current artifact (number)
+    maxFragments - Maximum number of fragments that can be carried (number)
+]]
+	return "Dwarf", "", 384, 0, 100, 200
+end
+
 function GetNumEquipmentSets()
 	-- http://www.wowwiki.com/API_GetNumEquipmentSets
 	-- Returns 0,MAX_NUM_EQUIPMENT_SETS

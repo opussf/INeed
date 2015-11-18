@@ -809,6 +809,37 @@ function INEED.remove( nameIn )
 		INEED.clearData()
 	end
 end
+INEED.archaeologyCurrencies = {
+	384, --  1 - Dwarf
+	398, --  2 - Draenei
+	393, --  3 - Fossil
+	394, --  4 - Night Elf
+	400, --  5 - Nerubian
+	397, --  6 - Orc
+	401, --  7 - Tol'vir
+	385, --  8 - Troll
+	399, --  9 - Vrykul
+	754, -- 10 - Mantid
+	676, -- 11 - Pandaren
+	677, -- 12 - Mogu
+	829, -- 13 - Arakkoa
+	821, -- 14 - Draenor Clans
+	828, -- 15 - Ogre
+}
+function INEED.archScan()
+	local numRaces = GetNumArchaeologyRaces()
+	print("I found "..numRaces.." Archaeology races")
+	for i = 1, GetNumArchaeologyRaces() do
+		if INEED.archaeologyCurrencies[i] then
+			local raceName, raceTexture, raceItemID, numFragmentsCollected, numFragmentsRequired, maxFragments = GetArchaeologyRaceInfo( i )
+			print(raceName.." uses "..raceItemID..": "..numFragmentsCollected.."/"..numFragmentsRequired)
+			if select( 7, GetCurrencyInfo(INEED.archaeologyCurrencies[i]) ) then
+				print("I've seen this currency.  Needing")
+				INEED.addItem( "currency:"..INEED.archaeologyCurrencies[i], numFragmentsRequired )
+			end
+		end
+	end
+end
 
 -- Testing functions
 
@@ -869,6 +900,10 @@ INEED.CommandList = {
 	["remove"] = {
 		["func"] = INEED.remove,
 		["help"] = {"<name>-<realm>", "Removes <name>-<realm>"},
+	},
+	["arch"] = {
+		["func"] = INEED.archScan,
+		["help"] = {"", "Scans the archaeology items"},
 	},
 	["test"] = {
 		["func"] = INEED.test,
