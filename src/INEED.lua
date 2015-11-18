@@ -828,13 +828,10 @@ INEED.archaeologyCurrencies = {
 }
 function INEED.archScan()
 	local numRaces = GetNumArchaeologyRaces()
-	print("I found "..numRaces.." Archaeology races")
 	for i = 1, GetNumArchaeologyRaces() do
 		if INEED.archaeologyCurrencies[i] then
 			local raceName, raceTexture, raceItemID, numFragmentsCollected, numFragmentsRequired, maxFragments = GetArchaeologyRaceInfo( i )
-			print(raceName.." uses "..raceItemID..": "..numFragmentsCollected.."/"..numFragmentsRequired)
 			if select( 7, GetCurrencyInfo(INEED.archaeologyCurrencies[i]) ) then
-				print("I've seen this currency.  Needing")
 				INEED.addItem( "currency:"..INEED.archaeologyCurrencies[i], numFragmentsRequired )
 			end
 		end
