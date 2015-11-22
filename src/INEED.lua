@@ -341,6 +341,8 @@ function INEED.MERCHANT_SHOW()
 			local itemT = INEED_data[itemID][INEED.realm][INEED.name]
 			local neededQuantity = itemT.needed - itemT.total
 			if not msgSent then INEED.Print("This merchant sells items that you need"); msgSent=true; end
+			INEED_data[itemID][INEED.realm][INEED.name].updated = time()
+			INEEDUIListFrame:Show()
 			if isUsable and INEED_account.balance and currencyCount == 0 then  -- I have money to spend, and not a special currency
 				-- How many can I afford at this price.
 				local canAffordQuantity = math.floor(((INEED_account.balance or 0) * quantity) / price)
@@ -365,9 +367,8 @@ function INEED.MERCHANT_SHOW()
 					local itemID = INEED.getItemIdFromLink( link )
 					if itemID
 							and ((INEED_data[itemID] and INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] and (value > INEED_data[itemID][INEED.realm][INEED.name].needed))
-							or (not INEED_data[itemID]))
+							or (not ((INEED_data[itemID] and INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] and INEED_data[itemID][INEED.realm][INEED.name].needed >= value))))
 							then
-						print("link: "..link.." itemID: "..(itemID or "nil") )
 						INEED.addItem( link, value )
 					end
 
@@ -808,6 +809,34 @@ function INEED.remove( nameIn )
 		INEED.clearData()
 	end
 end
+INEED.archaeologyCurrencies = {
+	384, --  1 - Dwarf
+	398, --  2 - Draenei
+	393, --  3 - Fossil
+	394, --  4 - Night Elf
+	400, --  5 - Nerubian
+	397, --  6 - Orc
+	401, --  7 - Tol'vir
+	385, --  8 - Troll
+	399, --  9 - Vrykul
+	754, -- 10 - Mantid
+	676, -- 11 - Pandaren
+	677, -- 12 - Mogu
+	829, -- 13 - Arakkoa
+	821, -- 14 - Draenor Clans
+	828, -- 15 - Ogre
+}
+function INEED.archScan()
+	local numRaces = GetNumArchaeologyRaces()
+	for i = 1, GetNumArchaeologyRaces() do
+		if INEED.archaeologyCurrencies[i] then
+			local raceName, raceTexture, raceItemID, numFragmentsCollected, numFragmentsRequired, maxFragments = GetArchaeologyRaceInfo( i )
+			if select( 7, GetCurrencyInfo(INEED.archaeologyCurrencies[i]) ) then
+				INEED.addItem( "currency:"..INEED.archaeologyCurrencies[i], numFragmentsRequired )
+			end
+		end
+	end
+end
 
 -- Testing functions
 
@@ -868,6 +897,10 @@ INEED.CommandList = {
 	["remove"] = {
 		["func"] = INEED.remove,
 		["help"] = {"<name>-<realm>", "Removes <name>-<realm>"},
+	},
+	["arch"] = {
+		["func"] = INEED.archScan,
+		["help"] = {"", "Scans the archaeology items"},
 	},
 	["test"] = {
 		["func"] = INEED.test,

@@ -243,9 +243,11 @@ function test.testAccountInfo_SubtractValue_Copper_SubZero()
 	INEED.command( "account -90" )
 	assertIsNil( INEED_account.balance )
 end
-function test.testMerchantShow_NoBalance()
+function test.testMerchantShow_NoBalance_Updated()
 	INEED.addItem( "|cff9d9d9d|Hitem:7073:0:0:0:0:0:0:0:80:0:0|h[Broken Fang]|h|r", 100 ) -- the merchant sells these!
+	INEED_data["7073"]["testRealm"]["testName"].updated = 0
 	INEED.MERCHANT_SHOW()
+	assertEquals( time(), INEED_data["7073"]["testRealm"]["testName"].updated )
 end
 function test.testMerchantShow_AutoPurchaseDecrementsBalance()
 	INEED.accountInfo( 1000000 )  -- sets 100 gold
@@ -723,6 +725,13 @@ end
 function test.testAddSpecialCurrencyItem_CurrencyItemCurrentlyNeeded_HaveMoreThanNeeded()
 	-- The needed item costs a special currency (>1)
 end
+
+-- archaeology tests
+function test.testArchaeology_Command()
+	INEED.command( "arch" )
+--	assertEquals( 100, assertEquals( 100, INEED_currency["384"].needed ) )
+end
+
 
 --------------
 -- UI Tests --
