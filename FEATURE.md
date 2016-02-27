@@ -18,11 +18,44 @@ http://wowprogramming.com/docs/api/GetArtifactProgress
 ## feature/goldValue
 Allow the player to need an amount of gold.
 
-/in 25g
-/in 25g 35s
+  /in 25g
+  /in 25g 35s
+  /in gold 25g
 (Should be able to use the same function as the account command)
 
-Store per toon, or as a global variable?
+Store per toon, or in the global area.
+	-- per toon would not allow other toons to know about needed gold.
+	   * No spam at mailbox
+	   * No spam when getting gold.
+Store this in:
+	INEED_account["currentGold"] = {
+  		["needed"] = copperAmount,
+	}
+
+
+The INEED_account["currentGold"] will be cleared once the value is reached.
+-----------------------------------------
+
+Define a tithe amount.
+While tithe is a 10% payment to a church or organization, or a tax, there is no idea of setting aside a percentage for savings, at least no name.
+I've seen the phrase "tithe thyself" as a description of saving, but nothing else.
+
+The tithe will be a way to automaticly add money to the spending account for INeed.
+
+  /in title 0
+Turns off the tithe
+
+  /in tithe 10
+Sets the tithe to 10%
+
+  /in tithe 100
+Sets the tithe to 100%
+
+  /in tithe
+Shows the tithe percentage.
+
+Store this in:
+  INEED_account["tithe"]
 
 ## feature/gui
 This will introduce a GUI element to the addon.
