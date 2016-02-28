@@ -18,6 +18,7 @@ INEED = {}
 INEED_data = {}
 INEED_currency = {}
 INEED_account = {}
+INEED_gold = {}
 INEED_unknown = {}
 
 INEED.bindTypes = {
@@ -58,6 +59,7 @@ function INEED.OnLoad()
 	INEED_Frame:RegisterEvent("TRADE_SKILL_CLOSE")
 	INEED_Frame:RegisterEvent("TRADE_SKILL_UPDATE")
 	-- ^^^ Fired immediately after TRADE_SKILL_SHOW, after something is created via tradeskill, or anytime the tradeskill window is updated (filtered, tree folded/unfolded, etc.)
+	INEED_Frame:RegisterEvent("PLAYER_MONEY")
 end
 function INEED.TRADE_SKILL_SHOW()
 	INEED.Print("TradeSkill window opened.")
@@ -395,9 +397,22 @@ function INEED.MERCHANT_SHOW()
 	BuyMerchantItem(index {, quantity});
 	]]--
 end
+function PLAYER_MONEY()
+	--[[
+	GoldRate_data[GoldRate.realm][GoldRate.faction].toons[GoldRate.name]["last"] = GetMoney()
+	GoldRate_data[GoldRate.realm][GoldRate.faction].toons[GoldRate.name]["firstTS"] =
+			GoldRate_data[GoldRate.realm][GoldRate.faction].toons[GoldRate.name]["firstTS"] or time()
+	GoldRate_data[GoldRate.realm][GoldRate.faction].consolidated[time()] = GoldRate.otherSummed + GetMoney()
+
+	GoldRate.ShowRate()
+	GoldRate_Display:Show()
+	]]
+end
 function INEED.OnUpdate()
 end
+-----------------------------------------
 -- Non Event functions
+-----------------------------------------
 function INEED.makeOthersNeed()
 	-- This parses the saved data to determine what other players need.
 	-- Call this at ADDON_LOADED and probably MAIL_SEND_SUCCESS?
@@ -617,6 +632,21 @@ function INEED.addItem( itemLink, quantity )
 		end
 		return itemLink -- return done
 	end
+	local needGoldAmount = INEED.parseGold( itemLink )
+	if needGoldAmount then
+		print("Need gold amount: "..(needGoldAmount or "nil") )
+		local curAmount = GetMoney()
+		if curAmount < needGoldAmount then
+			INEED.Print( string.format( "Needing: %s/%s",
+					GetCoinTextureString(needGoldAmount), GetCoinTextureString(curAmount) ) )
+			INEED_gold[INEED.realm] = INEED_gold[INEED.realm] or {}
+			INEED_gold[INEED.realm][INEED.name] = INEED_gold[INEED.realm][INEED.name] or {}
+			INEED_gold[INEED.realm][INEED.name].needed = needGoldAmount
+			INEED_gold[INEED.realm][INEED.name].total = curAmount
+			INEED_gold[INEED.realm][INEED.name].added = INEED_gold[INEED.realm][INEED.name].added or time()
+			INEED_gold[INEED.realm][INEED.name].updated = time()
+		end
+	end
 	if itemLink then
 		INEED.Print("Unknown link or command: "..string.sub(itemLink, 12))
 		INEED_unknown[time()] = itemLink
@@ -713,6 +743,7 @@ function INEED.showList( searchTerm )
 	]]
 	for currencyID, cData in pairs( INEED_currency ) do
 		local currencyLink = GetCurrencyLink( currencyID )
+		print(currencyID..":"..cData.total.."/"..cData.needed)
 		INEED.Print( string.format( "%i/%i x %s", cData.total, cData.needed, currencyLink ) )
 	end
 end
@@ -766,22 +797,35 @@ function INEED.showFulfillList()
 	end
 	return youHaveTotal -- for unit testing
 end
-function INEED.accountInfo( value )
+function INEED.parseGold( valueIn )
+	-- parse the gold value passed in
+	-- returns value, modify
+	--     modify is true if the value should be added, value could be negative
+	-- nil is a sign of invalid value
+	-- may be a bug to examine, but this seems to never return nil
 	local sub,add = false, false
-	if value and value ~= "" then
-		sub = strfind( value, "^[-]" )
-		add = strfind( value, "^[+]" )
-		if tonumber(value) then
+	if valueIn and valueIn ~= "" then
+		sub = strfind( valueIn, "^[-]" )  -- given a negative number, subtract this amount
+		add = strfind( valueIn, "^[+]" )  -- given a number with a +, add this ammount instead of replace
+		if tonumber(valueIn) then
+			value = tonumber(valueIn)  -- just use this value
 		else
-			local gold   = strmatch( value, "(%d+)g" )
-			local silver = strmatch( value, "(%d+)s" )
-			local copper = strmatch( value, "(%d+)c" )
+			local gold   = strmatch( valueIn, "(%d+)g" )
+			local silver = strmatch( valueIn, "(%d+)s" )
+			local copper = strmatch( valueIn, "(%d+)c" )
 			value = ((gold or 0) * 10000) + ((silver or 0) * 100) + (copper or 0)
 			if sub then value = -value end
 		end
+		return value, (sub or add)
+	end
+end
+function INEED.accountInfo( value )
+	value, modify = INEED.parseGold( value )
+
+	if value then
 		INEED_account.balance = INEED_account.balance
-				and ((sub or add) and INEED_account.balance + value)
-				or tonumber(value)
+				and (modify and INEED_account.balance + value)
+				or value
 	end
 	if INEED_account.balance and INEED_account.balance <= 0 then
 		INEED_account.balance = nil

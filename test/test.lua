@@ -30,6 +30,8 @@ INEED.faction = "Alliance"
 function test.before()
 	myInventory = { ["7073"] = 52, ["9799"] = 52, ["9999"] = 52, }
 	myCurrencies = { ["703"] = 5, }  -- Fictional currency?
+	INEED_currency = {}
+	INEED_gold = {}
 	INEED.OnLoad()
 end
 function test.after()
@@ -729,9 +731,8 @@ end
 -- archaeology tests
 function test.testArchaeology_Command()
 	INEED.command( "arch" )
---	assertEquals( 100, assertEquals( 100, INEED_currency["384"].needed ) )
+--	assertEquals( 100, assertEquals( 100, INEED_currency[384].needed ) )
 end
-
 
 --------------
 -- UI Tests --
@@ -750,11 +751,53 @@ end
 function test.testUI_INEEDBars_CreatesBars()
 end
 ]]
+function test.testParseGold_value()
+	local v,m = INEED.parseGold( "15s16c20g" )
+	assertEquals( 201516, v )
+	assertFalse( m )
+end
+function test.testParseGold_value2()
+	local v,m = INEED.parseGold( "201516" )
+	assertEquals( 201516, v )
+	assertFalse( m )
+end
+function test.testParseGold_value_negative()
+	local v,m = INEED.parseGold( "-15s16c20g" )
+	assertEquals( -201516, v )
+	assertTrue( m )
+end
+function test.testParseGold_value_plus()
+	local v,m = INEED.parseGold( "+15s16c20g" )
+	assertEquals( 201516, v )
+	assertTrue( m )
+end
+function test.testParseGold_value_nil()
+	local v,m = INEED.parseGold( "Hello" )
+	assertIsNil( v )
+end
 
 --------- Gold Value
 function test.testGoldValue_addNeededValue_gold()
-	INEED.command("25g")
+	INEED.command( "25g" )
+	assertEquals( INEED_gold["testRealm"]["testName"].needed, 250000 )
 end
+function test.testGoldValue_addNeededValue_silver()
+	INEED.command( "25s" )
+	assertEquals( INEED_gold["testRealm"]["testName"].needed, 2500 )
+end
+function test.testGoldValue_addNeededValue_copper()
+	INEED.command( "25c" )
+	assertEquals( INEED_gold["testRealm"]["testName"].needed, 25 )
+end
+function test.testGoldValue_addNeededValue_added()
+	INEED.command( "25c" )
+	assertEquals( INEED_gold["testRealm"]["testName"].added, time() )
+end
+function test.testGoldValue_addNeededValue_updated()
+	INEED.command( "25c" )
+	assertEquals( INEED_gold["testRealm"]["testName"].updated, time() )
+end
+
 
 
 test.run()
