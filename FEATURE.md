@@ -23,17 +23,13 @@ Allow the player to need an amount of gold.
   /in gold 25g
 (Should be able to use the same function as the account command)
 
-Store per toon, or in the global area.
-	-- per toon would not allow other toons to know about needed gold.
-	   * No spam at mailbox
-	   * No spam when getting gold.
-Store this in:
-	INEED_account["currentGold"] = {
-  		["needed"] = copperAmount,
-	}
+Store in INEED_gold for all.
+
+INEED_gold = {["realm"]["player"] = {["needed"] = 15000, ["total"] = 70000, ["faction"] = "Alliance", ["added"] = ts, ["updated"] = ts},}
+
+INEED_gold["realm"]["player"] will be cleared once the value is reached.
 
 
-The INEED_account["currentGold"] will be cleared once the value is reached.
 -----------------------------------------
 
 Define a tithe amount.
