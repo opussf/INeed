@@ -83,6 +83,7 @@ TaxiNodes = {
 	{["name"] = "Ironforge", ["type"] = "NONE", ["hops"] = 1, ["cost"]=1000},
 }
 Currencies = {
+	["1"] = { ["name"] = "Currency Token Test Token 4", ["texturePath"] = "", ["weeklyMax"] = 0, ["totalMax"] = 0, isDiscovered = false, ["link"] = "|cffffffff|Hcurrency:1|h[Currency Token Test Token 4]|h|r"},
 	["402"] = { ["name"] = "Ironpaw Token", ["texturePath"] = "", ["weeklyMax"] = 0, ["totalMax"] = 0, isDiscovered = true, ["link"] = "|cff9d9d9d|Hcurrency:402:0:0:0:0:0:0:0:80:0:0|h[Ironpaw Token]|h|r"},
 	["703"] = { ["name"] = "Fictional Currency", ["texturePath"] = "", ["weeklyMax"] = 1000, ["totalMax"] = 4000, isDiscovered = true, ["link"] = "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r"},
 	["384"] = { ["name"] = "Dwarf Archaeology Fragment", ["texturePath"] = "", ["weeklyMax"] = 0, ["totalMax"] = 200, isDiscovered = true, ["link"] = "|cff9d9d9d|Hcurrency:384:0:0:0:0:0:0:0:80:0:0|h[Dwarf Archaeology Fragment]|h|r"},
