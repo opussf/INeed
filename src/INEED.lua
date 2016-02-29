@@ -397,16 +397,37 @@ function INEED.MERCHANT_SHOW()
 	BuyMerchantItem(index {, quantity});
 	]]--
 end
-function PLAYER_MONEY()
-	--[[
-	GoldRate_data[GoldRate.realm][GoldRate.faction].toons[GoldRate.name]["last"] = GetMoney()
-	GoldRate_data[GoldRate.realm][GoldRate.faction].toons[GoldRate.name]["firstTS"] =
-			GoldRate_data[GoldRate.realm][GoldRate.faction].toons[GoldRate.name]["firstTS"] or time()
-	GoldRate_data[GoldRate.realm][GoldRate.faction].consolidated[time()] = GoldRate.otherSummed + GetMoney()
+function INEED.PLAYER_MONEY()
+	if INEED_gold[INEED.realm] then
+		if INEED_gold[INEED.realm][INEED.name] then
+			if INEED_gold[INEED.realm][INEED.name].needed then
+				itemFulfilled = false
+				local needed = INEED_gold[INEED.realm][INEED.name].needed
+				local total = GetMoney()
+				INEED_gold[INEED.realm][INEED.name].total = total
 
-	GoldRate.ShowRate()
-	GoldRate_Display:Show()
-	]]
+				if total < needed then
+					if INEED_options.showProgress or INEED_options.printProgress then
+						local progressString = string.format("%s/%s",
+								GetCoinTextureString(total), GetCoinTextureString(needed))
+						_ = INEED_options.showProgress and UIErrorsFrame:AddMessage( progressString, 1.0, 1.0, 0.1, 1.0 )
+						_ = INEED_options.printProgress and INEED.Print( progressString )
+					end
+					INEEDUIListFrame:Show()
+				elseif total >= needed then
+					_ = INEED_options.showSuccess and
+							INEED.showSplash( string.format("%s/%s",
+									GetCoinTextureString(total), GetCoinTextureString(needed) ) )
+					_ = INEED_options.printSuccess and
+							INEED.Print( string.format( "Reached goal of %s.", GetCoinTextureString( needed ) ) )
+					INEED_gold[INEED.realm][INEED.name] = nil
+					INEED.clearData()
+					itemFulfilled = true
+				end
+				_ = itemFulfilled and INEED.itemFulfilledAnnouce()
+			end
+		end
+	end
 end
 function INEED.OnUpdate()
 end
@@ -472,6 +493,21 @@ function INEED.clearData()
 		if realmCount == 0 then
 			INEED_data[itemID] = nil
 		end
+	end
+	local realmCount = 0
+	for realm in pairs(INEED_gold) do
+		local charCount = 0
+		realmCount = realmCount + 1
+		for _ in pairs( INEED_gold[realm] ) do
+			charCount = charCount + 1
+		end
+		if charCount == 0 then
+			INEED_gold[realm] = nil
+			realmCount = realmCount - 1
+		end
+	end
+	if realmCount == 0 then
+		INEED_gold = {}
 	end
 end
 function INEED.hookSetItem(tooltip, ...)  -- is passed the tooltip frame as a table
@@ -634,18 +670,24 @@ function INEED.addItem( itemLink, quantity )
 	end
 	local needGoldAmount = INEED.parseGold( itemLink )
 	if needGoldAmount then
-		print("Need gold amount: "..(needGoldAmount or "nil") )
+		--print("Need gold amount: "..(needGoldAmount or "nil") )
 		local curAmount = GetMoney()
 		if curAmount < needGoldAmount then
 			INEED.Print( string.format( "Needing: %s/%s",
-					GetCoinTextureString(needGoldAmount), GetCoinTextureString(curAmount) ) )
+					GetCoinTextureString(curAmount), GetCoinTextureString(needGoldAmount) ) )
 			INEED_gold[INEED.realm] = INEED_gold[INEED.realm] or {}
 			INEED_gold[INEED.realm][INEED.name] = INEED_gold[INEED.realm][INEED.name] or {}
 			INEED_gold[INEED.realm][INEED.name].needed = needGoldAmount
 			INEED_gold[INEED.realm][INEED.name].total = curAmount
 			INEED_gold[INEED.realm][INEED.name].added = INEED_gold[INEED.realm][INEED.name].added or time()
 			INEED_gold[INEED.realm][INEED.name].updated = time()
+		elseif needGoldAmount == 0 then
+			if INEED_gold[INEED.realm] and INEED_gold[INEED.realm][INEED.name] then
+				INEED.Print( "Removing gold from your need list" )
+				INEED_gold[INEED.realm][INEED.name] = nil
+			end
 		end
+		return itemLink  -- return done
 	end
 	if itemLink then
 		INEED.Print("Unknown link or command: "..string.sub(itemLink, 12))
@@ -804,19 +846,22 @@ function INEED.parseGold( valueIn )
 	-- nil is a sign of invalid value
 	-- may be a bug to examine, but this seems to never return nil
 	local sub,add = false, false
+	local valid = false
 	if valueIn and valueIn ~= "" then
 		sub = strfind( valueIn, "^[-]" )  -- given a negative number, subtract this amount
 		add = strfind( valueIn, "^[+]" )  -- given a number with a +, add this ammount instead of replace
 		if tonumber(valueIn) then
 			value = tonumber(valueIn)  -- just use this value
+			valid = true
 		else
 			local gold   = strmatch( valueIn, "(%d+)g" )
 			local silver = strmatch( valueIn, "(%d+)s" )
 			local copper = strmatch( valueIn, "(%d+)c" )
+			valid = (gold or silver or copper)
 			value = ((gold or 0) * 10000) + ((silver or 0) * 100) + (copper or 0)
 			if sub then value = -value end
 		end
-		return value, (sub or add)
+		if valid then return value, (sub or add) end
 	end
 end
 function INEED.accountInfo( value )

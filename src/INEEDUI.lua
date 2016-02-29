@@ -94,6 +94,19 @@ function INEED.UIListOnUpdate()
 			count = count + 1
 		end
 	end
+	if INEED_gold[INEED.realm] and INEED_gold[INEED.realm][INEED.name] then
+		local g = INEED_gold[INEED.realm][INEED.name]
+		table.insert( sortedDisplayItems,
+				{["updated"] = g.updated,
+				 ["itemPre"] = "",
+				 ["id"] = "",
+				 ["total"] = g.total,
+				 ["needed"] = g.needed,
+				 ["linkStr"] = "",
+				 ["showString"] = GetCoinTextureString(g.total).."/"..GetCoinTextureString(g.needed),
+		})
+		count = count + 1
+	end
 	-- return early, no need to sort an empty table.
 	if (count == 0 and INEEDUIListFrame:IsShown()) then
 		INEEDUIListFrame:Hide()
@@ -112,7 +125,7 @@ function INEED.UIListOnUpdate()
 	for i = 1, barsNeeded do
 		local data = sortedDisplayItems[i]
 		local linkString = data.linkStr
-		local outStr = string.format( "%i/%i %s", data.total, data.needed, linkString )
+		local outStr = data.showString or string.format( "%i/%i %s", data.total, data.needed, linkString )
 
 		INEED.UIList_bars[i]:SetMinMaxValues( 0, data.needed )
 		INEED.UIList_bars[i]:SetValue( data.total )
@@ -136,26 +149,3 @@ end
 function INEED.UIListOnDragStop()
 	INEEDUIListFrame:StopMovingOrSizing()
 end
-
-
-
---[[
-		b1  n1  c = 3, bn = 3 = min(3,6), bc = 6 = ab(3) -- need to hide 4,5,6
-		b2  n2
-		b3  n3
-		b4
-		b5
-		b6
-
-		b1  n1  c = 10, bn = 6 = min(10,6), bc = 6 = ab(6) -- need to hide bn -> bc
-		b2  n2
-		b3  n3
-		b4  n4
-		b5  n5
-		b6  n6
-		    n7
-		    n8
-		    n9
-		    n10
-
-]]

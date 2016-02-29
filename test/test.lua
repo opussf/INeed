@@ -32,6 +32,7 @@ function test.before()
 	myCurrencies = { ["703"] = 5, }  -- Fictional currency?
 	INEED_currency = {}
 	INEED_gold = {}
+	myCopper = 0
 	INEED.OnLoad()
 end
 function test.after()
@@ -797,7 +798,37 @@ function test.testGoldValue_addNeededValue_updated()
 	INEED.command( "25c" )
 	assertEquals( INEED_gold["testRealm"]["testName"].updated, time() )
 end
-
+function test.testGoldValue_addNeededValue_0clears()
+	INEED.command( "25g" )
+	INEED.command( "0g" )
+	assertIsNil( INEED_gold["testRealm"]["testName"] )  -- clearData will clear the rest later
+end
+function test.testGoldValue_haveMoreThanNeed()
+	myCopper = 150000
+	INEED.command( "25c" )
+	assertIsNil( INEED_gold["testRealm"] )
+end
+function test.testGoldValue_clearsData()
+	INEED.command( "25g" )
+	assertEquals( INEED_gold["testRealm"]["testName"].needed, 250000 )
+	myCopper = 300000
+	INEED.PLAYER_MONEY()
+	assertIsNil( INEED_gold["testRealm"] )
+end
+function test.testGoldValue_doesNotAffectOthers_SameRealm()
+	INEED_gold={["testRealm"]={["otherName"]={["needed"] = 250000, ["current"] = 5, ["added"]=0, ["updated"]=0 },},}
+	INEED.command( "25g" )
+	myCopper = 300000
+	INEED.PLAYER_MONEY()
+	assertIsNil( INEED_gold["testRealm"] )
+end
+function test.testGoldValue_doesNotAffectOthers_SameRealm()
+	INEED_gold={["otherRealm"]={["otherName"]={["needed"] = 250000, ["current"] = 5, ["added"]=0, ["updated"]=0 },},}
+	INEED.command( "25g" )
+	myCopper = 300000
+	INEED.PLAYER_MONEY()
+	assertEquals( INEED_gold["otherRealm"]["otherName"].needed, 250000 )
+end
 
 
 test.run()
