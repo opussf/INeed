@@ -780,23 +780,23 @@ end
 --------- Gold Value
 function test.testGoldValue_addNeededValue_gold()
 	INEED.command( "25g" )
-	assertEquals( INEED_gold["testRealm"]["testName"].needed, 250000 )
+	assertEquals( 250000, INEED_gold["testRealm"]["testName"].needed )
 end
 function test.testGoldValue_addNeededValue_silver()
 	INEED.command( "25s" )
-	assertEquals( INEED_gold["testRealm"]["testName"].needed, 2500 )
+	assertEquals( 2500, INEED_gold["testRealm"]["testName"].needed )
 end
 function test.testGoldValue_addNeededValue_copper()
 	INEED.command( "25c" )
-	assertEquals( INEED_gold["testRealm"]["testName"].needed, 25 )
+	assertEquals( 25, INEED_gold["testRealm"]["testName"].needed )
 end
 function test.testGoldValue_addNeededValue_added()
 	INEED.command( "25c" )
-	assertEquals( INEED_gold["testRealm"]["testName"].added, time() )
+	assertEquals( time(), INEED_gold["testRealm"]["testName"].added )
 end
 function test.testGoldValue_addNeededValue_updated()
 	INEED.command( "25c" )
-	assertEquals( INEED_gold["testRealm"]["testName"].updated, time() )
+	assertEquals( time(), INEED_gold["testRealm"]["testName"].updated )
 end
 function test.testGoldValue_addNeededValue_0clears()
 	INEED.command( "25g" )
@@ -810,7 +810,7 @@ function test.testGoldValue_haveMoreThanNeed()
 end
 function test.testGoldValue_clearsData()
 	INEED.command( "25g" )
-	assertEquals( INEED_gold["testRealm"]["testName"].needed, 250000 )
+	assertEquals( 250000, INEED_gold["testRealm"]["testName"].needed )
 	myCopper = 300000
 	INEED.PLAYER_MONEY()
 	assertIsNil( INEED_gold["testRealm"] )
@@ -827,8 +827,69 @@ function test.testGoldValue_doesNotAffectOthers_SameRealm()
 	INEED.command( "25g" )
 	myCopper = 300000
 	INEED.PLAYER_MONEY()
-	assertEquals( INEED_gold["otherRealm"]["otherName"].needed, 250000 )
+	assertEquals( 250000, INEED_gold["otherRealm"]["otherName"].needed )
+end
+--------------
+-- Test addItemToTable
+function test.testAddItemToTable_tableInNil()
+	local tOut = INEED.addItemToTable( nil )
+	assertIsNil( tOut )
+end
+function test.testAddItemToTable_neededIsNil()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, nil )
+	assertEquals( 0, #tOut )  -- really the best test?
+end
+function test.testAddItemToTable_needed_noTotal()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50 )
+	assertEquals( 0, #tOut )
+end
+function test.testAddItemToTable_needed_total_setsNeeded()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50, 25 )
+	assertEquals( 50, tOut.needed )
+end
+function test.testAddItemToTable_needed_total_setsTotal()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50, 25 )
+	assertEquals( 25, tOut.total )
+end
+function test.testAddItemToTable_needed_total_nilFaction()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50, 25 )
+	assertIsNil( tOut.faction )
 end
 
+function test.testAddItemToTable_includeFaction()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50, 25, true )
+	assertEquals( "Alliance", tOut.faction )
+end
+function test.testAddItemToTable_includeLink()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50, 25, true, "link" )
+	assertEquals( "link", tOut.link )
+end
+function test.testAddItemToTable_setsAdded_newItem()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50, 25, true, "link" )
+	assertEquals( time(), tOut.added )
+end
+function test.testAddItemToTable_setsAdded_oldItem()
+	local tIn = {["needed"] = 1, ["total"] = 0, ["added"] = 0}
+	local tOut = INEED.addItemToTable( tIn, 50, 0, true, "link" )
+	assertEquals( 0, tOut.added )
+end
+function test.testAddItemToTable_setsUpdated_newItem()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50, 0, true, "link" )
+	assertEquals( time(), tOut.updated )
+end
+function test.testAddItemToTable_setsUpdated_oldItem()
+	local tIn = {["needed"] = 1, ["total"] = 0, ["added"] = 0, ["updated"] = 0}
+	local tOut = INEED.addItemToTable( tIn, 50, 0, true, "link" )
+	assertEquals( time(), tOut.updated )
+end
 
 test.run()
