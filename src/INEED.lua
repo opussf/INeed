@@ -404,12 +404,18 @@ function INEED.PLAYER_MONEY()
 				itemFulfilled = false
 				local needed = INEED_gold[INEED.realm][INEED.name].needed
 				local total = GetMoney()
+				local gained = total - INEED_gold[INEED.realm][INEED.name].total
 				INEED_gold[INEED.realm][INEED.name].total = total
 
 				if total < needed then
 					if INEED_options.showProgress or INEED_options.printProgress then
-						local progressString = string.format("%s/%s",
-								GetCoinTextureString(total), GetCoinTextureString(needed))
+						local progressString = string.format("%s%s/%s",
+								GetCoinTextureString(total),
+								(INEED_options.includeChange and
+									string.format(" (%s%s%s%s) ", ((gained > 0) and COLOR_GREEN or COLOR_RED), ((gained > 0) and "+" or "-"),
+										GetCoinTextureString(gained), COLOR_END)
+									or ""),
+								GetCoinTextureString(needed))
 						_ = INEED_options.showProgress and UIErrorsFrame:AddMessage( progressString, 1.0, 1.0, 0.1, 1.0 )
 						_ = INEED_options.printProgress and INEED.Print( progressString )
 					end
