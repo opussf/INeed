@@ -216,6 +216,7 @@ function INEED.BAG_UPDATE()
 				--INEED.Print("Recorded does not equal what I have")
 				INEED_data[itemID][INEED.realm][INEED.name].updated = time()
 				INEED_data[itemID][INEED.realm][INEED.name]['total'] = iHaveNum
+
 				if INEED_options.showProgress or INEED_options.printProgress then
 					local progressString = string.format("%i/%i %s%s",
 							iHaveNum, INEED_data[itemID][INEED.realm][INEED.name].needed,
@@ -409,13 +410,13 @@ function INEED.PLAYER_MONEY()
 
 				if total < needed then
 					if INEED_options.showProgress or INEED_options.printProgress then
-						local progressString = string.format("%s%s/%s",
-								GetCoinTextureString(total),
+						local progressString = string.format("%s/%s %s",
+								GetCoinTextureString(total), GetCoinTextureString(needed),
 								(INEED_options.includeChange and
 									string.format(" (%s%s%s%s) ", ((gained > 0) and COLOR_GREEN or COLOR_RED), ((gained > 0) and "+" or "-"),
-										GetCoinTextureString(gained), COLOR_END)
-									or ""),
-								GetCoinTextureString(needed))
+										GetCoinTextureString(math.abs(gained)), COLOR_END)
+									or "")
+								)
 						_ = INEED_options.showProgress and UIErrorsFrame:AddMessage( progressString, 1.0, 1.0, 0.1, 1.0 )
 						_ = INEED_options.printProgress and INEED.Print( progressString )
 					end
@@ -584,6 +585,8 @@ function INEED.addItemToTable( tableIn, needed, total, includeFaction, link )
 		tableIn.updated = time()
 	end
 	return tableIn
+end
+function INEED.showProgress()
 end
 function INEED.parseCmd(msg)
 	if msg then
