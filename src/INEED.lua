@@ -407,6 +407,7 @@ function INEED.PLAYER_MONEY()
 				local total = GetMoney()
 				local gained = total - INEED_gold[INEED.realm][INEED.name].total
 				INEED_gold[INEED.realm][INEED.name].total = total
+				INEED_gold[INEED.realm][INEED.name].updated = time()
 
 				if total < needed then
 					if INEED_options.showProgress or INEED_options.printProgress then

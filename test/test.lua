@@ -816,18 +816,25 @@ function test.testGoldValue_clearsData()
 	assertIsNil( INEED_gold["testRealm"] )
 end
 function test.testGoldValue_doesNotAffectOthers_SameRealm()
-	INEED_gold={["testRealm"]={["otherName"]={["needed"] = 250000, ["current"] = 5, ["added"]=0, ["updated"]=0 },},}
+	INEED_gold={["testRealm"]={["otherName"]={["needed"] = 250000, ["total"] = 5, ["added"]=0, ["updated"]=0 },},}
 	INEED.command( "25g" )
 	myCopper = 300000
 	INEED.PLAYER_MONEY()
 	assertIsNil( INEED_gold["testRealm"] )
 end
 function test.testGoldValue_doesNotAffectOthers_SameRealm()
-	INEED_gold={["otherRealm"]={["otherName"]={["needed"] = 250000, ["current"] = 5, ["added"]=0, ["updated"]=0 },},}
+	INEED_gold={["otherRealm"]={["otherName"]={["needed"] = 250000, ["total"] = 5, ["added"]=0, ["updated"]=0 },},}
 	INEED.command( "25g" )
 	myCopper = 300000
 	INEED.PLAYER_MONEY()
 	assertEquals( 250000, INEED_gold["otherRealm"]["otherName"].needed )
+end
+function test.testGoldValue_updated_isUpdated()
+	myCopper = 5
+	INEED.command("25g")
+	myCopper = 1005
+	INEED.PLAYER_MONEY()
+	assertEquals( time(), INEED_gold["testRealm"]["testName"].updated )
 end
 --------------
 -- Test addItemToTable
@@ -860,7 +867,6 @@ function test.testAddItemToTable_needed_total_nilFaction()
 	local tOut = INEED.addItemToTable( tIn, 50, 25 )
 	assertIsNil( tOut.faction )
 end
-
 function test.testAddItemToTable_includeFaction()
 	local tIn = {}
 	local tOut = INEED.addItemToTable( tIn, 50, 25, true )
