@@ -836,6 +836,19 @@ function test.testGoldValue_updated_isUpdated()
 	INEED.PLAYER_MONEY()
 	assertEquals( time(), INEED_gold["testRealm"]["testName"].updated )
 end
+function test.testGoldValue_plus()
+	myCopper = 10000
+	INEED.command("+29g")
+	INEED.PLAYER_MONEY()
+	assertEquals( 300000, INEED_gold["testRealm"]["testName"].needed )
+end
+function test.testGoldValue_neg()
+	-- does this even make sense?
+	myCopper = 10000
+	INEED.command("-1g")
+	INEED.PLAYER_MONEY()
+	assertIsNil( INEED_gold["testRealm"] )
+end
 --------------
 -- Test addItemToTable
 function test.testAddItemToTable_tableInNil()

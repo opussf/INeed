@@ -690,10 +690,13 @@ function INEED.addItem( itemLink, quantity )
 		end
 		return itemLink -- return done
 	end
-	local needGoldAmount = INEED.parseGold( itemLink )
+	local needGoldAmount, modify = INEED.parseGold( itemLink )
 	if needGoldAmount then
-		--print("Need gold amount: "..(needGoldAmount or "nil") )
 		local curAmount = GetMoney()
+		if modify then
+			needGoldAmount = curAmount + needGoldAmount
+		end
+		--print("Need gold amount: "..(needGoldAmount or "nil") )
 		if curAmount < needGoldAmount then
 			INEED.Print( string.format( "Needing: %s/%s",
 					GetCoinTextureString(curAmount), GetCoinTextureString(needGoldAmount) ) )
