@@ -897,5 +897,10 @@ function test.testAddItemToTable_setsUpdated_oldItem()
 	local tOut = INEED.addItemToTable( tIn, 50, 0, true, "link" )
 	assertEquals( time(), tOut.updated )
 end
+------
+-- showProgress (1017)
+function test.testShowProgress()
+
+end
 
 test.run()
