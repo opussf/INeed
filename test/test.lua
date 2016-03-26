@@ -842,8 +842,16 @@ function test.testGoldValue_plus()
 	INEED.PLAYER_MONEY()
 	assertEquals( 300000, INEED_gold["testRealm"]["testName"].needed )
 end
+function test.testGoldValue_plusPreValue()
+	INEED.command("5g")
+	myCopper = 10000
+	INEED.PLAYER_MONEY()
+	INEED.command("+29g")
+	INEED.PLAYER_MONEY()
+	assertEquals( 300000, INEED_gold["testRealm"]["testName"].needed )
+end
 function test.testGoldValue_neg()
-	-- does this even make sense?
+	-- does this even make sense?  a negative value would put the target value below the current value
 	myCopper = 10000
 	INEED.command("-1g")
 	INEED.PLAYER_MONEY()
