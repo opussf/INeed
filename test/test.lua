@@ -30,6 +30,9 @@ INEED.faction = "Alliance"
 function test.before()
 	myInventory = { ["7073"] = 52, ["9799"] = 52, ["9999"] = 52, }
 	myCurrencies = { ["703"] = 5, }  -- Fictional currency?
+	INEED_currency = {}
+	INEED_gold = {}
+	myCopper = 0
 	INEED.OnLoad()
 end
 function test.after()
@@ -243,9 +246,11 @@ function test.testAccountInfo_SubtractValue_Copper_SubZero()
 	INEED.command( "account -90" )
 	assertIsNil( INEED_account.balance )
 end
-function test.testMerchantShow_NoBalance()
+function test.testMerchantShow_NoBalance_Updated()
 	INEED.addItem( "|cff9d9d9d|Hitem:7073:0:0:0:0:0:0:0:80:0:0|h[Broken Fang]|h|r", 100 ) -- the merchant sells these!
+	INEED_data["7073"]["testRealm"]["testName"].updated = 0
 	INEED.MERCHANT_SHOW()
+	assertEquals( time(), INEED_data["7073"]["testRealm"]["testName"].updated )
 end
 function test.testMerchantShow_AutoPurchaseDecrementsBalance()
 	INEED.accountInfo( 1000000 )  -- sets 100 gold
@@ -724,6 +729,12 @@ function test.testAddSpecialCurrencyItem_CurrencyItemCurrentlyNeeded_HaveMoreTha
 	-- The needed item costs a special currency (>1)
 end
 
+-- archaeology tests
+function test.testArchaeology_Command()
+	INEED.command( "arch" )
+--	assertEquals( 100, assertEquals( 100, INEED_currency[384].needed ) )
+end
+
 --------------
 -- UI Tests --
 --------------
@@ -741,6 +752,30 @@ end
 function test.testUI_INEEDBars_CreatesBars()
 end
 ]]
+function test.testParseGold_value()
+	local v,m = INEED.parseGold( "15s16c20g" )
+	assertEquals( 201516, v )
+	assertFalse( m )
+end
+function test.testParseGold_value2()
+	local v,m = INEED.parseGold( "201516" )
+	assertEquals( 201516, v )
+	assertFalse( m )
+end
+function test.testParseGold_value_negative()
+	local v,m = INEED.parseGold( "-15s16c20g" )
+	assertEquals( -201516, v )
+	assertTrue( m )
+end
+function test.testParseGold_value_plus()
+	local v,m = INEED.parseGold( "+15s16c20g" )
+	assertEquals( 201516, v )
+	assertTrue( m )
+end
+function test.testParseGold_value_nil()
+	local v,m = INEED.parseGold( "Hello" )
+	assertIsNil( v )
+end
 
 --------------------
 -- goalName tests --
@@ -761,7 +796,156 @@ function test.testGoalName_addGoalName_previouslyAddedItem()
 end
 
 
+
+--------- Gold Value
+function test.testGoldValue_addNeededValue_gold()
+	INEED.command( "25g" )
+	assertEquals( 250000, INEED_gold["testRealm"]["testName"].needed )
+end
+function test.testGoldValue_addNeededValue_silver()
+	INEED.command( "25s" )
+	assertEquals( 2500, INEED_gold["testRealm"]["testName"].needed )
+end
+function test.testGoldValue_addNeededValue_copper()
+	INEED.command( "25c" )
+	assertEquals( 25, INEED_gold["testRealm"]["testName"].needed )
+end
+function test.testGoldValue_addNeededValue_added()
+	INEED.command( "25c" )
+	assertEquals( time(), INEED_gold["testRealm"]["testName"].added )
+end
+function test.testGoldValue_addNeededValue_updated()
+	INEED.command( "25c" )
+	assertEquals( time(), INEED_gold["testRealm"]["testName"].updated )
+end
+function test.testGoldValue_addNeededValue_0clears()
+	INEED.command( "25g" )
+	INEED.command( "0g" )
+	assertIsNil( INEED_gold["testRealm"]["testName"] )  -- clearData will clear the rest later
+end
+function test.testGoldValue_haveMoreThanNeed()
+	myCopper = 150000
+	INEED.command( "25c" )
+	assertIsNil( INEED_gold["testRealm"] )
+end
+function test.testGoldValue_clearsData()
+	INEED.command( "25g" )
+	assertEquals( 250000, INEED_gold["testRealm"]["testName"].needed )
+	myCopper = 300000
+	INEED.PLAYER_MONEY()
+	assertIsNil( INEED_gold["testRealm"] )
+end
+function test.testGoldValue_doesNotAffectOthers_SameRealm()
+	INEED_gold={["testRealm"]={["otherName"]={["needed"] = 250000, ["total"] = 5, ["added"]=0, ["updated"]=0 },},}
+	INEED.command( "25g" )
+	myCopper = 300000
+	INEED.PLAYER_MONEY()
+	assertIsNil( INEED_gold["testRealm"] )
+end
+function test.testGoldValue_doesNotAffectOthers_SameRealm()
+	INEED_gold={["otherRealm"]={["otherName"]={["needed"] = 250000, ["total"] = 5, ["added"]=0, ["updated"]=0 },},}
+	INEED.command( "25g" )
+	myCopper = 300000
+	INEED.PLAYER_MONEY()
+	assertEquals( 250000, INEED_gold["otherRealm"]["otherName"].needed )
+end
+function test.testGoldValue_updated_isUpdated()
+	myCopper = 5
+	INEED.command("25g")
+	myCopper = 1005
+	INEED.PLAYER_MONEY()
+	assertEquals( time(), INEED_gold["testRealm"]["testName"].updated )
+end
+function test.testGoldValue_plus()
+	myCopper = 10000
+	INEED.command("+29g")
+	INEED.PLAYER_MONEY()
+	assertEquals( 300000, INEED_gold["testRealm"]["testName"].needed )
+end
+function test.testGoldValue_plusPreValue()
+	INEED.command("5g")
+	myCopper = 10000
+	INEED.PLAYER_MONEY()
+	INEED.command("+29g")
+	INEED.PLAYER_MONEY()
+	assertEquals( 300000, INEED_gold["testRealm"]["testName"].needed )
+end
+function test.testGoldValue_neg()
+	-- does this even make sense?  a negative value would put the target value below the current value
+	myCopper = 10000
+	INEED.command("-1g")
+	INEED.PLAYER_MONEY()
+	assertIsNil( INEED_gold["testRealm"] )
+end
+--------------
+-- Test addItemToTable
+function test.testAddItemToTable_tableInNil()
+	local tOut = INEED.addItemToTable( nil )
+	assertIsNil( tOut )
+end
+function test.testAddItemToTable_neededIsNil()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, nil )
+	assertEquals( 0, #tOut )  -- really the best test?
+end
+function test.testAddItemToTable_needed_noTotal()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50 )
+	assertEquals( 0, #tOut )
+end
+function test.testAddItemToTable_needed_total_setsNeeded()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50, 25 )
+	assertEquals( 50, tOut.needed )
+end
+function test.testAddItemToTable_needed_total_setsTotal()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50, 25 )
+	assertEquals( 25, tOut.total )
+end
+function test.testAddItemToTable_needed_total_nilFaction()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50, 25 )
+	assertIsNil( tOut.faction )
+end
+function test.testAddItemToTable_includeFaction()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50, 25, true )
+	assertEquals( "Alliance", tOut.faction )
+end
+function test.testAddItemToTable_includeLink()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50, 25, true, "link" )
+	assertEquals( "link", tOut.link )
+end
+function test.testAddItemToTable_setsAdded_newItem()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50, 25, true, "link" )
+	assertEquals( time(), tOut.added )
+end
+function test.testAddItemToTable_setsAdded_oldItem()
+	local tIn = {["needed"] = 1, ["total"] = 0, ["added"] = 0}
+	local tOut = INEED.addItemToTable( tIn, 50, 0, true, "link" )
+	assertEquals( 0, tOut.added )
+end
+function test.testAddItemToTable_setsUpdated_newItem()
+	local tIn = {}
+	local tOut = INEED.addItemToTable( tIn, 50, 0, true, "link" )
+	assertEquals( time(), tOut.updated )
+end
+function test.testAddItemToTable_setsUpdated_oldItem()
+	local tIn = {["needed"] = 1, ["total"] = 0, ["added"] = 0, ["updated"] = 0}
+	local tOut = INEED.addItemToTable( tIn, 50, 0, true, "link" )
+	assertEquals( time(), tOut.updated )
+end
+------
+-- showProgress (1017)
+function test.testShowProgress()
+
+end
+
 ---------------
 -- Run Tests --
 ---------------
+
 test.run()

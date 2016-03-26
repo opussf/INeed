@@ -2,8 +2,60 @@
 
 Record unknown links used.
 
+
 local link, item, charges, showItemWhenComplete = GetQuestLogSpecialItemInfo(questLogIndex);
 
+
+## feature/arch
+This feature will introduce the ability to scan the Archeology tab for projects that are in progress, and add the items to your need list.
+
+The new command will be: '/in arch'
+
+While the original vision is to only add the items to complete current projects, it might also expand to include adding the accelerated items as well.
+
+The 'arch' command will scan all current projects only.
+http://wowprogramming.com/docs/api/GetArchaeologyRaceInfo
+http://wowprogramming.com/docs/api/GetNumArchaeologyRaces
+http://wowprogramming.com/docs/api/GetArtifactProgress
+
+
+## feature/goldValue
+Allow the player to need an amount of gold.
+
+  /in 25g
+  /in 25g 35s
+  /in gold 25g
+(Should be able to use the same function as the account command)
+
+Store in INEED_gold for all.
+
+INEED_gold = {["realm"]["player"] = {["needed"] = 15000, ["total"] = 70000, ["faction"] = "Alliance", ["added"] = ts, ["updated"] = ts},}
+
+INEED_gold["realm"]["player"] will be cleared once the value is reached.
+
+
+-----------------------------------------
+
+Define a tithe amount.
+While tithe is a 10% payment to a church or organization, or a tax, there is no idea of setting aside a percentage for savings, at least no name.
+I've seen the phrase "tithe thyself" as a description of saving, but nothing else.
+
+The tithe will be a way to automaticly add money to the spending account for INeed.
+
+  /in title 0
+Turns off the tithe
+
+  /in tithe 10
+Sets the tithe to 10%
+
+  /in tithe 100
+Sets the tithe to 100%
+
+  /in tithe
+Shows the tithe percentage.
+
+Store this in:
+  INEED_account["tithe"]
 
 ## feature/gui
 This will introduce a GUI element to the addon.
