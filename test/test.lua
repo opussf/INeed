@@ -406,6 +406,17 @@ function test.testAddCurrency_StoreName()
 	INEED.command( "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r 100" )
 	assertEquals( "Fictional Currency", INEED_currency["703"].name )
 end
+function test.testCurrency_showList()
+	INEED.command( "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r 100" )
+	listDictionary = INEED.showList()
+	for k,v in pairs(listDictionary) do
+		if v.displayStr == "5/100 x |cffffffff|Hcurrency:703|h[Fictional Currency]|h|r" then
+			return -- found the string, pass the test
+		end
+	end
+	fail("String not found in the list.")
+
+end
 function test.testCurrencyFulfilled_ObtainItem_IsFulfilled()
 	INEED.command( "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r 10" )
 	myCurrencies["703"] = 10
