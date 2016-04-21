@@ -789,7 +789,7 @@ function INEED.showList( searchTerm )
 	-- add currency entries, which are only for you
 	for currencyID, cData in pairs( INEED_currency ) do
 		table.insert( updatedItems, {
-				["updated"] = (data.updated or data.added or 1),
+				["updated"] = (cData.updated or cData.added or 1),
 				["displayStr"] = string.format("%i/%i x %s",
 						cData.total, cData.needed, GetCurrencyLink( currencyID ) )
 		})
