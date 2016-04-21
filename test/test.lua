@@ -406,6 +406,17 @@ function test.testAddCurrency_StoreName()
 	INEED.command( "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r 100" )
 	assertEquals( "Fictional Currency", INEED_currency["703"].name )
 end
+function test.testCurrency_showList()
+	INEED.command( "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r 100" )
+	listDictionary = INEED.showList()
+	for k,v in pairs(listDictionary) do
+		if v.displayStr == "5/100 x |cffffffff|Hcurrency:703|h[Fictional Currency]|h|r" then
+			return -- found the string, pass the test
+		end
+	end
+	fail("String not found in the list.")
+
+end
 function test.testCurrencyFulfilled_ObtainItem_IsFulfilled()
 	INEED.command( "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r 10" )
 	myCurrencies["703"] = 10
@@ -856,6 +867,21 @@ function test.testGoldValue_neg()
 	INEED.command("-1g")
 	INEED.PLAYER_MONEY()
 	assertIsNil( INEED_gold["testRealm"] )
+end
+function test.testGoldValue_showList()
+	-- Does the gold value show up in the list of things needed
+	myCopper = 12345
+	INEED.command("+1g")
+	INEED.PLAYER_MONEY()
+	listDictionary = INEED.showList()
+	haveStr = GetCoinTextureString( myCopper )
+	needStr = GetCoinTextureString( myCopper + 10000 )
+	for k,v in pairs(listDictionary) do
+		if v.displayStr == string.format("%s/%s for testName of testRealm", haveStr, needStr) then
+			return -- found the string, pass the test
+		end
+	end
+	fail("String not found in the list.")
 end
 --------------
 -- Test addItemToTable
