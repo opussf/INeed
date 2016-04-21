@@ -769,47 +769,58 @@ function INEED.showList( searchTerm )
 	searchTerm = (searchTerm and string.len(searchTerm) ~= 0) and searchTerm or "me"    -- me | realm | all
 	local showHeader = true
 	local updatedItems = {}
+	-- Search for items that are needed, based on search term
 	for itemID, _ in pairs(INEED_data) do
 		for realm, _ in pairs(INEED_data[itemID]) do
 			for name, data in pairs(INEED_data[itemID][realm]) do
 				if ( searchTerm == "me" and name == INEED.name and realm == INEED.realm ) or
 						( searchTerm == "realm" and realm == INEED.realm ) or
 						( searchTerm == "all" ) then
-					table.insert( updatedItems, { ["itemID"] = itemID, ["added"] = data.added, ["updated"] = (data.updated or data.added or 1) } )
+					table.insert( updatedItems, {
+							["updated"] = (data.updated or data.added or 1),
+							["displayStr"] = string.format("%i/%i x %s for %s of %s",
+									data.total, data.needed, (select( 2, GetItemInfo( itemID ) ) ), name, realm ),
+					} )
 				end
 			end
 		end
 	end
-	table.sort( updatedItems, function(a,b)	return a.updated<b.updated end ) -- sort by updated
+
+	-- add currency entries, which are only for you
+	for currencyID, cData in pairs( INEED_currency ) do
+		table.insert( updatedItems, {
+				["updated"] = (cData.updated or cData.added or 1),
+				["displayStr"] = string.format("%i/%i x %s",
+						cData.total, cData.needed, GetCurrencyLink( currencyID ) )
+		})
+	end
+
+	-- add the Gold entries (Use the search value here)
+	for realm, _ in pairs( INEED_gold ) do
+		for name, data in pairs( INEED_gold[realm] ) do
+			if ( searchTerm == "me" and name == INEED.name and realm == INEED.realm ) or
+					( searchTerm == "realm" and realm == INEED.realm ) or
+					( searchTerm == "all" ) then
+				table.insert( updatedItems, {
+						["updated"] = (data.updated or data.added or 1),
+						["displayStr"] = string.format("%s/%s for %s of %s",
+								GetCoinTextureString( data.total ), GetCoinTextureString( data.needed ),
+								name, realm )
+				} )
+			end
+		end
+	end
+
+	-- sort the values by updated
+	table.sort( updatedItems, function(a,b)	return a.updated<b.updated end ) -- sort by updated, most recent is last
+
+	-- display the list
 	for _, item in pairs( updatedItems ) do
 		itemID = item.itemID
-		for realm, _ in pairs( INEED_data[itemID] ) do
-			for name, data in pairs( INEED_data[itemID][realm] ) do
-				if ( searchTerm == "me" and name == INEED.name and realm == INEED.realm ) or
-						( searchTerm == "realm" and realm == INEED.realm ) or
-						( searchTerm == "all" ) then
-					if showHeader then INEED.Print("Needed items:"); showHeader=nil; end
-					local itemLink = select( 2, GetItemInfo( itemID ) ) or "item:"..itemID
-					INEED.Print(string.format("%i/%i x %s is needed by %s of %s", data.total, data.needed,
-							itemLink, name, realm))
-				end
-			end
-		end
+		if showHeader then INEED.Print("Needed items:"); showHeader=nil; end
+		INEED.Print( item.displayStr )
 	end
-	--[[
-	table.sort( items, function(a,b) return a.updated > b.updated end ) -- more recnet updated is last
-	INEED.Print("Needed items:")
-	for itemID, data in pairs( items ) do
-		local itemLink = select( 2, GetItemInfo( itemID ) ) or "item:"..itemID
-		INEED.Print(string.format("%i/%i x %s is needed by %s of %s", data.total, data.needed,
-				itemLink, name, realm))
-	end
-	]]
-	for currencyID, cData in pairs( INEED_currency ) do
-		local currencyLink = GetCurrencyLink( currencyID )
-		print(currencyID..":"..cData.total.."/"..cData.needed)
-		INEED.Print( string.format( "%i/%i x %s", cData.total, cData.needed, currencyLink ) )
-	end
+	return updatedItems
 end
 function INEED.itemIsSoulbound( itemLink )
 	-- return 1 or nil to reflect if the item is BOP or bound
