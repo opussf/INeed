@@ -57,34 +57,45 @@ function INEED.OnLoad()
 	-- Tradeskill Events
 	INEED_Frame:RegisterEvent("TRADE_SKILL_SHOW")
 	INEED_Frame:RegisterEvent("TRADE_SKILL_CLOSE")
-	INEED_Frame:RegisterEvent("TRADE_SKILL_UPDATE")
+	INEED_Frame:RegisterEvent("TRADE_SKILL_LIST_UPDATE")
+	INEED_Frame:RegisterEvent("TRADE_SKILL_FILTER_UPDATE")
 	-- ^^^ Fired immediately after TRADE_SKILL_SHOW, after something is created via tradeskill, or anytime the tradeskill window is updated (filtered, tree folded/unfolded, etc.)
 	INEED_Frame:RegisterEvent("PLAYER_MONEY")
 end
 function INEED.TRADE_SKILL_SHOW()
-	INEED.Print("TradeSkill window opened.")
-	for index = 1,GetNumTradeSkills() do
-		if select( 2, GetTradeSkillInfo( index ) ) ~= "header" then
-			local itemLink = GetTradeSkillItemLink( index )
-			local itemID = INEED.getItemIdFromLink( itemLink )
-			if INEED_data[itemID] and INEED_data[itemID][INEED.realm] then
-				local names = {}
-				local printItem = nil -- set to true if someone is actually found that has an outstanding need
-				for name, data in pairs( INEED_data[itemID][INEED.realm] ) do
-					if (data.faction == INEED.faction) and (data.needed - data.total - ( data.inMail or 0 ) > 0) then
-						-- same faction, and not fulfilled via mail already
-						tinsert( names, name )
-						printItem = true -- set the flag on to print
+	--INEED.Print("TradeSkill window opened.")
+	INEED.TradeSkillsScanned = false
+end
+function INEED.TRADE_SKILL_CLOSE()
+end
+function INEED.TRADE_SKILL_LIST_UPDATE()
+	--INEED.Print("TradeSkill Update")
+	if not INEED.TradeSkillsScanned then
+		INEED.TradeSkillsScanned = true
+		local recipeTable = C_TradeSkillUI.GetAllRecipeIDs()
+		for i,recipeID in pairs(recipeTable) do
+			local recipeInfo = C_TradeSkillUI.GetRecipeInfo( recipeID )
+			if recipeInfo.learned then
+				local itemLink = C_TradeSkillUI.GetRecipeItemLink( recipeID )
+				local itemID = INEED.getItemIdFromLink( itemLink )
+				if INEED_data[itemID] and INEED_data[itemID][INEED.realm] then
+					local names = {}
+					local printItem = nil -- set to true if someone is actually found that has an outstanding need
+					for name, data in pairs( INEED_data[itemID][INEED.realm] ) do
+						if (data.faction == INEED.faction) and (data.needed - data.total - ( data.inMail or 0 ) > 0) then
+							-- same faction, and not fulfilled via mail already
+							tinsert( names, name )
+							printItem = true -- set the flag on to print
+						end
 					end
+					local _ = printItem and INEED.Print( itemLink.." is needed by: "..table.concat( names, ", " ) )
 				end
-				local _ = printItem and INEED.Print( itemLink.." is needed by: "..table.concat( names, ", " ) )
 			end
 		end
 	end
 end
-function INEED.TRADE_SKILL_CLOSE()
-end
-function INEED.TRADE_SKILL_UPDATE()
+function INEED.TRADE_SKILL_FILTER_UPDATE()
+	INEED.Print("TradeSkill Filter Update")
 end
 function INEED.MAIL_SEND_INFO_UPDATE()
 	INEED.mailInfo = {}
@@ -643,20 +654,23 @@ function INEED.addItem( itemLink, quantity )
 	local enchantID = INEED.getEnchantIdFromLink( itemLink )
 	if enchantID then
 		INEED.Print( string.format( "You need: %i %s (enchant:%s)", quantity, itemLink, enchantID ) )
-		local numSkills = GetNumTradeSkills()
-		for index = 1, numSkills do  -- loop through the recepies
-			local testEnchantID = INEED.getEnchantIdFromLink( GetTradeSkillRecipeLink( index ) )  -- enchantID
-			if enchantID == testEnchantID then  -- linked enchant == enchant from list ?
-				local ItemLink = GetTradeSkillItemLink( index )  -- add the item, there may be a bug here
-				local minMade, maxMade =GetTradeSkillNumMade( index )
-				INEED.addItem( ItemLink, minMade * quantity ) -- If a tradeskill makes more than one at a time.
+		local recipeTable = C_TradeSkillUI.GetAllRecipeIDs()
+		for i,recipeID in pairs(recipeTable) do
+			if recipeID == tonumber(enchantID) then -- found the enchant link just needed
+				--INEED.Print( "Needing :"..recipeID )
+				local madeItemLink = C_TradeSkillUI.GetRecipeItemLink( recipeID )
+				local minMade, maxMade = C_TradeSkillUI.GetRecipeNumItemsProduced( recipeID )
+				INEED.addItem( madeItemLink, minMade * quantity ) -- If a tradeskill makes more than one at a time.
 
-				local numReagents = GetTradeSkillNumReagents( index )
+				local numReagents = C_TradeSkillUI.GetRecipeNumReagents( recipeID )
 				for reagentIndex = 1, numReagents do
-					local _, _, reagentCount = GetTradeSkillReagentInfo( index, reagentIndex )
-					local reagentLink = GetTradeSkillReagentItemLink( index, reagentIndex )
+					local _, _, reagentCount = C_TradeSkillUI.GetRecipeReagentInfo( recipeID, reagentIndex )
+					local reagentLink = C_TradeSkillUI.GetRecipeReagentItemLink( recipeID, reagentIndex )
 					INEED.addItem( reagentLink, reagentCount * quantity )
 				end
+				local toolName = C_TradeSkillUI.GetRecipeTools( recipeID )
+				local _, toolLink = GetItemInfo( toolName )
+				INEED.addItem( toolLink, 1 )
 			end
 		end
 		return itemLink -- return done

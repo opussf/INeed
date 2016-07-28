@@ -341,6 +341,7 @@ function test.testRemoveChar_OtherRealm()
 	assertEquals( 10, INEED_data["7073"]["testRealm"]["otherTestName"].needed )
 	assertEquals( 10, INEED_data["7073"]["otherTestRealm"]["otherTestName2"].needed )
 end
+--[[
 function test.testTradeSkill_Link()
 	INEED.command( "|cffffffff|Henchant:44157|h[Engineering: Turbo-Charged Flying Machine]|h|r" )
 	assertEquals( 1, INEED_data["34061"]["testRealm"]["testName"].needed ) -- item to make
@@ -354,6 +355,7 @@ function test.testTradeSkill_EnchantId()
 	--assertIsNil( INEED_data["34061"]["testRealm"]["testName"].needed )
 	assertEquals( 8, INEED_data["23786"]["testRealm"]["testName"].needed )
 end
+]]
 -- Tests for currency
 function test.testGetCurrencyIdFromLink_withLink()
 	assertEquals( "402",
