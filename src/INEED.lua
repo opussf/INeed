@@ -56,9 +56,9 @@ function INEED.OnLoad()
 	INEED_Frame:RegisterEvent("MAIL_INBOX_UPDATE")
 	-- Tradeskill Events
 	INEED_Frame:RegisterEvent("TRADE_SKILL_SHOW")
-	INEED_Frame:RegisterEvent("TRADE_SKILL_CLOSE")
+	--INEED_Frame:RegisterEvent("TRADE_SKILL_CLOSE")
 	INEED_Frame:RegisterEvent("TRADE_SKILL_LIST_UPDATE")
-	INEED_Frame:RegisterEvent("TRADE_SKILL_FILTER_UPDATE")
+	--INEED_Frame:RegisterEvent("TRADE_SKILL_FILTER_UPDATE")
 	-- ^^^ Fired immediately after TRADE_SKILL_SHOW, after something is created via tradeskill, or anytime the tradeskill window is updated (filtered, tree folded/unfolded, etc.)
 	INEED_Frame:RegisterEvent("PLAYER_MONEY")
 end
@@ -95,7 +95,7 @@ function INEED.TRADE_SKILL_LIST_UPDATE()
 	end
 end
 function INEED.TRADE_SKILL_FILTER_UPDATE()
-	INEED.Print("TradeSkill Filter Update")
+	--INEED.Print("TradeSkill Filter Update")
 end
 function INEED.MAIL_SEND_INFO_UPDATE()
 	INEED.mailInfo = {}
