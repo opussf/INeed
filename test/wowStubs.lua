@@ -445,6 +445,10 @@ function GetCurrencyLink( id )
 		return Currencies[id].link
 	end
 end
+function GetCurrencyListSize()
+	-- @TODO
+	return 5
+end
 function GetEquipmentSetItemIDs( setName )
 	-- http://wowprogramming.com/docs/api/GetEquipmentSetItemIDs
 	-- Returns a table of item IDs keyed by slotID of items in the equipmentSet
