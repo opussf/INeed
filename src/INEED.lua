@@ -669,8 +669,11 @@ function INEED.addItem( itemLink, quantity )
 					INEED.addItem( reagentLink, reagentCount * quantity )
 				end
 				local toolName = C_TradeSkillUI.GetRecipeTools( recipeID )
-				local _, toolLink = GetItemInfo( toolName )
-				INEED.addItem( toolLink, 1 )
+				if toolName then
+					INEED.Print( toolName )
+					local _, toolLink = GetItemInfo( toolName )
+					INEED.addItem( toolLink, 1 )
+				end
 			end
 		end
 		return itemLink -- return done
@@ -946,32 +949,40 @@ function INEED.remove( nameIn )
 	end
 end
 INEED.archaeologyCurrencies = {
-	384, --  1 - Dwarf
-	398, --  2 - Draenei
-	393, --  3 - Fossil
-	394, --  4 - Night Elf
-	400, --  5 - Nerubian
-	397, --  6 - Orc
-	401, --  7 - Tol'vir
-	385, --  8 - Troll
-	399, --  9 - Vrykul
-	754, -- 10 - Mantid
-	676, -- 11 - Pandaren
-	677, -- 12 - Mogu
-	829, -- 13 - Arakkoa
-	821, -- 14 - Draenor Clans
-	828, -- 15 - Ogre
+	1174, --  1 - Demonic
+	1173, --  2 - Highmountain Tauren
+	1172, --  3 - Highborne
+	828, --  4 - Ogre
+	821, --  5 - Draenor Clans
+	829, --  6 - Arakkoa
+	677, --  7 - Mogu
+	676, --  8 - Pandaren
+	754, --  9 - Mantid
+	399, -- 10 - Vrykul
+	385, -- 11 - Troll
+	401, -- 12 - Tol'vir
+	397, -- 13 - Orc
+	400, -- 14 - Nerubian
+	394, -- 15 - Night Elf
+	393, -- 16 - Fossil
+	398, -- 17 - Draenei
+	384, -- 18 - Dwarf
 }
 function INEED.archScan()
+	print("ArchScan")
 	local numRaces = GetNumArchaeologyRaces()
+	print("NumRaces: "..numRaces)
 	for i = 1, GetNumArchaeologyRaces() do
+		print("i: "..i..":"..GetArchaeologyRaceInfo( i ) )
 		if INEED.archaeologyCurrencies[i] then
+
 			local raceName, raceTexture, raceItemID, numFragmentsCollected, numFragmentsRequired, maxFragments = GetArchaeologyRaceInfo( i )
-			if select( 7, GetCurrencyInfo(INEED.archaeologyCurrencies[i]) ) then
-				INEED.addItem( "currency:"..INEED.archaeologyCurrencies[i], numFragmentsRequired )
-			end
+		--	if select( 7, GetCurrencyInfo(INEED.archaeologyCurrencies[i]) ) then
+		--		INEED.addItem( "currency:"..INEED.archaeologyCurrencies[i], numFragmentsRequired )
+		--	end
 		end
 	end
+	print("CurrencyListSize: "..GetCurrencyListSize() )
 end
 
 -- Testing functions
