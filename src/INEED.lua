@@ -969,20 +969,19 @@ INEED.archaeologyCurrencies = {
 	384, -- 18 - Dwarf
 }
 function INEED.archScan()
-	print("ArchScan")
+	--print("ArchScan")
 	local numRaces = GetNumArchaeologyRaces()
-	print("NumRaces: "..numRaces)
+	--print("NumRaces: "..numRaces)
 	for i = 1, GetNumArchaeologyRaces() do
-		print("i: "..i..":"..GetArchaeologyRaceInfo( i ) )
+		--print("i: "..i..":"..GetArchaeologyRaceInfo( i ) )
 		if INEED.archaeologyCurrencies[i] then
 
 			local raceName, raceTexture, raceItemID, numFragmentsCollected, numFragmentsRequired, maxFragments = GetArchaeologyRaceInfo( i )
-		--	if select( 7, GetCurrencyInfo(INEED.archaeologyCurrencies[i]) ) then
-		--		INEED.addItem( "currency:"..INEED.archaeologyCurrencies[i], numFragmentsRequired )
-		--	end
+			if select( 7, GetCurrencyInfo(INEED.archaeologyCurrencies[i]) ) then
+				INEED.addItem( "currency:"..INEED.archaeologyCurrencies[i], numFragmentsRequired )
+			end
 		end
 	end
-	print("CurrencyListSize: "..GetCurrencyListSize() )
 end
 
 -- Testing functions
