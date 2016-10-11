@@ -56,35 +56,46 @@ function INEED.OnLoad()
 	INEED_Frame:RegisterEvent("MAIL_INBOX_UPDATE")
 	-- Tradeskill Events
 	INEED_Frame:RegisterEvent("TRADE_SKILL_SHOW")
-	INEED_Frame:RegisterEvent("TRADE_SKILL_CLOSE")
-	INEED_Frame:RegisterEvent("TRADE_SKILL_UPDATE")
+	--INEED_Frame:RegisterEvent("TRADE_SKILL_CLOSE")
+	INEED_Frame:RegisterEvent("TRADE_SKILL_LIST_UPDATE")
+	--INEED_Frame:RegisterEvent("TRADE_SKILL_FILTER_UPDATE")
 	-- ^^^ Fired immediately after TRADE_SKILL_SHOW, after something is created via tradeskill, or anytime the tradeskill window is updated (filtered, tree folded/unfolded, etc.)
 	INEED_Frame:RegisterEvent("PLAYER_MONEY")
 end
 function INEED.TRADE_SKILL_SHOW()
-	INEED.Print("TradeSkill window opened.")
-	for index = 1,GetNumTradeSkills() do
-		if select( 2, GetTradeSkillInfo( index ) ) ~= "header" then
-			local itemLink = GetTradeSkillItemLink( index )
-			local itemID = INEED.getItemIdFromLink( itemLink )
-			if INEED_data[itemID] and INEED_data[itemID][INEED.realm] then
-				local names = {}
-				local printItem = nil -- set to true if someone is actually found that has an outstanding need
-				for name, data in pairs( INEED_data[itemID][INEED.realm] ) do
-					if (data.faction == INEED.faction) and (data.needed - data.total - ( data.inMail or 0 ) > 0) then
-						-- same faction, and not fulfilled via mail already
-						tinsert( names, name )
-						printItem = true -- set the flag on to print
+	--INEED.Print("TradeSkill window opened.")
+	INEED.TradeSkillsScanned = false
+end
+function INEED.TRADE_SKILL_CLOSE()
+end
+function INEED.TRADE_SKILL_LIST_UPDATE()
+	--INEED.Print("TradeSkill Update")
+	if not INEED.TradeSkillsScanned then
+		INEED.TradeSkillsScanned = true
+		local recipeTable = C_TradeSkillUI.GetAllRecipeIDs()
+		for i,recipeID in pairs(recipeTable) do
+			local recipeInfo = C_TradeSkillUI.GetRecipeInfo( recipeID )
+			if recipeInfo.learned then
+				local itemLink = C_TradeSkillUI.GetRecipeItemLink( recipeID )
+				local itemID = INEED.getItemIdFromLink( itemLink )
+				if INEED_data[itemID] and INEED_data[itemID][INEED.realm] then
+					local names = {}
+					local printItem = nil -- set to true if someone is actually found that has an outstanding need
+					for name, data in pairs( INEED_data[itemID][INEED.realm] ) do
+						if (data.faction == INEED.faction) and (data.needed - data.total - ( data.inMail or 0 ) > 0) then
+							-- same faction, and not fulfilled via mail already
+							tinsert( names, name )
+							printItem = true -- set the flag on to print
+						end
 					end
+					local _ = printItem and INEED.Print( itemLink.." is needed by: "..table.concat( names, ", " ) )
 				end
-				local _ = printItem and INEED.Print( itemLink.." is needed by: "..table.concat( names, ", " ) )
 			end
 		end
 	end
 end
-function INEED.TRADE_SKILL_CLOSE()
-end
-function INEED.TRADE_SKILL_UPDATE()
+function INEED.TRADE_SKILL_FILTER_UPDATE()
+	--INEED.Print("TradeSkill Filter Update")
 end
 function INEED.MAIL_SEND_INFO_UPDATE()
 	INEED.mailInfo = {}
@@ -643,19 +654,25 @@ function INEED.addItem( itemLink, quantity )
 	local enchantID = INEED.getEnchantIdFromLink( itemLink )
 	if enchantID then
 		INEED.Print( string.format( "You need: %i %s (enchant:%s)", quantity, itemLink, enchantID ) )
-		local numSkills = GetNumTradeSkills()
-		for index = 1, numSkills do  -- loop through the recepies
-			local testEnchantID = INEED.getEnchantIdFromLink( GetTradeSkillRecipeLink( index ) )  -- enchantID
-			if enchantID == testEnchantID then  -- linked enchant == enchant from list ?
-				local ItemLink = GetTradeSkillItemLink( index )  -- add the item, there may be a bug here
-				local minMade, maxMade =GetTradeSkillNumMade( index )
-				INEED.addItem( ItemLink, minMade * quantity ) -- If a tradeskill makes more than one at a time.
+		local recipeTable = C_TradeSkillUI.GetAllRecipeIDs()
+		for i,recipeID in pairs(recipeTable) do
+			if recipeID == tonumber(enchantID) then -- found the enchant link just needed
+				--INEED.Print( "Needing :"..recipeID )
+				local madeItemLink = C_TradeSkillUI.GetRecipeItemLink( recipeID )
+				local minMade, maxMade = C_TradeSkillUI.GetRecipeNumItemsProduced( recipeID )
+				INEED.addItem( madeItemLink, minMade * quantity ) -- If a tradeskill makes more than one at a time.
 
-				local numReagents = GetTradeSkillNumReagents( index )
+				local numReagents = C_TradeSkillUI.GetRecipeNumReagents( recipeID )
 				for reagentIndex = 1, numReagents do
-					local _, _, reagentCount = GetTradeSkillReagentInfo( index, reagentIndex )
-					local reagentLink = GetTradeSkillReagentItemLink( index, reagentIndex )
+					local _, _, reagentCount = C_TradeSkillUI.GetRecipeReagentInfo( recipeID, reagentIndex )
+					local reagentLink = C_TradeSkillUI.GetRecipeReagentItemLink( recipeID, reagentIndex )
 					INEED.addItem( reagentLink, reagentCount * quantity )
+				end
+				local toolName = C_TradeSkillUI.GetRecipeTools( recipeID )
+				if toolName then
+					INEED.Print( toolName )
+					local _, toolLink = GetItemInfo( toolName )
+					INEED.addItem( toolLink, 1 )
 				end
 			end
 		end
@@ -932,26 +949,33 @@ function INEED.remove( nameIn )
 	end
 end
 INEED.archaeologyCurrencies = {
-	384, --  1 - Dwarf
-	398, --  2 - Draenei
-	393, --  3 - Fossil
-	394, --  4 - Night Elf
-	400, --  5 - Nerubian
-	397, --  6 - Orc
-	401, --  7 - Tol'vir
-	385, --  8 - Troll
-	399, --  9 - Vrykul
-	754, -- 10 - Mantid
-	676, -- 11 - Pandaren
-	677, -- 12 - Mogu
-	829, -- 13 - Arakkoa
-	821, -- 14 - Draenor Clans
-	828, -- 15 - Ogre
+	1174, --  1 - Demonic
+	1173, --  2 - Highmountain Tauren
+	1172, --  3 - Highborne
+	828, --  4 - Ogre
+	821, --  5 - Draenor Clans
+	829, --  6 - Arakkoa
+	677, --  7 - Mogu
+	676, --  8 - Pandaren
+	754, --  9 - Mantid
+	399, -- 10 - Vrykul
+	385, -- 11 - Troll
+	401, -- 12 - Tol'vir
+	397, -- 13 - Orc
+	400, -- 14 - Nerubian
+	394, -- 15 - Night Elf
+	393, -- 16 - Fossil
+	398, -- 17 - Draenei
+	384, -- 18 - Dwarf
 }
 function INEED.archScan()
+	--print("ArchScan")
 	local numRaces = GetNumArchaeologyRaces()
+	--print("NumRaces: "..numRaces)
 	for i = 1, GetNumArchaeologyRaces() do
+		--print("i: "..i..":"..GetArchaeologyRaceInfo( i ) )
 		if INEED.archaeologyCurrencies[i] then
+
 			local raceName, raceTexture, raceItemID, numFragmentsCollected, numFragmentsRequired, maxFragments = GetArchaeologyRaceInfo( i )
 			if select( 7, GetCurrencyInfo(INEED.archaeologyCurrencies[i]) ) then
 				INEED.addItem( "currency:"..INEED.archaeologyCurrencies[i], numFragmentsRequired )
