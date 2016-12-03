@@ -445,6 +445,10 @@ function test.testSendMail_MAIL_SEND_INFO_UPDATE_itemSet()
 	SendMailNameEditBox:SetText( "test-realm" )
 
 end
+function test.testMailInBoxUpdate_01()
+	-- TODO: Write some tests for this
+
+end
 -------
 -- Tests for doing global goals
 -------
