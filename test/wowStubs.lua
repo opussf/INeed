@@ -112,6 +112,14 @@ TradeSkillItems = {
 		},
 	},
 }
+Achievements = {
+	["10722"] = {
+		["link"] = "|cffffff00|Hachievement:10722:Player-3661-06DAB4ED:0:0:0:-1:524288:0:0:0|h[The Wish Remover]|h|r",
+		["criteria"] = {
+			"item:7073", "item:6742"
+		}
+	}
+}
 -- EquipmentSets is an array (1 based numeric key table)
 EquipmentSets = {
 	{["name"] = "testSet", ["icon"] = "icon", ["items"] = {[1] = "113596"},},
