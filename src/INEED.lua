@@ -160,7 +160,7 @@ function INEED.MAIL_INBOX_UPDATE()
 		if itemCount then
 			for itemIndex = 1, itemCount do
 				local itemID = INEED.getItemIdFromLink( GetInboxItemLink( mailID, itemIndex ) )
-				local q = select( 3, GetInboxItem( mailID, itemIndex ) )
+				local q = select( 4, GetInboxItem( mailID, itemIndex ) )
 				if itemID then
 					INEED.inboxInventory[itemID] =
 							(INEED.inboxInventory[itemID] and

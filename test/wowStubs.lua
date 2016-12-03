@@ -476,6 +476,10 @@ function GetEquipmentSetInfoByName( nameIn )
 		end
 	end
 end
+function GetInboxItem( index, itemIndex )
+	-- http://wow.gamepedia.com/API_GetInboxItem
+	-- name, itemID, texture, count, quality, canUse  = GetInboxItem(index, itemIndex)
+end
 function GetInventoryItemID( unitID, invSlot )
 	-- http://www.wowwiki.com/API_GetInventoryItemID
 	-- unitID: string   (http://www.wowwiki.com/API_TYPE_UnitId)  (bossN 1-4, player, partyN 1-4, raidN 1-40)
