@@ -415,12 +415,14 @@ function GetAchievementCriteriaInfo( ID, criteriaNum )
 		end
 	end
 end
+--[[
 function GetAchievementCriteriaInfoByID( criteriaID )
 	-- criteriaString, criteriaType, completed, quantity, reqQuantity,
 	-- charName, flags, assetID, quantityString, criteriaID, eligible =
 	-- GetAchievementCriteriaInfoByID(achievementID, criteriaID)
 	return "string","36",3,4,5,6,7
 end
+--]]
 function GetAchievementInfo( id, index )
 	-- http://wowprogramming.com/docs/api/GetAchievementInfo
 	-- Arguments:
