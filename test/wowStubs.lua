@@ -116,10 +116,45 @@ Achievements = {
 	["10722"] = {
 		["link"] = "|cffffff00|Hachievement:10722:Player-3661-06DAB4ED:0:0:0:-1:524288:0:0:0|h[The Wish Remover]|h|r",
 		["criteria"] = {
-			"item:7073", "item:6742"
-		}
+			{ 	["description"] = "Broken Fang thingy",
+				["type"] = 36,
+				["completed"] = false,
+				["quantity"] = 0,
+				["reqQuantity"] = 1,
+				["charName"] = "",
+				["flags"] = nil,
+				["assetID"] = "7073",
+				["quantityString"] = "string",
+				["criteriaID"] = "id",
+			},
+			{	["description"] = "string",
+				["type"] = 36,
+				["completed"] = false,
+				["quantity"] = 0,
+				["reqQuantity"] = 1,
+				["charName"] = "",
+				["flags"] = nil,
+				["assetID"] = "6742",
+				["quantityString"] = "string",
+				["criteriaID"] = "id",
+			}
+		},
+		["name"] = "The Wish Remover",
+		["points"] =10,
+		["completed"] = false,
+		["month"] = nil,
+		["day"] = nil,
+		["year"] = nil,
+		["description"] = "Fishing in Dalaran fountain (again)",
+		["flags"] = 0x00000000,
+		["icon"] = "",
+		["rewardText"] = "",
+		["isGuildAch"] = false,
+		["wasEarnedByMe"] = false,
+		["earnedBy"] = ""
 	}
 }
+
 -- EquipmentSets is an array (1 based numeric key table)
 EquipmentSets = {
 	{["name"] = "testSet", ["icon"] = "icon", ["items"] = {[1] = "113596"},},
@@ -366,6 +401,26 @@ function GetAccountExpansionLevel()
 	-- returns 0 to 4 (5)
 	return accountExpansionLevel
 end
+function GetAchievementCriteriaInfo( ID, criteriaNum )
+	-- criteriaString, criteriaType, completed, quantity, reqQuantity,
+	-- charName, flags, assetID, quantityString, criteriaID =
+	-- GetAchievementCriteriaInfo(criteriaID or achievementID, criteriaNum);
+	if criteriaNum then
+		achievementID = ID
+		if Achievements[achievementID] then
+			achievementInfo = Achievements[achievementID]
+			info = achievementInfo["criteria"][criteriaNum]
+			return info.description, info.type, info.completed, info.quantity, info.reqQuantity, info.charName,
+					info.flags, info.assetID, info.quantityString, info.criteriaID
+		end
+	end
+end
+function GetAchievementCriteriaInfoByID( criteriaID )
+	-- criteriaString, criteriaType, completed, quantity, reqQuantity,
+	-- charName, flags, assetID, quantityString, criteriaID, eligible =
+	-- GetAchievementCriteriaInfoByID(achievementID, criteriaID)
+	return "string","36",3,4,5,6,7
+end
 function GetAchievementInfo( id, index )
 	-- http://wowprogramming.com/docs/api/GetAchievementInfo
 	-- Arguments:
@@ -389,9 +444,22 @@ function GetAchievementInfo( id, index )
 	-- isGuildAch: True if the achievement is a Guild achievement; otherwise false (boolean)
 	-- wasEarnedByMe: True if the achievement was earned by the player; otherwise false (boolean)
 	-- earnedBy: Who earned the achivement, if not the player; otherwise nil (string)
+	if index then
+		category = id
+		-- Find the id to actually work with
+	end
+	achiveInfo = Achievements[id]
 
+	return id, achiveInfo['name'], achiveInfo['points'], achiveInfo['completed'], achiveInfo['month'], achiveInfo['day'], achiveInfo['year'],
+		achiveInfo['description'], achiveInfo['flags'], achiveInfo['icon'], achiveInfo['rewardText'], achiveInfo['isGuildAch'],
+		achiveInfo['wasEarnedByMe'], achiveInfo['earnedBy']
 end
-
+function GetAchievementNumCriteria( achievementID )
+	-- numCriteria = GetAchievementNumCriteria(AchievementID)
+	if Achievements[achievementID] then
+		return #Achievements[achievementID]["criteria"]
+	end
+end
 function GetAddOnMetadata(addon, field)
 	-- returns addonData[field] for 'addon'
 	-- local addonData = { ["version"] = "1.0", }

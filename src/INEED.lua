@@ -20,6 +20,12 @@ INEED_currency = {}
 INEED_account = {}
 INEED_gold = {}
 INEED_unknown = {}
+INEED.criteriaTypes = {
+		[12] = "currency:%s",
+		[36] = "item:%s",
+		[42] = "item:%s",
+		[57] = "item:%s",
+}
 
 INEED.bindTypes = {
 	[ITEM_SOULBOUND] = "Bound",
@@ -728,6 +734,33 @@ function INEED.addItem( itemLink, quantity )
 		end
 		return itemLink  -- return done
 	end
+	local achievementID = INEED.getAchievementIdFromLink( itemLink )
+	if achievementID then
+		--print( "-->"..achievementID )
+		_, name, points, completed = GetAchievementInfo( achievementID )
+		--print( "-->"..( completed and "complete" or "incomplete" ) )
+		if not completed then
+			numCriteria = GetAchievementNumCriteria( achievementID )
+			if numCriteria then
+				for i = 1, numCriteria do
+					print( "-->"..i )
+					desc, criteriaType, completedCriteria, quantity, reqQuantity, charName, flags, assetID, quantityString, criteriaID = GetAchievementCriteriaInfo( achievementID, i )
+					--_, criteriaType, completedCriteria, _, _, _, _, assetID = GetAchievementCriteriaInfoByID( achievementID, criteriaID )
+					--print( "--> type:"..criteriaType )
+					--print( "--> assetID:"..assetID )
+					print( "-->"..string.format( INEED.criteriaTypes[criteriaType], assetID ).." "..reqQuantity )
+					if not completedCriteria then
+						INEED.addItem( string.format( INEED.criteriaTypes[criteriaType], assetID ).." "..reqQuantity )
+					end
+					print( "End "..i )
+				end
+				print( "End numCriteria" )
+			end
+			print( "End not completed" )
+		end
+		print( "returning: "..itemLink )
+		return itemLink
+	end
 	if itemLink then
 		INEED.Print("Unknown link or command: "..string.sub(itemLink, 12))
 		INEED_unknown[time()] = itemLink
@@ -752,6 +785,11 @@ function INEED.getCurrencyIdFromLink( currencyLink )
 	-- currency:402
 	if currencyLink then
 		return strmatch( currencyLink, "currency:(%d*)" )
+	end
+end
+function INEED.getAchievementIdFromLink( achievementLink )
+	if achievementLink then
+		return strmatch( achievementLink, "achievement:(%d*)" )
 	end
 end
 function INEED.command(msg)
