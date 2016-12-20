@@ -742,8 +742,9 @@ function INEED.addItem( itemLink, quantity )
 			if numCriteria then
 				for i = 1, numCriteria do
 					desc, criteriaType, completedCriteria, quantity, reqQuantity, charName, flags, assetID, quantityString, criteriaID = GetAchievementCriteriaInfo( achievementID, i )
-					if not completedCriteria then
-						INEED.addItem( string.format( INEED.criteriaTypes[criteriaType], assetID ).." "..reqQuantity )
+					criteriaFormatString = INEED.criteriaTypes[criteriaType]
+					if criteriaFormatString and not completedCriteria then
+						INEED.addItem( string.format( criteriaFormatString, assetID ).." "..reqQuantity )
 					end
 				end
 			end
