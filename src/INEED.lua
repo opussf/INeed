@@ -743,20 +743,22 @@ function INEED.addItem( itemLink, quantity )
 			numCriteria = GetAchievementNumCriteria( achievementID )
 			if numCriteria then
 				for i = 1, numCriteria do
-					print( "-->"..i )
+					--print( "-->"..i )
 					desc, criteriaType, completedCriteria, quantity, reqQuantity, charName, flags, assetID, quantityString, criteriaID = GetAchievementCriteriaInfo( achievementID, i )
 					--_, criteriaType, completedCriteria, _, _, _, _, assetID = GetAchievementCriteriaInfoByID( achievementID, criteriaID )
 					--print( "--> type:"..criteriaType )
 					--print( "--> assetID:"..assetID )
-					print( "-->"..string.format( INEED.criteriaTypes[criteriaType], assetID ).." "..reqQuantity )
+--					needStringFormat = INEED.criteriaTypes[criteriaType]
+
+					--print( "-->"..string.format( INEED.criteriaTypes[criteriaType], assetID ).." "..reqQuantity )
 					if not completedCriteria then
 						INEED.addItem( string.format( INEED.criteriaTypes[criteriaType], assetID ).." "..reqQuantity )
 					end
-					print( "End "..i )
+					--print( "End "..i )
 				end
-				print( "End numCriteria" )
+				--print( "End numCriteria" )
 			end
-			print( "End not completed" )
+			--print( "End not completed" )
 		end
 		print( "returning: "..itemLink )
 		return itemLink
