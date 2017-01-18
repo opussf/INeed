@@ -1,6 +1,13 @@
 # Feature
 
-Record unknown links used.
+## Achievements
+/in achievement:10722
+"|cffffff00|Hachievement:10722:Player-3661-06DAB4ED:0:0:0:-1:524288:0:0:0|h[The Wish Remover]|h|r"
+
+Add achievement tracking.
+If the achievement requires items, add them to the list as well.
+
+## Record unknown links used.
 
 ## feature/arch
 This feature will introduce the ability to scan the Archeology tab for projects that are in progress, and add the items to your need list.

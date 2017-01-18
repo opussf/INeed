@@ -20,6 +20,12 @@ INEED_currency = {}
 INEED_account = {}
 INEED_gold = {}
 INEED_unknown = {}
+INEED.criteriaTypes = {
+		[12] = "currency:%s",
+		[36] = "item:%s",
+		[42] = "item:%s",
+		[57] = "item:%s",
+}
 
 INEED.bindTypes = {
 	[ITEM_SOULBOUND] = "Bound",
@@ -728,6 +734,23 @@ function INEED.addItem( itemLink, quantity )
 		end
 		return itemLink  -- return done
 	end
+	local achievementID = INEED.getAchievementIdFromLink( itemLink )
+	if achievementID then
+		_, name, points, completed = GetAchievementInfo( achievementID )
+		if not completed then
+			numCriteria = GetAchievementNumCriteria( achievementID )
+			if numCriteria then
+				for i = 1, numCriteria do
+					desc, criteriaType, completedCriteria, quantity, reqQuantity, charName, flags, assetID, quantityString, criteriaID = GetAchievementCriteriaInfo( achievementID, i )
+					criteriaFormatString = INEED.criteriaTypes[criteriaType]
+					if criteriaFormatString and not completedCriteria then
+						INEED.addItem( string.format( criteriaFormatString, assetID ).." "..reqQuantity )
+					end
+				end
+			end
+		end
+		return itemLink
+	end
 	if itemLink then
 		INEED.Print("Unknown link or command: "..string.sub(itemLink, 12))
 		INEED_unknown[time()] = itemLink
@@ -752,6 +775,11 @@ function INEED.getCurrencyIdFromLink( currencyLink )
 	-- currency:402
 	if currencyLink then
 		return strmatch( currencyLink, "currency:(%d*)" )
+	end
+end
+function INEED.getAchievementIdFromLink( achievementLink )
+	if achievementLink then
+		return strmatch( achievementLink, "achievement:(%d*)" )
 	end
 end
 function INEED.command(msg)
