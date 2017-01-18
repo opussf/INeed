@@ -81,6 +81,9 @@ end
 function test.testGetEnchantIdFromLink_withEnchantNum()
 	assertEquals( "44157", INEED.getEnchantIdFromLink( "enchant:44157" ) )
 end
+function test.testGetAchievementIdFromLink( )
+	assertEquals( "10722", INEED.getAchievementIdFromLink( "achievement:10722" ) )
+end
 function test.testAddItem_ItemStr()
 	INEED.addItem( "item:9798" )
 	assertEquals( 1, INEED_data["9798"]["testRealm"]["testName"].needed )
@@ -955,5 +958,17 @@ end
 function test.testShowProgress()
 
 end
+------
+-- Achievement Tests
+function test.testAddAchievement_incomplete_addsItems()
+	INEED.command( "achievement:10722" )
+	assertEquals( 1, INEED_data["6742"]["testRealm"]["testName"].needed )
+end
+function test.testAddAchievement_complete_noItemsNeeded()
+	INEED.command( "achievement:10722" )
+end
+function test.test_yaya()
+	--print("----->"..GetAchievementNumCriteria("10722"))
 
+end
 test.run()
