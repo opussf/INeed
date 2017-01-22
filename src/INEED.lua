@@ -493,6 +493,9 @@ function INEED.itemFulfilledAnnouce()
 			PlaySoundFile( INEED_options.soundFile )
 		end
 	end
+	if INEED_options.doScreenShot then
+		Screenshot()
+	end
 end
 function INEED.showSplash( msg )
 	-- Show the 'success' messages in the middle splash
