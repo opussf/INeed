@@ -17,12 +17,20 @@ function ExportXML()
 	strOut = strOut .. "<ineed>\n"
 
 	for itemID, ineedStruct in pairs( INEED_data ) do
-		strOut = strOut .. string.format( '\t<item id="%s">', itemID )
+		strOut = strOut .. string.format( '<item id="%s">\n', itemID )
+
 		for realm, realmStruct in pairs( ineedStruct ) do
-			strOut = strOut .. string.format( '\n\t\t<realm name="%s">', realm )
-			strOut = strOut .."\t</realm>\n"
+			for playerName, playerStruct in pairs( realmStruct ) do
+				strOut = strOut .. string.format( '\t<player realm="%s" name="%s" faction="%s" has="%s" needs="%s" added="%s" addedTS="%s" updated="%s" updatedTS="%s" />\n',
+						realm, playerName, playerStruct.faction, playerStruct.total + (playerStruct.inmail or 0), playerStruct.needed,
+						os.date("%Y-%m-%dT%H:%M:%S", playerStruct.added), playerStruct.added,
+						(playerStruct.updated and os.date("%Y-%m-%dT%H:%M:%S", playerStruct.updated) or ''), playerStruct.updated or '' )
+				itemLink = ( playerStruct.link or (itemLink or nil) ) -- set to link if given, or set to itemLink if not nil, or set to nil
+			end
 		end
-		strOut = strOut .. "\t</item>\n"
+
+		strOut = strOut .. string.format( '\t<itemLink><![CDATA[%s]]></itemLink>\n', (itemLink or '') )
+		strOut = strOut .. "</item>\n"
 	end
 
 	strOut = strOut .. "</ineed>"
