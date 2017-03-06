@@ -11,6 +11,10 @@ function DoFile( filename )
 	local f = assert( loadfile( filename ) )
 	return f()
 end
+function GetFormattedDate( TS )
+	dateFormat = "%Y-%m-%dT%H:%M:%S"
+	return os.date( dateFormat, TS )
+end
 
 function ExportXML()
 	strOut = "<?xml version='1.0' encoding='utf-8' ?>\n"
@@ -21,15 +25,18 @@ function ExportXML()
 
 		for realm, realmStruct in pairs( ineedStruct ) do
 			for playerName, playerStruct in pairs( realmStruct ) do
+
 				strOut = strOut .. string.format( '\t<player realm="%s" name="%s" faction="%s" has="%s" needs="%s" added="%s" addedTS="%s" updated="%s" updatedTS="%s" />\n',
 						realm, playerName, playerStruct.faction, playerStruct.total + (playerStruct.inmail or 0), playerStruct.needed,
-						os.date("%Y-%m-%dT%H:%M:%S", playerStruct.added), playerStruct.added,
-						(playerStruct.updated and os.date("%Y-%m-%dT%H:%M:%S", playerStruct.updated) or ''), playerStruct.updated or '' )
+						GetFormattedDate(playerStruct.added), playerStruct.added,
+						(playerStruct.updated and GetFormattedDate(playerStruct.updated) or ''), playerStruct.updated or '' )
 				itemLink = ( playerStruct.link or (itemLink or nil) ) -- set to link if given, or set to itemLink if not nil, or set to nil
 			end
 		end
+		itemName = string.match(itemLink, "%[(.*)%]")
 
 		strOut = strOut .. string.format( '\t<itemLink><![CDATA[%s]]></itemLink>\n', (itemLink or '') )
+		strOut = strOut .. string.format( '\t<itemName><![CDATA[%s]]></itemName>\n', (itemName or '') )
 		strOut = strOut .. "</item>\n"
 	end
 
@@ -39,13 +46,30 @@ function ExportXML()
 end
 function ExportJSON()
 	strOut = '{"INEED": {\n'
+	itemList = {}
 	for itemID, ineedStruct in pairs( INEED_data ) do
-		strOut = strOut .. string.format( '\t"%s": {', itemID )
+		itemStr = string.format( '\t"%s": {', itemID )
+		playerList = {}
 		for realm, realmStruct in pairs( ineedStruct ) do
-			strOut = strOut .. string.format( '\n\t\t"%s": {', realm )
-			strOut = strOut .. "\t},\n"
+			for playerName, playerStruct in pairs( realmStruct ) do
+				table.insert( playerList, string.format( '{"name": "%s", "realm": "%s", "faction": "%s", "has": "%s", "needs": "%s", "added": "%s", "addedTS": "%s", "updated": "%s", "updatedTS": "%s"}',
+						playerName, realm, playerStruct.faction, playerStruct.total + (playerStruct.inmail or 0), playerStruct.needed,
+						os.date("%Y-%m-%dT%H:%M:%S", playerStruct.added), playerStruct.added,
+						(playerStruct.updated and os.date("%Y-%m-%dT%H:%M:%S", playerStruct.updated) or ''), playerStruct.updated or '' ) )
+				itemLink = ( playerStruct.link or (itemLink or nil) )
+			end
 		end
+		itemName = string.match( itemLink, "%[(.*)%]" )
+
+		-- add players:
+		itemStr = itemStr .. '"players": ['.. table.concat( playerList, ", " ) .."], "
+
+		-- add item metadata
+		itemStr = itemStr .. string.format( '"itemLink": "%s", "itemName": "%s" }', (itemLink or ''), (itemName or '') )
+
+		table.insert( itemList, itemStr )
 	end
+	strOut = strOut .. table.concat( itemList, ",\n " ).."\n}}\n"
 
 	return strOut
 end
