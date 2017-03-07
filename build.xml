@@ -109,9 +109,13 @@
 	<target name="web.deploy" description="deploys the web site">
 		<mkdir	dir="${target.dir}/web"/>
 		<zip	destfile="${target.dir}/${ant.project.name}-web.zip"
-				basedir="site"
+				basedir="src/web"
 				includes="**"/>
-		<delete dir="${target.dir}/web" verbose="true"/>
+
+		<exec executable="rsync" dir="src/web" failonerror="true">
+			<arg line='-rvihz --rsh="/usr/bin/ssh -l ${USER} -p 2022" . ${USER}@${HOST}:${DIR}'/>
+		</exec>
+	<!--		<delete dir="${target.dir}/web" verbose="true"/>   -->
 	</target>
 
 	<target name="wow" depends="test" description="copy files to currnet wow install">

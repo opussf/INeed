@@ -5,13 +5,13 @@
 <xsl:output method="html"
 doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
-	
+
 <xsl:template match="/">
 	<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
-	<link rel='stylesheet' href='css/bootstrap.css'/>
+	<link rel='stylesheet' href='/css/bootstrap.css'/>
 	<link rel='stylesheet' href='css/ineed.css'/>
-	<script src='js/bootstrap.min.js'></script>
+	<script src='/js/bootstrap.min.js'></script>
 	<meta name='viewport' content='width=device-width, initial-scale=1'/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<meta http-equiv="refresh" content="300"/>
@@ -43,7 +43,7 @@ doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 	<div class='row ineed-stats'>
 	<div class='row ineed-item-count'>
 	<div class='col-sm-6 col-sm-offset-1'>
-	<xsl:value-of select="count(/ineed/item)"/> items. 
+	<xsl:value-of select="count(/ineed/item)"/> items.
 	(<xsl:value-of select='sum(/ineed/item/player/@has)'/> / <xsl:value-of select='sum(/ineed/item/player/@needs)'/>)
 	</div>
 	</div>
@@ -137,7 +137,7 @@ doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" />
 	Added:&#160;<xsl:value-of select='@added'/>
 	Updated:&#160;<xsl:value-of select='@updated'/>
 	</div>
-	
+
 	</div> <!-- row -->
 </xsl:template>
 
