@@ -27,7 +27,7 @@ function ExportXML()
 			for playerName, playerStruct in pairs( realmStruct ) do
 
 				strOut = strOut .. string.format( '\t<player realm="%s" name="%s" faction="%s" has="%s" needs="%s" added="%s" addedTS="%s" updated="%s" updatedTS="%s" />\n',
-						realm, playerName, playerStruct.faction, playerStruct.total + (playerStruct.inmail or 0), playerStruct.needed,
+						realm, playerName, playerStruct.faction, playerStruct.total + (playerStruct.inMail or 0), playerStruct.needed,
 						GetFormattedDate(playerStruct.added), playerStruct.added,
 						(playerStruct.updated and GetFormattedDate(playerStruct.updated) or ''), playerStruct.updated or '' )
 				itemLink = ( playerStruct.link or (itemLink or nil) ) -- set to link if given, or set to itemLink if not nil, or set to nil
@@ -45,15 +45,15 @@ function ExportXML()
 
 end
 function ExportJSON()
-	strOut = '{"INEED": {\n'
+	strOut = '{"INEED": [\n'
 	itemList = {}
 	for itemID, ineedStruct in pairs( INEED_data ) do
-		itemStr = string.format( '\t"%s": {', itemID )
+		itemStr = string.format( '\t{"id": %s, "players": ', itemID )
 		playerList = {}
 		for realm, realmStruct in pairs( ineedStruct ) do
 			for playerName, playerStruct in pairs( realmStruct ) do
-				table.insert( playerList, string.format( '{"name": "%s", "realm": "%s", "faction": "%s", "has": "%s", "needs": "%s", "added": "%s", "addedTS": "%s", "updated": "%s", "updatedTS": "%s"}',
-						playerName, realm, playerStruct.faction, playerStruct.total + (playerStruct.inmail or 0), playerStruct.needed,
+				table.insert( playerList, string.format( '{"name": "%s", "realm": "%s", "faction": "%s", "has": %s, "needs": %s, "added": "%s", "addedTS": %s, "updated": "%s", "updatedTS": %s}',
+						playerName, realm, playerStruct.faction, playerStruct.total + (playerStruct.inMail or 0), playerStruct.needed,
 						os.date("%Y-%m-%dT%H:%M:%S", playerStruct.added), playerStruct.added,
 						(playerStruct.updated and os.date("%Y-%m-%dT%H:%M:%S", playerStruct.updated) or ''), playerStruct.updated or '' ) )
 				itemLink = ( playerStruct.link or (itemLink or nil) )
@@ -62,14 +62,14 @@ function ExportJSON()
 		itemName = string.match( itemLink, "%[(.*)%]" )
 
 		-- add players:
-		itemStr = itemStr .. '"players": ['.. table.concat( playerList, ", " ) .."], "
+		itemStr = itemStr .. '['.. table.concat( playerList, ", " ) .."], "
 
 		-- add item metadata
 		itemStr = itemStr .. string.format( '"itemLink": "%s", "itemName": "%s" }', (itemLink or ''), (itemName or '') )
 
 		table.insert( itemList, itemStr )
 	end
-	strOut = strOut .. table.concat( itemList, ",\n " ).."\n}}\n"
+	strOut = strOut .. table.concat( itemList, ",\n " ).."\n]}\n"
 
 	return strOut
 end
