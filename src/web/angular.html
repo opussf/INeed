@@ -27,31 +27,37 @@
 
 <div class='row ineed-stats'>
 <div class='row ineed-item-count'>
-<div class='col-sm-6 col-sm-offset-1'>
+<div class='col-sm-3 col-sm-offset-1'>
 {{ (items).length}} items. ({{haveItemCount}} / {{needItemCount}})
+</div> <!-- col -->
+<div class='col-sm-3'>Data loaded {{dataLoadedAt | amCalendar}}
 </div> <!-- col -->
 </div> <!-- row -->
 <div class='row ineed-item-stats'>
 <div class='col-xs-3 col-md-2 col-sm-offset-1'>Oldest added item:</div>
-<div class='col-xs-2 col-sm-1'><a href="#{{oldestAddedItem.itemID}}">{{oldestAddedItem.itemID}}</a></div>
+<div class='col-xs-2 col-sm-1'>
+<a href ng-click="itemFilter={id:oldestAddedItem.itemID}">{{oldestAddedItem.itemID}}</a></div>
 <div class='col-xs-4 col-sm-3 col-md-2'>{{oldestAddedItem.date | amCalendar}}</div>
 <div class='col-xs-3'>{{oldestAddedItem.who}}</div>
 </div> <!-- row -->
 <div class='row ineed-item-stats'>
 <div class='col-xs-3 col-md-2 col-sm-offset-1'>Oldest updated item:</div>
-<div class='col-xs-2 col-sm-1'><a href="#{{oldestUpdatedItem.itemID}}">{{oldestUpdatedItem.itemID}}</a></div>
+<div class='col-xs-2 col-sm-1'>
+<a href ng-click="itemFilter={id:oldestUpdatedItem.itemID}">{{oldestUpdatedItem.itemID}}</a></div>
 <div class='col-xs-4 col-sm-3 col-md-2'>{{oldestUpdatedItem.date | amCalendar}}</div>
 <div class='col-xs-3'>{{oldestUpdatedItem.who}}</div>
 </div> <!-- row -->
 <div class='row ineed-item-stats'>
 <div class='col-xs-3 col-md-2 col-sm-offset-1'>Most recently added:</div>
-<div class='col-xs-2 col-sm-1'><a href="#{{newestAddedItem.itemID}}">{{newestAddedItem.itemID}}</a></div>
+<div class='col-xs-2 col-sm-1'>
+<a href ng-click="itemFilter={id:newestAddedItem.itemID}">{{newestAddedItem.itemID}}</a></div>
 <div class='col-xs-4 col-sm-3 col-md-2'>{{newestAddedItem.date | amCalendar}}</div>
 <div class='col-xs-3'>{{newestAddedItem.who}}</div>
 </div> <!-- row -->
 <div class='row ineed-item-stats'>
 <div class='col-xs-3 col-md-2 col-sm-offset-1'>Most recently updated:</div>
-<div class='col-xs-2 col-sm-1'><a href="#{{newestUpdatedItem.itemID}}">{{newestUpdatedItem.itemID}}</a></div>
+<div class='col-xs-2 col-sm-1'>
+<a href ng-click="itemFilter={id:newestUpdatedItem.itemID}">{{newestUpdatedItem.itemID}}</a></div>
 <div class='col-xs-4 col-sm-3 col-md-2'>{{newestUpdatedItem.date | amCalendar}}</div>
 <div class='col-xs-3'>{{newestUpdatedItem.who}}</div>
 </div> <!-- row -->
@@ -59,14 +65,19 @@
 
 <div class='row ineed-main'>
 <div class='row ineed-sort-head'>
+<div class='col-xs-11 col-xs-offset-1'>
 <ul>
 <li><a href ng-click="sortReverse = sortType=='id' ? !sortReverse : false; sortType='id'">ID
 	<span ng-show="sortType=='id' && !sortReverse" class="fa fa-caret-down"></span>
 	<span ng-show="sortType=='id' && sortReverse" class="fa fa-caret-up"></span>
 </a></li>
+<li ng-show='itemFilter !== null && itemFilter.id'><a href ng-click='itemFilter=""'>Show All</a></li>
+<li ng-show='itemFilter === null || !itemFilter.id'><input type='text' ng-model='itemFilter'/></li>
+<li>Shown items: {{(items|filter:itemFilter).length}}</li>
 </ul>
+</div> <!-- col -->
 </div> <!-- ineed-sort-head -->
-<div class='row ineed-itemRow' ng-repeat="item in items | orderBy:sortType:sortReverse">
+<div class='row ineed-itemRow' ng-repeat="item in items | orderBy:sortType:sortReverse | filter:itemFilter">
 <div class='col-xs-12'>
 <div class='row ineed-itemLinkRow'>
 <div class='col-xs-12 ineed-itemLink'><a name='{{item.id}}' target="_blank" href="http://www.wowhead.com/item={{item.id}}">{{item.id}} ({{item.itemName}})</a></div>
@@ -107,6 +118,7 @@ $scope.loadData = function() {
 	$http.get('ineed.json')
 		.then( function( response ) {
 			$scope.items = response.data.INEED;
+			$scope.dataLoadedAt = new Date();
 			// stats
 			$scope.haveItemCount = 0; $scope.needItemCount = 0;
 			$scope.oldestAddedItem = {"itemID": 0, "date": new Date(), "who": ""};
