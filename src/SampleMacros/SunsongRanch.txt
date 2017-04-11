@@ -1,4 +1,4 @@
-Sets need for payments daily quest, and for blue reputation items, and Nomi's cooking item.
+ Sets need for payments daily quest, and for blue reputation items, and Nomi's cooking item.
 Calls Nomi.
 
 /in item:90735

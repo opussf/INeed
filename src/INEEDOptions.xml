@@ -98,9 +98,21 @@
 					<PostClick>INEED.OptionsPanel_CheckButton_PostClick(self,"printSuccess")</PostClick>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_AudibleAlert" inherits="INEEDOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_SuccessScreenShot" inherits="INEEDOptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_PrintSuccess" relativePoint="BOTTOMLEFT">
+						<Offset><AbsDimension x="0" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self.tooltip = "Take a screenshot on success"</OnLoad>
+					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad( self, "doScreenShot", "Take a screenshot on success")</OnShow>
+					<PostClick>INEED.OptionsPanel_CheckButton_PostClick( self, "doScreenShot" )</PostClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parent_AudibleAlert" inherits="INEEDOptionsCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_SuccessScreenShot" relativePoint="BOTTOMLEFT">
 						<Offset><AbsDimension x="0" y="-10"/></Offset>
 					</Anchor>
 				</Anchors>
