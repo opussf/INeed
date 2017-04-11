@@ -1,9 +1,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:ex="http://exslt.org/dates-and-times"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<xsl:output method="xml" indent="yes"/>
 
-	<xsl:variable name="now" select="ex:seconds()" />
 	<xsl:variable name='maxLevel' select='/restedToons/maxLevel'/>
 
 	<xsl:template match="/">
@@ -62,6 +60,9 @@
 	<xsl:template match='item'>
 		<xsl:param name="title"/>
 		<xsl:if test='position() = 1'>
+		<xsl:variable name="playerInfo"><xsl:apply-templates select="./player">
+			<xsl:sort data-type='number' order='descending' select='./player/@added'/>
+		</xsl:apply-templates></xsl:variable>
 		<item>
 		<title><xsl:value-of select="$title"/>: <xsl:value-of select="@id"/>
 		<xsl:text> added at </xsl:text>
@@ -69,8 +70,8 @@
 			<xsl:sort data-type='number' order='descending' select='./player/@added'/>
 		</xsl:apply-templates>
 		</title>
-		<link>http://www.wowhead.com/item=<xsl:value-of select='@id'/></link>
-		<guid isPermaLink="false"><xsl:value-of select="@id"/></guid>
+		<link>http://www.zz9-za.com/~opus/ineed/&#x23;<xsl:value-of select='@id'/></link>
+		<guid isPermaLink="false"><xsl:value-of select="@id"/>-<xsl:value-of select='$title'/>-<xsl:value-of select='$playerInfo'/></guid>
 		<description><xsl:value-of select="@id"/> (<xsl:value-of select="itemLink"/>)</description>
 		</item>
 		</xsl:if>
