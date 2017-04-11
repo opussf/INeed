@@ -148,6 +148,7 @@ function INEED.MAIL_SEND_SUCCESS()
 				INEED_data[i][realm][sendto].inMail =
 						(INEED_data[i][realm][sendto].inMail and
 						(INEED_data[i][realm][sendto].inMail + q) or q)
+				INEED_data[i][realm][sendto].updated = time()
 				--INEED.Print(i..":"..q)
 			end
 		end
@@ -492,6 +493,9 @@ function INEED.itemFulfilledAnnouce()
 		if INEED_options.playSoundFile and INEED_options.soundFile then
 			PlaySoundFile( INEED_options.soundFile )
 		end
+	end
+	if INEED_options.doScreenShot then
+		Screenshot()
 	end
 end
 function INEED.showSplash( msg )

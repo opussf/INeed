@@ -1,0 +1,15 @@
+body {
+	background-image: url('../bg/128-168.jpg');
+}
+
+div.ineed-stats {
+	border-bottom: solid #000;
+}
+div.ineed-itemRow {
+	border-bottom: solid #000;
+	border-bottom-width: 1px;
+}
+div.ineed-itemSum {
+	border-top: dotted #000;
+	border-top-width: 1px;
+}

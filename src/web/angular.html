@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang='en'>
+<head>
+<meta charset="utf-8"/>
+<link href='rss' rel='alternate' type='application/rss+xml' title='Ineed RSS Feed'/>
+<link href='atom' rel='alternate' type='application/atom+xml' title='Ineed Atom Feed'/>
+<link rel='icon' type='image/png' href='favicon.png'/>
+<link rel="stylesheet" href="/css/bootstrap.css" type="text/css"/>
+<link rel="stylesheet" href="css/ineed.css" type="text/css"/>
+<link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css"/>
+<script src="/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>INeed Items</title>
+<script src="/js/angular.min.js"></script>
+<script src="/js/moment.js"></script>
+<script src="/js/angular-moment.min.js"></script>
+</head>
+
+<body>
+<div class='container-fluid'>
+<div class='main' ng-app='ineedApp' ng-controller='ineedController'>
+<div class='row ineed-title'>
+<div class='col-sm-6 col-sm-offset-3'>
+<span>Needed items by my characters from WoW.</span>
+</div> <!-- col -->
+</div> <!-- row -->
+
+<div class='row ineed-stats'>
+<div class='row ineed-item-count'>
+<div class='col-sm-3 col-sm-offset-1'>
+{{ (items).length}} items. ({{haveItemCount}} / {{needItemCount}})
+</div> <!-- col -->
+<div class='col-sm-3'>Data loaded {{dataLoadedAt | amCalendar}}
+</div> <!-- col -->
+</div> <!-- row -->
+<div class='row ineed-item-stats'>
+<div class='col-xs-3 col-md-2 col-sm-offset-1'>Oldest added item:</div>
+<div class='col-xs-2 col-sm-1'>
+<a href ng-click="itemFilter={id:oldestAddedItem.itemID}">{{oldestAddedItem.itemID}}</a></div>
+<div class='col-xs-4 col-sm-3 col-md-2'>{{oldestAddedItem.date | amCalendar}}</div>
+<div class='col-xs-3'>{{oldestAddedItem.who}}</div>
+</div> <!-- row -->
+<div class='row ineed-item-stats'>
+<div class='col-xs-3 col-md-2 col-sm-offset-1'>Oldest updated item:</div>
+<div class='col-xs-2 col-sm-1'>
+<a href ng-click="itemFilter={id:oldestUpdatedItem.itemID}">{{oldestUpdatedItem.itemID}}</a></div>
+<div class='col-xs-4 col-sm-3 col-md-2'>{{oldestUpdatedItem.date | amCalendar}}</div>
+<div class='col-xs-3'>{{oldestUpdatedItem.who}}</div>
+</div> <!-- row -->
+<div class='row ineed-item-stats'>
+<div class='col-xs-3 col-md-2 col-sm-offset-1'>Most recently added:</div>
+<div class='col-xs-2 col-sm-1'>
+<a href ng-click="itemFilter={id:newestAddedItem.itemID}">{{newestAddedItem.itemID}}</a></div>
+<div class='col-xs-4 col-sm-3 col-md-2'>{{newestAddedItem.date | amCalendar}}</div>
+<div class='col-xs-3'>{{newestAddedItem.who}}</div>
+</div> <!-- row -->
+<div class='row ineed-item-stats'>
+<div class='col-xs-3 col-md-2 col-sm-offset-1'>Most recently updated:</div>
+<div class='col-xs-2 col-sm-1'>
+<a href ng-click="itemFilter={id:newestUpdatedItem.itemID}">{{newestUpdatedItem.itemID}}</a></div>
+<div class='col-xs-4 col-sm-3 col-md-2'>{{newestUpdatedItem.date | amCalendar}}</div>
+<div class='col-xs-3'>{{newestUpdatedItem.who}}</div>
+</div> <!-- row -->
+</div> <!-- row ineed-stats -->
+
+<div class='row ineed-main'>
+<div class='row ineed-sort-head'>
+<div class='col-xs-11 col-xs-offset-1'>
+<ul>
+<li><a href ng-click="sortReverse = sortType=='id' ? !sortReverse : false; sortType='id'">ID
+	<span ng-show="sortType=='id' && !sortReverse" class="fa fa-caret-down"></span>
+	<span ng-show="sortType=='id' && sortReverse" class="fa fa-caret-up"></span>
+</a></li>
+<li ng-show='itemFilter !== null && itemFilter.id'><a href ng-click='itemFilter=""'>Show All</a></li>
+<li ng-show='itemFilter === null || !itemFilter.id'><input type='text' ng-model='itemFilter'/></li>
+<li>Shown items: {{(items|filter:itemFilter).length}}</li>
+</ul>
+</div> <!-- col -->
+</div> <!-- ineed-sort-head -->
+<div class='row ineed-itemRow' ng-repeat="item in items | orderBy:sortType:sortReverse | filter:itemFilter">
+<div class='col-xs-12'>
+<div class='row ineed-itemLinkRow'>
+<div class='col-xs-12 ineed-itemLink'><a name='{{item.id}}' target="_blank" href="http://www.wowhead.com/item={{item.id}}">{{item.id}} ({{item.itemName}})</a></div>
+</div> <!-- row ineed-itemLinkRow -->
+<div class='row ineed-playerInfoRow' ng-repeat="player in item.players | orderBy:'updatedTS'">
+<div class='col-xs-3 col-md-offset-1'>{{player.name}}-{{player.realm}}</div>
+<div class='col-xs-1 col-m1-1'>({{player.has}} / {{player.needs}})</div>
+<div class='col-xs-3'>Added: {{player.addedTS*1000 | amCalendar}}</div>
+<div class='col-xs-3'>Updated: {{player.updatedTS*1000 | amCalendar}}</div>
+</div> <!-- row playerInfoRow -->
+<div class='row ineed-itemSum' ng-show='(item.players).length > 1'>
+<div class='col-xs-2 col-md-1 col-xs-offset-3 col-md-offset-4'>({{item.players | sumOfValue:'has'}} / {{item.players | sumOfValue:'needs'}})</div>
+</div> <!-- row ineed-itemSum -->
+</div> <!-- col -->
+</div> <!-- row ineed-itemRow -->
+</div> <!-- row ineed-main -->
+</div> <!-- main -->
+</div> <!-- container -->
+
+<script>
+var app = angular.module('ineedApp', ['angularMoment']);
+app.filter('sumOfValue', function() {
+	return function(data, key) {
+		if (angular.isUndefined(data) || angular.isUndefined(key))
+			return 0;
+		var sum = 0;
+		angular.forEach(data, function(v, k) {
+			sum = sum + parseInt(v[key]);
+		});
+		return sum;
+	}
+});
+app.controller('ineedController', ["$scope", "$http", "$interval", "moment", function( $scope, $http, $interval, moment ) {
+$scope.sortReverse = false;
+$scope.sortType = 'id';
+
+$scope.loadData = function() {
+	$http.get('ineed.json')
+		.then( function( response ) {
+			$scope.items = response.data.INEED;
+			$scope.dataLoadedAt = new Date();
+			// stats
+			$scope.haveItemCount = 0; $scope.needItemCount = 0;
+			$scope.oldestAddedItem = {"itemID": 0, "date": new Date(), "who": ""};
+			$scope.oldestUpdatedItem = {"itemID": 0, "date": new Date(), "who": ""};
+			$scope.newestAddedItem = {"itemID": 0, "date": new Date(0), "who": ""};
+			$scope.newestUpdatedItem = {"itemID": 0, "date": new Date(0), "who": ""};
+
+			angular.forEach( $scope.items, function( item, key ) {
+				angular.forEach( item.players, function( player, pkey ) {
+					$scope.haveItemCount += player.has;
+					$scope.needItemCount += player.needs;
+
+					addedDate = new Date( player.addedTS * 1000 );
+					updatedDate = new Date( player.updatedTS * 1000 );
+					if (player.addedTS*1000 < ($scope.oldestAddedItem.date.getTime())) {
+						$scope.oldestAddedItem = {"itemID": item.id, "date": addedDate, "who": player.name + " - " + player.realm};
+					};
+					if (player.updatedTS*1000 < ($scope.oldestUpdatedItem.date.getTime())) {
+						$scope.oldestUpdatedItem = {"itemID": item.id, "date": updatedDate, "who": player.name + " - " + player.realm};
+					};
+					if (player.addedTS*1000 > ($scope.newestAddedItem.date.getTime())) {
+						$scope.newestAddedItem = {"itemID": item.id, "date": addedDate, "who": player.name + " - " + player.realm};
+					};
+					if (player.updatedTS*1000 > ($scope.newestUpdatedItem.date.getTime())) {
+						$scope.newestUpdatedItem = {"itemID": item.id, "date": updatedDate, "who": player.name + " - " + player.realm};
+					};
+						
+				});
+			});
+		} ) 
+};
+
+//initial load
+$scope.loadData();
+
+var reload = $interval( function() { 
+	$scope.loadData();
+	console.log("Reload here");
+	}, 60000);
+
+} ] );
+</script>
+</body>
+</html>
