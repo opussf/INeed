@@ -148,6 +148,7 @@ function INEED.MAIL_SEND_SUCCESS()
 				INEED_data[i][realm][sendto].inMail =
 						(INEED_data[i][realm][sendto].inMail and
 						(INEED_data[i][realm][sendto].inMail + q) or q)
+				INEED_data[i][realm][sendto].updated = time()
 				--INEED.Print(i..":"..q)
 			end
 		end
