@@ -967,8 +967,5 @@ end
 function test.testAddAchievement_complete_noItemsNeeded()
 	INEED.command( "achievement:10722" )
 end
-function test.test_yaya()
-	--print("----->"..GetAchievementNumCriteria("10722"))
 
-end
 test.run()
