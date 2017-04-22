@@ -1022,6 +1022,14 @@ function test.testSlush_PlayerMoney_DoesNotSubtractFromAccount()
 	INEED.PLAYER_MONEY()
 	assertEquals( 10000, INEED_account.balance )  -- same as at the start
 end
+function test.testSlush_PlayerMoney_DoesNotExceedSetMax()
+	INEED_account.balance = 10000
+	myCopper = 150000
+	INEED.command( "slush 90% 2g" )
+	myCopper = 20150000  -- +2000g
+	INEED.PLAYER_MONEY()
+	assertEquals( 20000, INEED_account.balance )
+end
 function test.testSlush_plusMax()
 	INEED_account.max = 10000
 	INEED.command( "slush 1% +1g" )
@@ -1032,6 +1040,7 @@ function test.testSlush_plusMax_noPreviousVal()
 	INEED.command( "slush 1% +2g" )
 	assertEquals( 20000, INEED_account.max )
 end
+
 
 
 test.run()

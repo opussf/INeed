@@ -422,7 +422,10 @@ function INEED.PLAYER_MONEY()
 		local change = GetMoney() - (INEED_account.current or 0)
 		change = change * INEED_account.percent
 		if (INEED_account.max and INEED_account.balance < INEED_account.max or true) and (change>0) then
-			INEED_account.balance = INEED_account.balance and (INEED_account.balance + change) or change
+			INEED_account.balance = INEED_account.balance + change
+			if INEED_account.max and (INEED_account.balance > INEED_account.max) then
+				INEED_account.balance = INEED_account.max
+			end
 		end
 	end
 	if INEED_gold[INEED.realm] then
@@ -1040,8 +1043,8 @@ function INEED.slush( strIn )
 		INEED_account.max = (modify) and (INEED_account.max and INEED_account.max + maxValue) or maxValue
 		INEED_account.current = GetMoney()
 	end
-	INEED.Print( (INEED_account.percent * 100).."% "..(INEED_account.max and "max: "..INEED_account.max) )
-
+	INEED.Print( "Slush: "..(INEED_account.percent and ((INEED_account.percent * 100).."%") or "")..
+			(INEED_account.max and (" max: "..INEED_account.max) or "") )
 end
 
 -- Testing functions
