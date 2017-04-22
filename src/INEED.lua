@@ -418,14 +418,17 @@ function INEED.MERCHANT_SHOW()
 end
 function INEED.PLAYER_MONEY()
 	-- PLAYER_MONEY has changed
-	if INEED_account.percent then
+	if INEED_account.percent then  -- look to see if need to add to balance
 		local change = GetMoney() - (INEED_account.current or 0)
 		change = change * INEED_account.percent
-		if (INEED_account.max and INEED_account.balance < INEED_account.max or true) and (change>0) then
+
+		if (INEED_account.max and ((INEED_account.balance or 0) < INEED_account.max) or true)  -- true if max not set
+				and (change>0) then
 			INEED_account.balance = INEED_account.balance + change
 			if INEED_account.max and (INEED_account.balance > INEED_account.max) then
 				INEED_account.balance = INEED_account.max
 			end
+			INEED.Print( "account: "..GetCoinTextureString((INEED_account.balance or 0)).." +"..GetCoinTextureString( change ) )
 		end
 	end
 	if INEED_gold[INEED.realm] then
@@ -1044,7 +1047,7 @@ function INEED.slush( strIn )
 		INEED_account.current = GetMoney()
 	end
 	INEED.Print( "Slush: "..(INEED_account.percent and ((INEED_account.percent * 100).."%") or "")..
-			(INEED_account.max and (" max: "..INEED_account.max) or "") )
+			(INEED_account.max and (" max: "..GetCoinTextureString(INEED_account.max)) or "") )
 end
 
 -- Testing functions
