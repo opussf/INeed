@@ -422,7 +422,7 @@ function INEED.PLAYER_MONEY()
 		local change = GetMoney() - (INEED_account.current or 0)
 		change = change * INEED_account.percent
 		if (INEED_account.max and INEED_account.balance < INEED_account.max or true) and (change>0) then
-			INEED_account.balance = INEED_account.balance + change
+			INEED_account.balance = INEED_account.balance and (INEED_account.balance + change) or change
 		end
 	end
 	if INEED_gold[INEED.realm] then
@@ -1026,18 +1026,21 @@ end
 function INEED.slush( strIn )
 	--print( "Slush( "..strIn.. " )")
 	local percentLoc, percentLocEnd = strfind( strIn, "[.0-9]*%%")
-	--print( percentLoc, percentLocEnd )
-	local percent = strsub( strIn, percentLoc, percentLocEnd-1 )
-	local goldValue = strsub( strIn, percentLocEnd+2 )
-	--print( "goldValue: "..goldValue )
-	local maxValue, modify = INEED.parseGold( goldValue )
+	if percentLoc then
+		--print( percentLoc, percentLocEnd )
+		local percent = strsub( strIn, percentLoc, percentLocEnd-1 )
+		local goldValue = strsub( strIn, percentLocEnd+2 )
+		--print( "goldValue: "..goldValue )
+		local maxValue, modify = INEED.parseGold( goldValue )
 
-	--print( "Slush( "..(percent or "nil")..", "..(maxValue or "nil").." )" )
-	--print( percent.."::"..(maxValue or "nil").." -> "..value.."::"..(modify and "true" or "false") )
+		--print( "Slush( "..(percent or "nil")..", "..(maxValue or "nil").." )" )
+		--print( percent.."::"..(maxValue or "nil").." -> "..value.."::"..(modify and "true" or "false") )
 
-	INEED_account.percent = percent / 100
-	INEED_account.max = (modify) and (INEED_account.max and INEED_account.max + maxValue) or maxValue
-	INEED_account.current = GetMoney()
+		INEED_account.percent = percent / 100
+		INEED_account.max = (modify) and (INEED_account.max and INEED_account.max + maxValue) or maxValue
+		INEED_account.current = GetMoney()
+	end
+	INEED.Print( (INEED_account.percent * 100).."% "..(INEED_account.max and "max: "..INEED_account.max) )
 
 end
 
