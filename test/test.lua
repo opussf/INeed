@@ -978,6 +978,15 @@ function test.testSlush_setPercent_withMax()
 	assertEquals( 0.05, INEED_account.percent )
 	assertEquals( 1000000, INEED_account.max )
 end
+function test.testSlush_setPercent_withMax_withGoldAndSilver()
+	INEED.command( "slush 5% 100g 10s" )
+	assertEquals( 0.05, INEED_account.percent )
+	assertEquals( 1001000, INEED_account.max )
+end
+function test.testSlush_setPercent_greaterThan100()
+	INEED.command( "slush 500%" )
+	assertEquals( 5, INEED_account.percent )
+end
 function test.testSlush_setPercent_withMax_accountDoesNotChange()
 	INEED.command( "account 100g" )
 	INEED.command( "slush 1% 50g" )
@@ -1013,5 +1022,16 @@ function test.testSlush_PlayerMoney_DoesNotSubtractFromAccount()
 	INEED.PLAYER_MONEY()
 	assertEquals( 10000, INEED_account.balance )  -- same as at the start
 end
+function test.testSlush_plusMax()
+	INEED_account.max = 10000
+	INEED.command( "slush 1% +1g" )
+	assertEquals( 20000, INEED_account.max )
+end
+function test.testSlush_plusMax_noPreviousVal()
+	INEED_account.max = nil
+	INEED.command( "slush 1% +2g" )
+	assertEquals( 20000, INEED_account.max )
+end
+
 
 test.run()
