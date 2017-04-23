@@ -421,16 +421,15 @@ function INEED.PLAYER_MONEY()
 	if INEED_account.percent then  -- look to see if need to add to balance
 		local change = GetMoney() - (INEED_account.current or 0)
 		change = change * INEED_account.percent
-
-		if (INEED_account.max and ((INEED_account.balance or 0) < INEED_account.max) or true)  -- true if max not set
-				and (change>0) then
-			INEED_account.balance = INEED_account.balance + change
+		if ((not INEED_account.max) or ((INEED_account.balance or 0) < INEED_account.max)) and change>0 then
+			INEED_account.balance = (INEED_account.balance or 0) + change
 			if INEED_account.max and (INEED_account.balance > INEED_account.max) then
 				INEED_account.balance = INEED_account.max
 			end
 			INEED.Print( "account: "..GetCoinTextureString((INEED_account.balance or 0)).." +"..GetCoinTextureString( change ) )
 		end
 	end
+	INEED_account.current = GetMoney()
 	if INEED_gold[INEED.realm] then
 		if INEED_gold[INEED.realm][INEED.name] then
 			if INEED_gold[INEED.realm][INEED.name].needed then
