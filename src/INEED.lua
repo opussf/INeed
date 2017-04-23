@@ -417,6 +417,19 @@ function INEED.MERCHANT_SHOW()
 	]]--
 end
 function INEED.PLAYER_MONEY()
+	-- PLAYER_MONEY has changed
+	if INEED_account.percent then  -- look to see if need to add to balance
+		local change = GetMoney() - (INEED_account.current or 0)
+		change = change * INEED_account.percent
+		if ((not INEED_account.max) or ((INEED_account.balance or 0) < INEED_account.max)) and change>0 then
+			INEED_account.balance = (INEED_account.balance or 0) + change
+			if INEED_account.max and (INEED_account.balance > INEED_account.max) then
+				INEED_account.balance = INEED_account.max
+			end
+			INEED.Print( "account: "..GetCoinTextureString((INEED_account.balance or 0)).." +"..GetCoinTextureString( change ) )
+		end
+	end
+	INEED_account.current = GetMoney()
 	if INEED_gold[INEED.realm] then
 		if INEED_gold[INEED.realm][INEED.name] then
 			if INEED_gold[INEED.realm][INEED.name].needed then
@@ -1015,6 +1028,26 @@ function INEED.archScan()
 		end
 	end
 end
+function INEED.slush( strIn )
+	--print( "Slush( "..strIn.. " )")
+	local percentLoc, percentLocEnd = strfind( strIn, "[.0-9]*%%")
+	if percentLoc then
+		--print( percentLoc, percentLocEnd )
+		local percent = strsub( strIn, percentLoc, percentLocEnd-1 )
+		local goldValue = strsub( strIn, percentLocEnd+2 )
+		--print( "goldValue: "..goldValue )
+		local maxValue, modify = INEED.parseGold( goldValue )
+
+		--print( "Slush( "..(percent or "nil")..", "..(maxValue or "nil").." )" )
+		--print( percent.."::"..(maxValue or "nil").." -> "..value.."::"..(modify and "true" or "false") )
+
+		INEED_account.percent = percent / 100
+		INEED_account.max = (modify) and (INEED_account.max and INEED_account.max + maxValue) or maxValue
+		INEED_account.current = GetMoney()
+	end
+	INEED.Print( "Slush: "..(INEED_account.percent and ((INEED_account.percent * 100).."%") or "")..
+			(INEED_account.max and (" max: "..GetCoinTextureString(INEED_account.max)) or "") )
+end
 
 -- Testing functions
 
@@ -1079,6 +1112,10 @@ INEED.CommandList = {
 	["arch"] = {
 		["func"] = INEED.archScan,
 		["help"] = {"", "Scans the archaeology items"},
+	},
+	["slush"] = {
+		["func"] = INEED.slush,
+		["help"] = {"[percent%] [MaxAmount]", "Sets an auto fill percent up to MaxAmount"},
 	},
 	["test"] = {
 		["func"] = INEED.test,
