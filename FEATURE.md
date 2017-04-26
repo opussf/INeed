@@ -1,5 +1,36 @@
 # Feature
 
+## Tithe
+This has been an idea for ages, but it was stymied by the classic 'give it a name' problem.
+I've decided to go with the term 'tithe', even though it conotates the wrong details, specifically that the amount is paid to an external entity.
+
+The idea is to be able to give the addon an ability to auto-fill the spending account.
+
+After talking to many people, the idea of using 'slush' as the term has solidified.
+
+I think that I want to have:
+1) A way to set a % gain.
+2) A way to set a maximum value
+3) A way to set an amount.
+
+
+/in account 1% 50g   --> 1% slush up to 50g
+/in account 50g 1%   --> 1% slush up to 50g, start with 50g.
+/in account 1%       --> 1% slush, no max, no initial value
+/in account 50g      --> 50g account value
+/in slush 1% 50g     --> slush values, 1% with a maximum of 50g from slush
+
+/in account 100g     --> sets the account amount
+/in slush 1%         --> sets a %, no maximum
+/in slush 1% 50g     --> % with a maximum
+/in slush 1% 0g      --> %, clears maximum
+/in slush 0% 0g      --> clears percent
+
+
+
+
+
+
 ## Achievements
 /in achievement:10722
 "|cffffff00|Hachievement:10722:Player-3661-06DAB4ED:0:0:0:-1:524288:0:0:0|h[The Wish Remover]|h|r"
