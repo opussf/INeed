@@ -1040,7 +1040,55 @@ function test.testSlush_plusMax_noPreviousVal()
 	INEED.command( "slush 1% +2g" )
 	assertEquals( 20000, INEED_account.max )
 end
-
-
+------
+-- Combat Hide
+function test.testHide_HideSet_CombatStarts_hideSetTrue()
+	INEED_options.combatHide = true
+	INEED.hide = nil
+	INEED.PLAYER_REGEN_DISABLED()
+	assertTrue( INEED.hide )
+end
+function test.testHide_HideSet_CombatStarts_isHidden()
+	INEED_options.combatHide = true
+	INEED.hide = nil
+	INEED.PLAYER_REGEN_DISABLED()
+	assertFalse( INEEDUIListFrame:IsShown() )
+end
+function test.testHide_HideSet_CombatEnds_hideSetNil()
+	INEED_options.combatHide = true
+	INEED.hide = true
+	INEED.PLAYER_REGEN_ENABLED()
+	assertIsNil( INEED.hide )
+end
+function test.testHide_HideSet_CombatEnds_isShown()
+	INEED_options.combatHide = true
+	INEED.hide = true
+	INEED.PLAYER_REGEN_ENABLED()
+	assertTrue( INEEDUIListFrame:IsShown() )
+end
+function test.testHide_HideUnset_CombatStarts_hideSetNil()
+	INEED_options.combatHide = nil
+	INEED.hide = nil
+	INEED.PLAYER_REGEN_DISABLED()
+	assertIsNil( INEED.hide )
+end
+function test.testHide_HideUnset_CombatStarts_isShown()
+	INEED_options.combatHide = nil
+	INEED.hide = nil
+	INEED.PLAYER_REGEN_DISABLED()
+	assertTrue( INEEDUIListFrame:IsShown() )
+end
+function test.testHide_HideUnset_CombatEnds_hideSetNil()
+	INEED_options.combatHide = nil
+	INEED.hide = true
+	INEED.PLAYER_REGEN_ENABLED()
+	assertIsNil( INEED.hide )
+end
+function test.testHide_HideUnset_CombatEnds_isShown()
+	INEED_options.combatHide = nil
+	INEED.hide = true
+	INEED.PLAYER_REGEN_ENABLED()
+	assertTrue( INEEDUIListFrame:IsShown() )
+end
 
 test.run()

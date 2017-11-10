@@ -67,6 +67,9 @@ function INEED.OnLoad()
 	--INEED_Frame:RegisterEvent("TRADE_SKILL_FILTER_UPDATE")
 	-- ^^^ Fired immediately after TRADE_SKILL_SHOW, after something is created via tradeskill, or anytime the tradeskill window is updated (filtered, tree folded/unfolded, etc.)
 	INEED_Frame:RegisterEvent("PLAYER_MONEY")
+	-- Hide display
+	INEED_Frame:RegisterEvent("PLAYER_REGEN_ENABLED")
+	INEED_Frame:RegisterEvent("PLAYER_REGEN_DISABLED")
 end
 function INEED.TRADE_SKILL_SHOW()
 	--INEED.Print("TradeSkill window opened.")
@@ -468,11 +471,26 @@ function INEED.PLAYER_MONEY()
 		end
 	end
 end
+function INEED.PLAYER_REGEN_DISABLED()
+	-- combat start
+	INEED.Print( "combat starts" )
+	if INEED_options.combatHide then
+		INEED.hide = true
+	end
+end
+function INEED.PLAYER_REGEN_ENABLED()
+	-- combat ends
+	INEED.Print( "combat ends" )
+	INEED.hide = nil
+end
 function INEED.OnUpdate()
 end
 -----------------------------------------
 -- Non Event functions
 -----------------------------------------
+--function INEED.ShowUIListFrame()
+	--
+--end
 function INEED.makeOthersNeed()
 	-- This parses the saved data to determine what other players need.
 	-- Call this at ADDON_LOADED and probably MAIL_SEND_SUCCESS?
