@@ -483,6 +483,7 @@ function INEED.PLAYER_REGEN_ENABLED()
 	-- combat ends
 	INEED.Print( "combat ends" )
 	INEED.hide = nil
+	INEEDUIListFrame:Show()
 end
 function INEED.OnUpdate()
 end

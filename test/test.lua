@@ -1063,6 +1063,7 @@ end
 function test.testHide_HideSet_CombatEnds_isShown()
 	INEED_options.combatHide = true
 	INEED.hide = true
+	INEEDUIListFrame:Hide()
 	INEED.PLAYER_REGEN_ENABLED()
 	assertTrue( INEEDUIListFrame:IsShown() )
 end
