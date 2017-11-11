@@ -97,12 +97,12 @@ function test.testAddItem_ItemLink_TotalIsSet()
 	assertEquals( 52, INEED_data["7073"]["testRealm"]["testName"].total )
 end
 function test.testAddItem_TimeStampSet()
-	INEED.command( "item:9799 55")
+	INEED.command( "item:9799 55" )
 	local now = os.time()
 	assertEquals( now, INEED_data["9799"]["testRealm"]["testName"].added )
 end
 function test.testAddItem_SetsUpdated()
-	INEED.command( "item:9799 55")
+	INEED.command( "item:9799 55" )
 	local now = os.time()
 	assertEquals( now, INEED_data["9799"]["testRealm"]["testName"].updated )
 end
@@ -1090,5 +1090,16 @@ function test.testHide_HideUnset_CombatEnds_isShown()
 	INEED.PLAYER_REGEN_ENABLED()
 	assertTrue( INEEDUIListFrame:IsShown() )
 end
+function test.testHide_Command_Combat_setTrue()
+	INEED_options.combatHide = nil
+	INEED.command( "combat" )
+	assertTrue( INEED_options.combatHide )
+end
+function test.testHide_Command_Combat_setTrue()
+	INEED_options.combatHide = true
+	INEED.command( "combat" )
+	assertIsNil( INEED_options.combatHide )
+end
+
 
 test.run()
