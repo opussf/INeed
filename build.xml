@@ -74,13 +74,14 @@
 		<mkdir dir="${working.dir}"/>
 		<echo file="${working.dir}/changelog.txt">Changes since ${git.tag}..${line.separator}${line.separator}</echo>
 		<exec executable="git" dir=".">
-			<arg line="log --graph --pretty=format:'%h %ci - %d %s &lt;%an&gt;' ${git.tag}.."/>
+			<arg line="log --graph --pretty=format:'%h %ci - %d %s &lt;%an&gt;' ${git.tag}~1.."/>
 			<redirector append="true" output="${working.dir}/changelog.txt"/>
 		</exec>
 	</target>
 
 	<target name="package" depends="changelog, test" description="Create a deploy package">
 		<property name="package.dir" location="${working.dir}/${ant.project.name}"/>
+		<delete dir="${package.dir}" verbose="false"/>
 		<copy	todir="${package.dir}" filtering="true">
 			<fileset dir="src">
 				<include name="*.lua"/>
@@ -100,7 +101,6 @@
 		<zip 	destfile="${target.dir}/${project.zip}"
 				basedir="${working.dir}"
 				includes="${ant.project.name}/**"/>
-		<delete dir="${package.dir}" verbose="false"/>
 		<checksum file="${target.dir}/${project.zip}"
 				  property="zip.md5" />
 		<echo file="${target.dir}/${project.zip}.md5">${zip.md5} ${project.zip}${line.separator}</echo>
@@ -152,21 +152,13 @@
 		</fail>
 	</target>
 
-	<target name="deploy" depends="deploy.check" description="deploys the file" if="deploy.run">
-		<copy todir="${deploy.dir}">
-			<fileset dir="${deploy.from}">
-				<include name="*.zip"/>
-			</fileset>
+	<target name="curse" depends="package">
+		<property name="curse.dir" location="INeed-cf"/>
+		<copy todir="${curse.dir}">
+			<fileset dir="${package.dir}"/>
 		</copy>
+		<exec executable="git" dir="${curse.dir}" failifexecutionfails="true" errorproperty="">
+			<arg line="status" />
+		</exec>
 	</target>
-
-	<target name="deploy.check">
-		<condition property="deploy.run">
-			<and>
-				<available file="${deploy.from}" type="dir"/>
-				<available file="${deploy.dir}" type="dir"/>
-			</and>
-		</condition>
-	</target>
-
 </project>
