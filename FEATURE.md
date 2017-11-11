@@ -3,6 +3,8 @@
 ## combatHide
 Add an option to hide in combat.
 
+Time to put the option into the option pane.
+
 ## Tithe
 This has been an idea for ages, but it was stymied by the classic 'give it a name' problem.
 I've decided to go with the term 'tithe', even though it conotates the wrong details, specifically that the amount is paid to an external entity.
