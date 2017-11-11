@@ -1136,6 +1136,13 @@ INEED.CommandList = {
 		["func"] = INEED.slush,
 		["help"] = {"[percent%] [MaxAmount]", "Sets an auto fill percent up to MaxAmount"},
 	},
+	["combat"] = {
+		["func"] = function()
+				INEED_options.combatHide = not INEED_options.combatHide or nil
+				INEED.Print( "Hide: "..( INEED_options.combatHide and "ON" or "OFF" ) )
+				end,
+		["help"] = {"", "Toggle combat hide"}
+	},
 	["test"] = {
 		["func"] = INEED.test,
 		["help"] = {"","Do something helpful"},
