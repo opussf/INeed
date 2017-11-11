@@ -67,6 +67,9 @@ function INEED.OnLoad()
 	--INEED_Frame:RegisterEvent("TRADE_SKILL_FILTER_UPDATE")
 	-- ^^^ Fired immediately after TRADE_SKILL_SHOW, after something is created via tradeskill, or anytime the tradeskill window is updated (filtered, tree folded/unfolded, etc.)
 	INEED_Frame:RegisterEvent("PLAYER_MONEY")
+	-- Hide display
+	INEED_Frame:RegisterEvent("PLAYER_REGEN_ENABLED")
+	INEED_Frame:RegisterEvent("PLAYER_REGEN_DISABLED")
 end
 function INEED.TRADE_SKILL_SHOW()
 	--INEED.Print("TradeSkill window opened.")
@@ -467,6 +470,18 @@ function INEED.PLAYER_MONEY()
 			end
 		end
 	end
+end
+function INEED.PLAYER_REGEN_DISABLED()
+	-- combat start
+	if INEED_options.combatHide then
+		INEED.hide = true
+		INEEDUIListFrame:Hide()
+	end
+end
+function INEED.PLAYER_REGEN_ENABLED()
+	-- combat ends
+	INEED.hide = nil
+	INEEDUIListFrame:Show()
 end
 function INEED.OnUpdate()
 end
@@ -1116,6 +1131,13 @@ INEED.CommandList = {
 	["slush"] = {
 		["func"] = INEED.slush,
 		["help"] = {"[percent%] [MaxAmount]", "Sets an auto fill percent up to MaxAmount"},
+	},
+	["combat"] = {
+		["func"] = function()
+				INEED_options.combatHide = not INEED_options.combatHide or nil
+				INEED.Print( "Hide: "..( INEED_options.combatHide and "ON" or "OFF" ) )
+				end,
+		["help"] = {"", "Toggle combat hide"}
 	},
 	["test"] = {
 		["func"] = INEED.test,

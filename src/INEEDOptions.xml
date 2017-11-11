@@ -26,10 +26,22 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<CheckButton name="$parent_ShowProgress" inherits="INEEDOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_CombatHide" inherits="INEEDOptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_Title" relativePoint="BOTTOMLEFT">
 						<Offset><AbsDimension x="0" y="-10"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self.tooltip = "Hide list during combat";</OnLoad>
+					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"combatHide","Hide list during combat");</OnShow>
+					<PostClick>INEED.OptionsPanel_CheckButton_PostClick(self,"combatHide")</PostClick>
+				</Scripts>
+			</CheckButton>
+			<CheckButton name="$parent_ShowProgress" inherits="INEEDOptionsCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_CombatHide" relativePoint="BOTTOMLEFT">
+						<Offset><AbsDimension x="0" y="0"/></Offset>
 					</Anchor>
 				</Anchors>
 				<Scripts>
