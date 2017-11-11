@@ -476,6 +476,7 @@ function INEED.PLAYER_REGEN_DISABLED()
 	INEED.Print( "combat starts" )
 	if INEED_options.combatHide then
 		INEED.hide = true
+		INEEDUIListFrame:Hide()
 	end
 end
 function INEED.PLAYER_REGEN_ENABLED()
