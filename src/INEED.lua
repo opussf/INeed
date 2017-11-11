@@ -488,9 +488,6 @@ end
 -----------------------------------------
 -- Non Event functions
 -----------------------------------------
---function INEED.ShowUIListFrame()
-	--
---end
 function INEED.makeOthersNeed()
 	-- This parses the saved data to determine what other players need.
 	-- Call this at ADDON_LOADED and probably MAIL_SEND_SUCCESS?
