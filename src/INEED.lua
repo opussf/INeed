@@ -473,7 +473,6 @@ function INEED.PLAYER_MONEY()
 end
 function INEED.PLAYER_REGEN_DISABLED()
 	-- combat start
-	INEED.Print( "combat starts" )
 	if INEED_options.combatHide then
 		INEED.hide = true
 		INEEDUIListFrame:Hide()
@@ -481,7 +480,6 @@ function INEED.PLAYER_REGEN_DISABLED()
 end
 function INEED.PLAYER_REGEN_ENABLED()
 	-- combat ends
-	INEED.Print( "combat ends" )
 	INEED.hide = nil
 	INEEDUIListFrame:Show()
 end
