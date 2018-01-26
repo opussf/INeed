@@ -853,10 +853,11 @@ function INEED.showList( searchTerm )
 				if ( searchTerm == "me" and name == INEED.name and realm == INEED.realm ) or
 						( searchTerm == "realm" and realm == INEED.realm ) or
 						( searchTerm == "all" ) then
+
 					table.insert( updatedItems, {
 							["updated"] = (data.updated or data.added or 1),
 							["displayStr"] = string.format("%i/%i x %s for %s of %s",
-									data.total, data.needed, (select( 2, GetItemInfo( itemID ) ) ), name, realm ),
+									data.total, data.needed, (select( 2, GetItemInfo( itemID ) ) or itemID ), name, realm ),
 					} )
 				end
 			end
