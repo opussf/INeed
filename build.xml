@@ -1,4 +1,5 @@
 <project name="INeed" default="package">
+	<!-- version 7.1 -->
 
 	<tstamp/>
 	<property file="build.properties"/>
