@@ -1102,5 +1102,16 @@ function test.testHide_Command_Combat_setTrue()
 	assertIsNil( INEED_options.combatHide )
 end
 
+--Issue #11
+----------------
+function test.testAddItem_badItemString()
+	INEED.command( "item: 9799 55" )
+	assertIsNil( INEED_data[""] )
+end
+function test.testAddCurrency_CurrencyLink()
+	INEED.command( "currency: 402 2" )
+	assertIsNil( INEED_currency[""] )
+end
+
 
 test.run()

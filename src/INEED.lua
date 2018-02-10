@@ -660,7 +660,7 @@ function INEED.addItem( itemLink, quantity )
 	INEEDUIListFrame:Show()
 	quantity = quantity or 1
 	local itemID = INEED.getItemIdFromLink( itemLink )
-	if itemID then
+	if itemID and string.len( itemID ) > 0 then
 		local youHave =  GetItemCount( itemID, true ) -- include bank
 		local inBags = GetItemCount( itemID, false ) -- only in bags
 		if quantity > 0 then
@@ -690,7 +690,7 @@ function INEED.addItem( itemLink, quantity )
 		return itemLink   -- return early
 	end
 	local enchantID = INEED.getEnchantIdFromLink( itemLink )
-	if enchantID then
+	if enchantID and string.len( enchantID ) > 0 then
 		INEED.Print( string.format( "You need: %i %s (enchant:%s)", quantity, itemLink, enchantID ) )
 		local recipeTable = C_TradeSkillUI.GetAllRecipeIDs()
 		for i,recipeID in pairs(recipeTable) do
@@ -717,7 +717,7 @@ function INEED.addItem( itemLink, quantity )
 		return itemLink -- return done
 	end
 	local currencyID = INEED.getCurrencyIdFromLink( itemLink )
-	if currencyID then
+	if currencyID and string.len( currencyID ) > 0 then
 		local curName, curAmount, _, earnedThisWeek, weeklyMax, totalMax, isDiscovered = GetCurrencyInfo( currencyID )
 		quantity = (totalMax > 0 and quantity > totalMax) and totalMax or quantity
 		local currencyLink = GetCurrencyLink( currencyID ) or ("currency:"..currencyID)
@@ -767,7 +767,7 @@ function INEED.addItem( itemLink, quantity )
 		return itemLink  -- return done
 	end
 	local achievementID = INEED.getAchievementIdFromLink( itemLink )
-	if achievementID then
+	if achievementID and string.len( achievementID ) > 0 then
 		_, name, points, completed = GetAchievementInfo( achievementID )
 		if not completed then
 			numCriteria = GetAchievementNumCriteria( achievementID )
