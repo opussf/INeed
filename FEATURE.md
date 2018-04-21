@@ -1,5 +1,12 @@
 # Feature
 
+## accountMax
+
+Sometimes, when starting, or for other reasons, the value of the spending account is more than what the character has.
+Adjust the account value down to match the amount the toon has.
+
+Adjust this when spending / gold changed.
+
 ## combatHide
 Add an option to hide in combat.
 

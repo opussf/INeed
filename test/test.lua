@@ -1103,7 +1103,7 @@ function test.testHide_Command_Combat_setTrue()
 end
 
 --Issue #11
-----------------
+------------------------------------------
 function test.testAddItem_badItemString()
 	INEED.command( "item: 9799 55" )
 	assertIsNil( INEED_data[""] )
@@ -1111,6 +1111,20 @@ end
 function test.testAddCurrency_CurrencyLink()
 	INEED.command( "currency: 402 2" )
 	assertIsNil( INEED_currency[""] )
+end
+-- accountMax
+------------------------------------------
+function test.testAccountMax_adjustDown()
+	INEED_account.balance = 200000 -- 20g
+	myCopper = 150000 -- 15g
+	INEED.PLAYER_MONEY()
+	assertEquals( 150000, INEED_account.balance )
+end
+function test.testAccountMax_noAdjust()
+	INEED_account.balance = 100000 -- 10g
+	myCopper = 200000 -- 20g
+	INEED.PLAYER_MONEY()
+	assertEquals( 100000, INEED_account.balance )
 end
 
 
