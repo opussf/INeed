@@ -433,6 +433,11 @@ function INEED.PLAYER_MONEY()
 		end
 	end
 	INEED_account.current = GetMoney()
+	-- adjust the account current down if the balance is more than what you have.
+	if INEED_account.balance and INEED_account.balance > INEED_account.current then
+		INEED_account.balance = INEED_account.current
+	end
+	-- show info and update needed if tracking.
 	if INEED_gold[INEED.realm] then
 		if INEED_gold[INEED.realm][INEED.name] then
 			if INEED_gold[INEED.realm][INEED.name].needed then
