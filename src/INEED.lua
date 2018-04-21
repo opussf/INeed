@@ -908,7 +908,7 @@ function INEED.itemIsSoulbound( itemLink )
 		INEED.scanTip:SetHyperlink( itemLink )
 		return INEED.bindTypes[INEED.scanTip2:GetText()] or INEED.bindTypes[INEED.scanTip3:GetText()] or INEED.bindTypes[INEED.scanTip4:GetText()]
 	else
-		INEED.Print("itemIsSoulbound was called wit a 'nil' value.")
+		INEED.Print("itemIsSoulbound was called with a 'nil' value.")
 	end
 
 end
