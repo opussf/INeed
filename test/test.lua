@@ -14,7 +14,7 @@ INEED_SplashFrame = { ["Show"] = function() end,
 INEED_Frame = CreateFrame()
 SendMailNameEditBox = CreateFontString("SendMailNameEditBox")
 INEEDUIListFrame = CreateFrame()
-INEEDUIListFrame.TitleText = INEEDUIListFrame.CreateFontString()
+INEEDUIListFrame_TitleText = INEEDUIListFrame.CreateFontString()
 
 -- require the file to test
 package.path = "../src/?.lua;'" .. package.path
@@ -1145,7 +1145,7 @@ function test.testShowAccount_changeOnSlushSet_max()
 	INEED_account = {}  -- clears the account info
 	myCopper = 400000 -- 40g
 	INEED.command( 'slush 1% 200g' )
-	assertEquals( 'INEED - (1.00% -> 200G 0S 0C)', INEED.UITitleText )
+	assertEquals( 'INEED - (1.00% > 200G 0S 0C)', INEED.UITitleText )
 end
 function test.testShowAccount_()
 end

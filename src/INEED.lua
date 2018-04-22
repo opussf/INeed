@@ -475,6 +475,7 @@ function INEED.PLAYER_MONEY()
 			end
 		end
 	end
+	INEED.updateTitleText()
 end
 function INEED.PLAYER_REGEN_DISABLED()
 	-- combat start
@@ -1074,12 +1075,12 @@ end
 function INEED.updateTitleText( amountChange )
 	local accountBalanceStr = INEED_account.balance and GetCoinTextureString( INEED_account.balance ) or ""
 	local slushPercentStr = INEED_account.percent and string.format( "%0.2f%%", ( INEED_account.percent * 100 ) )
-	local slushMaxStr = INEED_account.max and " -> "..GetCoinTextureString( INEED_account.max )
+	local slushMaxStr = INEED_account.max and " > "..GetCoinTextureString( INEED_account.max )
 	local slushStr = slushPercentStr and "("..slushPercentStr..( slushMaxStr or "" )..")"
 	INEED.UITitleText = "INEED"..( ( accountBalanceStr or slushStr ) and " - ")..
 			( ( accountBalanceStr or "" )..( slushStr or "" ) )
 
-	INEEDUIListFrame.TitleText:SetText( INEED.UITitleText )
+	INEEDUIListFrame_TitleText:SetText( INEED.UITitleText )
 end
 
 -- Testing functions
