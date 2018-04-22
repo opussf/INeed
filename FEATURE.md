@@ -4,12 +4,7 @@
 
 Show the account info in the UI frame title.
 
-'INEED - 199g 56s 19c +1g 16s 19c'
-'INEED - 199g 56s 19c -1g 16s 19c'
 'INEED - 199g 56s 19c'
-
-Can the gold amount be colored to show change?
-Green being positive, and red being negative.
 
 This will also remove the print to the chat window of the account amount change.
 
@@ -18,7 +13,6 @@ Use 'INEED.UITitleText' as a field to keep the formatted text.
 When should this be set?
 
 Should there be an option to control this?
-
 
 ## accountMax
 

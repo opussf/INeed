@@ -1135,28 +1135,5 @@ function test.testShowAccount_changeOnAccountSet()
 	INEED.command( 'account 15s16c20g' )
 	assertEquals( 'INEED - 20G 15S 16C', INEED.UITitleText )
 end
-function test.notestShowAccount_changeOnSlushSet_percent()
-	INEED_account = {}  -- clears the account info
-	myCopper = 400000  -- 40g
-	INEED.command( 'slush 1%' )
-	assertEquals( 'INEED - (1%)', INEED.UITitleText )
-end
-function test.notestShowAccount_changeOnSlushSet_max()
-	INEED_account = {}  -- clears the account info
-	myCopper = 400000 -- 40g
-	INEED.command( 'slush 1% 200g' )
-	assertEquals( 'INEED - (1% > 200G 0S 0C)', INEED.UITitleText )
-end
-function test.testShowAccount_()
-end
-
---[[
-INEED_account = {
-	["max"] = 2000000,
-	["current"] = 119323790,
-	["percent"] = 0.1,
-	["balance"] = 2000000,
-}
-]]
 
 test.run()

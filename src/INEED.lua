@@ -421,9 +421,8 @@ function INEED.MERCHANT_SHOW()
 end
 function INEED.PLAYER_MONEY()
 	-- PLAYER_MONEY has changed
-	local change
 	if INEED_account.percent then  -- look to see if need to add to balance
-		change = GetMoney() - (INEED_account.current or 0)
+		local change = GetMoney() - (INEED_account.current or 0)
 		change = change * INEED_account.percent
 		if ((not INEED_account.max) or ((INEED_account.balance or 0) < INEED_account.max)) and change>0 then
 			INEED_account.balance = (INEED_account.balance or 0) + change
@@ -477,7 +476,7 @@ function INEED.PLAYER_MONEY()
 			end
 		end
 	end
-	INEED.updateTitleText( change )
+	INEED.updateTitleText( )
 end
 function INEED.PLAYER_REGEN_DISABLED()
 	-- combat start
@@ -1074,12 +1073,9 @@ function INEED.slush( strIn )
 	INEED.Print( "Slush: "..(INEED_account.percent and ((INEED_account.percent * 100).."%") or "")..
 			(INEED_account.max and (" max: "..GetCoinTextureString(INEED_account.max)) or "") )
 end
-function INEED.updateTitleText( amountChange )
+function INEED.updateTitleText( )
 	local accountBalanceStr = INEED_account.balance and GetCoinTextureString( INEED_account.balance )
-	local changeStr = amountChange and ( ( amountChange > 0 and COLOR_GREEN.."+" or COLOR_RED.."-" )..
-			GetCoinTextureString( math.abs( amountChange ) )..COLOR_END ) or ""
-	INEED.UITitleText = "INEED"..( accountBalanceStr and " - "..accountBalanceStr..changeStr or "" )
-
+	INEED.UITitleText = "INEED"..( accountBalanceStr and " - "..accountBalanceStr or "" )
 	INEEDUIListFrame_TitleText:SetText( INEED.UITitleText )
 end
 
