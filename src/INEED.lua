@@ -1073,12 +1073,8 @@ function INEED.slush( strIn )
 			(INEED_account.max and (" max: "..GetCoinTextureString(INEED_account.max)) or "") )
 end
 function INEED.updateTitleText( amountChange )
-	local accountBalanceStr = INEED_account.balance and GetCoinTextureString( INEED_account.balance ) or ""
-	local slushPercentStr = INEED_account.percent and string.format( "%0.2f%%", ( INEED_account.percent * 100 ) )
-	local slushMaxStr = INEED_account.max and " > "..GetCoinTextureString( INEED_account.max )
-	local slushStr = slushPercentStr and "("..slushPercentStr..( slushMaxStr or "" )..")"
-	INEED.UITitleText = "INEED"..( ( accountBalanceStr or slushStr ) and " - ")..
-			( ( accountBalanceStr or "" )..( slushStr or "" ) )
+	local accountBalanceStr = INEED_account.balance and GetCoinTextureString( INEED_account.balance )
+	INEED.UITitleText = "INEED"..( accountBalanceStr and " - "..accountBalanceStr or "" )
 
 	INEEDUIListFrame_TitleText:SetText( INEED.UITitleText )
 end
