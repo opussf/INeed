@@ -14,6 +14,7 @@ INEED_SplashFrame = { ["Show"] = function() end,
 INEED_Frame = CreateFrame()
 SendMailNameEditBox = CreateFontString("SendMailNameEditBox")
 INEEDUIListFrame = CreateFrame()
+INEEDUIListFrame.TitleText = INEEDUIListFrame.CreateFontString()
 
 -- require the file to test
 package.path = "../src/?.lua;'" .. package.path
@@ -1126,6 +1127,36 @@ function test.testAccountMax_noAdjust()
 	INEED.PLAYER_MONEY()
 	assertEquals( 100000, INEED_account.balance )
 end
+-- showAccount
+------------------------------------------
+function test.testShowAccount_changeOnAccountSet()
+	INEED_account = {}  -- clears the account info
+	myCopper = 400000  -- 40g
+	INEED.command( 'account 15s16c20g' )
+	assertEquals( 'INEED - 20G 15S 16C', INEED.UITitleText )
+end
+function test.testShowAccount_changeOnSlushSet_percent()
+	INEED_account = {}  -- clears the account info
+	myCopper = 400000  -- 40g
+	INEED.command( 'slush 1%' )
+	assertEquals( 'INEED - (1.00%)', INEED.UITitleText )
+end
+function test.testShowAccount_changeOnSlushSet_max()
+	INEED_account = {}  -- clears the account info
+	myCopper = 400000 -- 40g
+	INEED.command( 'slush 1% 200g' )
+	assertEquals( 'INEED - (1.00% -> 200G 0S 0C)', INEED.UITitleText )
+end
+function test.testShowAccount_()
+end
 
+--[[
+INEED_account = {
+	["max"] = 2000000,
+	["current"] = 119323790,
+	["percent"] = 0.1,
+	["balance"] = 2000000,
+}
+]]
 
 test.run()

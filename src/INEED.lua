@@ -991,6 +991,7 @@ function INEED.accountInfo( value )
 	if INEED_account.balance and INEED_account.balance <= 0 then
 		INEED_account.balance = nil
 	end
+	INEED.updateTitleText( )
 	INEED.Print( "The current autoSpend account balance is: "..
 			( INEED_account.balance and GetCoinTextureString( INEED_account.balance ) or "0" ) )
 end
@@ -1066,8 +1067,19 @@ function INEED.slush( strIn )
 		INEED_account.max = (modify) and (INEED_account.max and INEED_account.max + maxValue) or maxValue
 		INEED_account.current = GetMoney()
 	end
+	INEED.updateTitleText( )
 	INEED.Print( "Slush: "..(INEED_account.percent and ((INEED_account.percent * 100).."%") or "")..
 			(INEED_account.max and (" max: "..GetCoinTextureString(INEED_account.max)) or "") )
+end
+function INEED.updateTitleText( amountChange )
+	local accountBalanceStr = INEED_account.balance and GetCoinTextureString( INEED_account.balance ) or ""
+	local slushPercentStr = INEED_account.percent and string.format( "%0.2f%%", ( INEED_account.percent * 100 ) )
+	local slushMaxStr = INEED_account.max and " -> "..GetCoinTextureString( INEED_account.max )
+	local slushStr = slushPercentStr and "("..slushPercentStr..( slushMaxStr or "" )..")"
+	INEED.UITitleText = "INEED"..( ( accountBalanceStr or slushStr ) and " - ")..
+			( ( accountBalanceStr or "" )..( slushStr or "" ) )
+
+	INEEDUIListFrame.TitleText:SetText( INEED.UITitleText )
 end
 
 -- Testing functions

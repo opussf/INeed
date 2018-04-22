@@ -1,5 +1,27 @@
 # Feature
 
+## showAccount
+
+Show the account info in the UI frame title.
+
+'INEED - 199g 56s 19c (1.00% -> 200g) +1g 16s 19c'
+'INEED - 199g 56s 19c (1.00%) -1g 16s 19c'
+'INEED - 199g 56s 19c -2g'
+'INEED - 199g 56s 19c (1.00% -> 200g)'
+'INEED - (1.00% -> 200g)'
+
+Can the gold amount be colored to show change?
+Green being positive, and red being negative.
+
+This will also remove the print to the chat window of the account amount change.
+
+Use 'INEED.UITitleText' as a field to keep the formatted text.
+
+When should this be set?
+
+Should there be an option to control this?
+
+
 ## accountMax
 
 Sometimes, when starting, or for other reasons, the value of the spending account is more than what the character has.
