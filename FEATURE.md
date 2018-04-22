@@ -4,11 +4,9 @@
 
 Show the account info in the UI frame title.
 
-'INEED - 199g 56s 19c (1.00% -> 200g) +1g 16s 19c'
-'INEED - 199g 56s 19c (1.00%) -1g 16s 19c'
-'INEED - 199g 56s 19c -2g'
-'INEED - 199g 56s 19c (1.00% -> 200g)'
-'INEED - (1.00% -> 200g)'
+'INEED - 199g 56s 19c +1g 16s 19c'
+'INEED - 199g 56s 19c -1g 16s 19c'
+'INEED - 199g 56s 19c'
 
 Can the gold amount be colored to show change?
 Green being positive, and red being negative.
