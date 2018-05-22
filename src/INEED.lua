@@ -1079,6 +1079,21 @@ function INEED.updateTitleText( )
 	INEEDUIListFrame_TitleText:SetText( INEED.UITitleText )
 end
 
+-- Prune
+function INEED.prune( paramIn )
+	local itemID = INEED.getItemIdFromLink( paramIn )
+	if itemID and INEED_data[itemID] then
+		local linkString = select( 2, GetItemInfo( itemID ) ) or "item:"..itemID
+		INEED.Print( "Pruning "..linkString.." from:" )
+		for realm, data in pairs( INEED_data[itemID] ) do
+			for name in pairs( data ) do
+				INEED.Print( "-> "..name.."-"..realm )
+			end
+		end
+		INEED_data[itemID] = nil
+	end
+end
+
 -- Testing functions
 
 function INEED.test()
@@ -1153,6 +1168,10 @@ INEED.CommandList = {
 				INEED.Print( "Hide: "..( INEED_options.combatHide and "ON" or "OFF" ) )
 				end,
 		["help"] = {"", "Toggle combat hide"}
+	},
+	["prune"] = {
+		["func"] = INEED.prune,
+		["help"] = { "<link>", "Prune [link] from all character." },
 	},
 	["test"] = {
 		["func"] = INEED.test,
