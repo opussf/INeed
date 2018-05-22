@@ -1083,7 +1083,8 @@ end
 function INEED.prune( paramIn )
 	local itemID = INEED.getItemIdFromLink( paramIn )
 	if itemID and INEED_data[itemID] then
-		INEED.Print( "Pruning "..paramIn.." from:" )
+		local linkString = select( 2, GetItemInfo( itemID ) ) or "item:"..itemID
+		INEED.Print( "Pruning "..linkString.." from:" )
 		for realm, data in pairs( INEED_data[itemID] ) do
 			for name in pairs( data ) do
 				INEED.Print( name.."-"..realm )
