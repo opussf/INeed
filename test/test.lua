@@ -1135,5 +1135,27 @@ function test.testShowAccount_changeOnAccountSet()
 	INEED.command( 'account 15s16c20g' )
 	assertEquals( 'INEED - 20G 15S 16C', INEED.UITitleText )
 end
+-- Prune
+------------------------------------------
+function test.testPrune_item()
+	INEED_data["7073"] = {
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
+						["testName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
+		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, -- del
+							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
+	}
+	INEED.command( "prune item:7073" )
+	assertIsNil( INEED_data["7073"] )
+end
+function test.testPrune_link()
+	INEED_data["7073"] = {
+		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
+						["testName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
+		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, -- del
+							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
+	}
+	INEED.command( "prune |cff9d9d9d|Hitem:7073:0:0:0:0:0:0:0:80:0:0|h[Broken Fang]|h|r" )
+	assertIsNil( INEED_data["7073"] )
+end
 
 test.run()
