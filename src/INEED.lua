@@ -1087,7 +1087,7 @@ function INEED.prune( paramIn )
 		INEED.Print( "Pruning "..linkString.." from:" )
 		for realm, data in pairs( INEED_data[itemID] ) do
 			for name in pairs( data ) do
-				INEED.Print( name.."-"..realm )
+				INEED.Print( "-> "..name.."-"..realm )
 			end
 		end
 		INEED_data[itemID] = nil
