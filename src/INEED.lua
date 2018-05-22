@@ -1170,7 +1170,7 @@ INEED.CommandList = {
 	},
 	["prune"] = {
 		["func"] = INEED.prune,
-		["help"] = { "[link]", "Prune [link] from all character." },
+		["help"] = { "<link>", "Prune [link] from all character." },
 	},
 	["test"] = {
 		["func"] = INEED.test,
