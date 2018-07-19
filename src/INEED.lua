@@ -314,7 +314,7 @@ function INEED.CURRENCY_DISPLAY_UPDATE()
 	for currencyID, cData in pairs( INEED_currency ) do
 		--local curName, curAmount, _, earnedThisWeek, weeklyMax, totalMax, isDiscovered = GetCurrencyInfo( currencyID )
 		local iHaveNum = select( 2, GetCurrencyInfo( currencyID ) )
-		local currencyLink = GetCurrencyLink( currencyID )
+		local currencyLink = GetCurrencyLink( currencyID, iHaveNum )
 		local gained = iHaveNum - cData.total
 		if cData.total ~= iHaveNum then
 			local progressString = string.format("%i/%i %s%s",  -- Build the progress string
@@ -727,7 +727,7 @@ function INEED.addItem( itemLink, quantity )
 	if currencyID and string.len( currencyID ) > 0 then
 		local curName, curAmount, _, earnedThisWeek, weeklyMax, totalMax, isDiscovered = GetCurrencyInfo( currencyID )
 		quantity = (totalMax > 0 and quantity > totalMax) and totalMax or quantity
-		local currencyLink = GetCurrencyLink( currencyID ) or ("currency:"..currencyID)
+		local currencyLink = GetCurrencyLink( currencyID, curAmount ) or ("currency:"..currencyID)
 		--print("I need "..quantity.." of "..itemLink)
 		if quantity > 0 then
 			if quantity > curAmount then
@@ -876,7 +876,7 @@ function INEED.showList( searchTerm )
 		table.insert( updatedItems, {
 				["updated"] = (cData.updated or cData.added or 1),
 				["displayStr"] = string.format("%i/%i x %s",
-						cData.total, cData.needed, GetCurrencyLink( currencyID ) )
+						cData.total, cData.needed, GetCurrencyLink( currencyID, 0 ) )
 		})
 	end
 
