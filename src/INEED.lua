@@ -1018,24 +1018,26 @@ function INEED.remove( nameIn )
 	end
 end
 INEED.archaeologyCurrencies = {
-	1174, --  1 - Demonic
-	1173, --  2 - Highmountain Tauren
-	1172, --  3 - Highborne
-	828, --  4 - Ogre
-	821, --  5 - Draenor Clans
-	829, --  6 - Arakkoa
-	677, --  7 - Mogu
-	676, --  8 - Pandaren
-	754, --  9 - Mantid
-	399, -- 10 - Vrykul
-	385, -- 11 - Troll
-	401, -- 12 - Tol'vir
-	397, -- 13 - Orc
-	400, -- 14 - Nerubian
-	394, -- 15 - Night Elf
-	393, -- 16 - Fossil
-	398, -- 17 - Draenei
-	384, -- 18 - Dwarf
+	1535, --  1 - Drust
+	1534, --  2 - Zandalari
+	1174, --  3 - Demonic
+	1173, --  4 - Highmountain Tauren
+	1172, --  5 - Highborne
+	828,  --  6 - Ogre
+	821,  --  7 - Draenor Clans
+	829,  --  8 - Arakkoa
+	677,  --  9 - Mogu
+	676,  -- 10 - Pandaren
+	754,  -- 11 - Mantid
+	399,  -- 12 - Vrykul
+	385,  -- 13 - Troll
+	401,  -- 14 - Tol'vir
+	397,  -- 15 - Orc
+	400,  -- 16 - Nerubian
+	394,  -- 17 - Night Elf
+	393,  -- 18 - Fossil
+	398,  -- 19 - Draenei
+	384,  -- 20 - Dwarf
 }
 function INEED.archScan()
 	--print("ArchScan")
