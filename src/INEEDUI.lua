@@ -138,13 +138,6 @@ function INEED.UIListOnUpdate()
 		updatedTS = nil  -- since this is used in logic, clear the logic
 	end
 
---[[
-INEED.othersNeed[itemID][realm][data.faction] =
-							(INEED.othersNeed[itemID][realm][data.faction] and INEED.othersNeed[itemID][realm][data.faction]
-							or { ['needed'] = 0, ['total'] = 0, ['mine'] = iHaveNum })
-]]
-
-
 	-- return early, no need to sort an empty table.
 	if (count == 0 and INEEDUIListFrame:IsShown()) then
 		INEEDUIListFrame:Hide()

@@ -1,5 +1,13 @@
 # Feature
 
+## othersNeedUI
+
+After looking at some possible changes, this one seemed to be best.
+
+Simply, show the needed items for others in the UI.
+
+Future update on this, maybe limit this by an option?
+
 ## showAccount
 
 Show the account info in the UI frame title.
