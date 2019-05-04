@@ -280,6 +280,7 @@ function INEED.BAG_UPDATE()
 			local gained = iHaveNum - INEED.othersNeed[itemID][INEED.realm][INEED.faction].mine
 			if gained ~= 0 then
 				INEED.othersNeed[itemID][INEED.realm][INEED.faction].mine = iHaveNum
+				INEED.othersNeed[itemID][INEED.realm][INEED.faction].updated = time()
 				if INEED_options.showGlobal or INEED_options.printProgress then
 					local progressString = string.format("-=%i/%i %s%s=-",
 							(INEED.othersNeed[itemID][INEED.realm][INEED.faction].total
