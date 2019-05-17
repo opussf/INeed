@@ -1053,7 +1053,7 @@ function test.testHide_HideSet_CombatStarts_isHidden()
 	INEED_options.combatHide = true
 	INEED.hide = nil
 	INEED.PLAYER_REGEN_DISABLED()
-	assertFalse( INEEDUIListFrame:IsShown() )
+	assertFalse( INEEDUIListFrame:IsVisible() )
 end
 function test.testHide_HideSet_CombatEnds_hideSetNil()
 	INEED_options.combatHide = true
@@ -1066,7 +1066,7 @@ function test.testHide_HideSet_CombatEnds_isShown()
 	INEED.hide = true
 	INEEDUIListFrame:Hide()
 	INEED.PLAYER_REGEN_ENABLED()
-	assertTrue( INEEDUIListFrame:IsShown() )
+	assertTrue( INEEDUIListFrame:IsVisible() )
 end
 function test.testHide_HideUnset_CombatStarts_hideSetNil()
 	INEED_options.combatHide = nil
@@ -1078,7 +1078,7 @@ function test.testHide_HideUnset_CombatStarts_isShown()
 	INEED_options.combatHide = nil
 	INEED.hide = nil
 	INEED.PLAYER_REGEN_DISABLED()
-	assertTrue( INEEDUIListFrame:IsShown() )
+	assertTrue( INEEDUIListFrame:IsVisible() )
 end
 function test.testHide_HideUnset_CombatEnds_hideSetNil()
 	INEED_options.combatHide = nil
@@ -1090,7 +1090,7 @@ function test.testHide_HideUnset_CombatEnds_isShown()
 	INEED_options.combatHide = nil
 	INEED.hide = true
 	INEED.PLAYER_REGEN_ENABLED()
-	assertTrue( INEEDUIListFrame:IsShown() )
+	assertTrue( INEEDUIListFrame:IsVisible() )
 end
 function test.testHide_Command_Combat_setTrue()
 	INEED_options.combatHide = nil
