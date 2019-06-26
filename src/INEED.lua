@@ -914,11 +914,15 @@ function INEED.itemIsSoulbound( itemLink )
 		INEED.scanTip:SetOwner(UIParent, "ANCHOR_NONE")
 		INEED.scanTip:ClearLines()
 		INEED.scanTip:SetHyperlink( itemLink )
-		return INEED.bindTypes[INEED.scanTip2:GetText()] or INEED.bindTypes[INEED.scanTip3:GetText()] or INEED.bindTypes[INEED.scanTip4:GetText()]
+
+		local boundType = ( scanTip2 and INEED.bindTypes[INEED.scanTip2:GetText()] ) or
+				( scanTip3 and INEED.bindTypes[INEED.scanTip3:GetText()] ) or
+				( scanTip4 and INEED.bindTypes[INEED.scanTip4:GetText()] )
+
+		return boundType
 	else
 		INEED.Print("itemIsSoulbound was called with a 'nil' value.")
 	end
-
 end
 function INEED.showFulfillList()
 	-- returns number of items you can fulfill, or nil if none
