@@ -408,6 +408,15 @@ function INEED.MERCHANT_SHOW()
 			end
 		end
 	end
+	if( INEED_options.autoRepair ) then
+		repairAllCost, canRepair = GetRepairAllCost()
+		if( repairAllCost <= INEED_account.balance ) then
+			RepairAllItems()
+			INEED.Print( "Repair Items: "..GetCoinTextureString( repairAllCost ) )
+			purchaseAmount = purchaseAmount + repairAllCost
+		end
+	end
+
 	if purchaseAmount > 0 then
 		INEED.Print("==========================")
 		INEED.Print("Total:   "..GetCoinTextureString(purchaseAmount) )

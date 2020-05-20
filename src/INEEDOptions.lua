@@ -11,6 +11,8 @@ INEED_options = {
 	["hideInCombat"] = true,
 	["displayUIList"] = true,
 	["displayUIListDisplaySeconds"] = 300, -- 5 minute default
+	["autoRepair"] = true,
+	["autoTrain"] = true,
 }
 
 function INEED.OptionsPanel_OnLoad(panel)
