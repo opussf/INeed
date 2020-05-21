@@ -412,11 +412,11 @@ function INEED.MERCHANT_SHOW()
 		repairAllCost, canRepair = GetRepairAllCost()
 		if( repairAllCost > 0 and repairAllCost <= INEED_account.balance ) then
 			RepairAllItems()
-			INEED.Print( "Repair Items: "..GetCoinTextureString( repairAllCost ) )
+			INEED_account.balance = INEED_account.balance - repairAllCost
 			purchaseAmount = purchaseAmount + repairAllCost
+			INEED.Print( "Repair Items: "..GetCoinTextureString( repairAllCost ) )
 		end
 	end
-
 	if purchaseAmount > 0 then
 		INEED.Print("==========================")
 		INEED.Print("Total:   "..GetCoinTextureString(purchaseAmount) )
