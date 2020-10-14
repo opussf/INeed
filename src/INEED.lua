@@ -1,6 +1,7 @@
-INEED_MSG_ADDONNAME = "INeed";
-INEED_MSG_VERSION   = GetAddOnMetadata(INEED_MSG_ADDONNAME,"Version");
-INEED_MSG_AUTHOR    = "opussf";
+INEED_SLUG, INEED = ...
+INEED_MSG_ADDONNAME = GetAddOnMetadata( INEED_SLUG, "Title" )
+INEED_MSG_VERSION   = GetAddOnMetadata( INEED_SLUG, "Version" )
+INEED_MSG_AUTHOR    = GetAddOnMetadata( INEED_SLUG, "Author" )
 
 -- Colours
 COLOR_RED = "|cffff0000";
@@ -14,7 +15,6 @@ COLOR_GOLD = "|cffcfb52b";
 COLOR_NEON_BLUE = "|cff4d4dff";
 COLOR_END = "|r";
 
-INEED = {}
 INEED_data = {}
 INEED_currency = {}
 INEED_account = {}
@@ -192,25 +192,27 @@ function INEED.MAIL_INBOX_UPDATE()
 	end
 end
 --------------
-function INEED.ADDON_LOADED()
-	-- Unregister the event for this method.
-	INEED_Frame:UnregisterEvent("ADDON_LOADED")
+function INEED.ADDON_LOADED( _, arg1 )
+	if( arg1 == INEED_SLUG ) then
+		-- Unregister the event for this method.
+		INEED_Frame:UnregisterEvent("ADDON_LOADED")
 
-	-- Setup needed variables
-	INEED.name = UnitName("player")
-	INEED.realm = GetRealmName()
-	INEED.faction = UnitFactionGroup("player")
+		-- Setup needed variables
+		INEED.name = UnitName("player")
+		INEED.realm = GetRealmName()
+		INEED.faction = UnitFactionGroup("player")
 
-	-- Setup game settings
-	GameTooltip:HookScript("OnTooltipSetItem", INEED.hookSetItem)
-	ItemRefTooltip:HookScript("OnTooltipSetItem", INEED.hookSetItem)
-	--INEED.Orig_GameTooltip_SetCurrencyToken = GameTooltip.SetCurrencyToken  -- lifted from Altaholic (thanks guys)
-	--GameTooltip.SetCurrencyToken = INEED.hookSetCurrencyToken
+		-- Setup game settings
+		GameTooltip:HookScript("OnTooltipSetItem", INEED.hookSetItem)
+		ItemRefTooltip:HookScript("OnTooltipSetItem", INEED.hookSetItem)
+		--INEED.Orig_GameTooltip_SetCurrencyToken = GameTooltip.SetCurrencyToken  -- lifted from Altaholic (thanks guys)
+		--GameTooltip.SetCurrencyToken = INEED.hookSetCurrencyToken
 
-	-- Load Options panel
-	INEED.OptionsPanel_Reset()
+		-- Load Options panel
+		INEED.OptionsPanel_Reset()
 
-	INEED.Print("Loaded")
+		INEED.Print( INEED_MSG_VERSION .. " Loaded" )
+	end
 end
 function INEED.MAIL_SHOW()
 	INEED.Print("Others on this server need:")
