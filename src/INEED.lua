@@ -1061,7 +1061,7 @@ function INEED.archScan()
 		if INEED.archaeologyCurrencies[i] then
 
 			local raceName, raceTexture, raceItemID, numFragmentsCollected, numFragmentsRequired, maxFragments = GetArchaeologyRaceInfo( i )
-			if select( 7, GetCurrencyInfo(INEED.archaeologyCurrencies[i]) ) then
+			if ( C_CurrencyInfo.GetCurrencyInfo( tonumber( INEED.archaeologyCurrencies[i]) )["discovered"] ) then
 				INEED.addItem( "currency:"..INEED.archaeologyCurrencies[i], numFragmentsRequired )
 			end
 		end

@@ -89,7 +89,7 @@ function INEED.UIListOnUpdate()
 					 ["id"] = curID,
 					 ["total"] = INEED_currency[curID].total,
 					 ["needed"] = INEED_currency[curID].needed,
-					 ["linkStr"] = (C_CurrencyInfo.GetCurrencyLink( curID, INEED_currency[curID].total ) or ("currency:"..curID))
+					 ["linkStr"] = (C_CurrencyInfo.GetCurrencyLink( tonumber(curID), INEED_currency[curID].total ) or ("currency:"..curID))
 			})
 			count = count + 1
 		end
