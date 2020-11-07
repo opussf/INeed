@@ -735,6 +735,9 @@ function INEED.addItem( itemLink, quantity )
 	local currencyID = INEED.getCurrencyIdFromLink( itemLink )
 	if currencyID and string.len( currencyID ) > 0 then
 		--local curName, curAmount, _, earnedThisWeek, weeklyMax, totalMax, isDiscovered = GetCurrencyInfo( currencyID )
+		local currencyInfo = C_CurrencyInfo.GetCurrencyInfo( tonumber( currencyID ) )
+		local totalMax = currencyInfo["maxQuantity"]
+
 		quantity = (totalMax > 0 and quantity > totalMax) and totalMax or quantity
 		local currencyLink = C_CurrencyInfo.GetCurrencyLink( tonumber( currencyID ), curAmount ) or ("currency:"..currencyID)
 		--print("I need "..quantity.." of "..itemLink)
