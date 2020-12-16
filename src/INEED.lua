@@ -418,6 +418,10 @@ function INEED.MERCHANT_SHOW()
 	end
 	if( INEED_options.autoRepair ) then
 		repairAllCost, canRepair = GetRepairAllCost()
+		if( repairAllCost > 0 ) then  -- need to repair
+			RepairAllItems( true ) -- True to use guild repairAllCost
+		end
+		repairAllCost, canRepair = GetRepairAllCost()
 		if( INEED_account.balance and  repairAllCost > 0 and repairAllCost <= INEED_account.balance ) then
 			RepairAllItems()
 			INEED_account.balance = INEED_account.balance - repairAllCost
