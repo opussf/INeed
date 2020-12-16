@@ -747,26 +747,29 @@ function INEED.addItem( itemLink, quantity )
 	end
 	local currencyID = INEED.getCurrencyIdFromLink( itemLink )
 	if currencyID and string.len( currencyID ) > 0 then
-		--local curName, curAmount, _, earnedThisWeek, weeklyMax, totalMax, isDiscovered = GetCurrencyInfo( currencyID )
-		local currencyInfo = C_CurrencyInfo.GetCurrencyInfo( tonumber( currencyID ) )
-		local totalMax = currencyInfo["maxQuantity"]
+		local curInfo = C_CurrencyInfo.GetCurrencyInfo( tonumber( currencyID ) )
+		local iHaveNum = curInfo["quantity"]
+		local totalMax = curInfo["maxQuantity"]
+		iHaveNum = (totalMax > 0 and quantity > totalMax) and totalMax or iHaveNum
 
-		quantity = (totalMax > 0 and quantity > totalMax) and totalMax or quantity
-		local currencyLink = C_CurrencyInfo.GetCurrencyLink( tonumber( currencyID ), curAmount ) or ("currency:"..currencyID)
+		INEED_unknown[time()] = "currencyID: ".. tonumber( currencyID or 0 ).. "curAmount : ".. ( iHaveNum or "nil" )
+		INEED.Print( "GetCurrencyLink( "..tonumber( currencyID )..", "..iHaveNum.." )" )
+
+		local currencyLink = C_CurrencyInfo.GetCurrencyLink( tonumber( currencyID ), iHaveNum ) or ("currency:"..currencyID)
 		--print("I need "..quantity.." of "..itemLink)
 		if quantity > 0 then
-			if quantity > curAmount then
+			if quantity > iHaveNum then
 				INEED.Print( string.format( "Needing: %i/%i %s (currency:%s)",
-						curAmount, quantity, currencyLink, currencyID ) )
+						iHaveNum, quantity, currencyLink, currencyID ) )
 				INEED_currency[currencyID] = INEED_currency[currencyID] or {}
 
-				INEED_currency[currencyID] = INEED.addItemToTable( INEED_currency[currencyID], quantity, curAmount, false)
+				INEED_currency[currencyID] = INEED.addItemToTable( INEED_currency[currencyID], quantity, iHaveNum, false)
 				INEED_currency[currencyID]['name'] = curName -- custom field
 
 			else
 				--local currencyLink = GetCurrencyLink( currencyID )
 				INEED.Print( string.format( COLOR_RED.."-------"..COLOR_END..": %s %i / %i",
-						currencyLink, curAmount, quantity ) )
+						currencyLink, iHaveNum, quantity ) )
 
 			end
 		elseif quantity == 0 then
