@@ -753,7 +753,7 @@ function INEED.addItem( itemLink, quantity )
 		iHaveNum = (totalMax > 0 and quantity > totalMax) and totalMax or iHaveNum
 
 		INEED_unknown[time()] = "currencyID: ".. tonumber( currencyID or 0 ).. "curAmount : ".. ( iHaveNum or "nil" )
-		INEED.Print( "GetCurrencyLink( "..tonumber( currencyID )..", "..iHaveNum.." )" )
+		--INEED.Print( "GetCurrencyLink( "..tonumber( currencyID )..", "..iHaveNum.." )" )
 
 		local currencyLink = C_CurrencyInfo.GetCurrencyLink( tonumber( currencyID ), iHaveNum ) or ("currency:"..currencyID)
 		--print("I need "..quantity.." of "..itemLink)
