@@ -1,5 +1,5 @@
+## Title: INeed v@VERSION@
 ## Interface: @INTERFACE@
-## Title: INeed
 ## Notes: List items into an "I need" list. @VERSION@
 ## Author: opussf
 ## Version: @VERSION@
