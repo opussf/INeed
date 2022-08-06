@@ -67,7 +67,7 @@ function INEED.OptionsPanel_CheckButton_OnLoad( self, option, text )
 	getglobal(self:GetName().."Text"):SetText(text);
 	self:SetChecked(INEED_options[option]);
 end
-function INEED.OptionsPanel_CheckButton_PostClick( self, option )
+function INEED.OptionsPanel_CheckButton_OnClick( self, option )
 	if INEED.oldValues then
 		INEED.oldValues[option] = INEED.oldValues[option] or INEED_options[option];
 	else
@@ -80,8 +80,8 @@ function INEED.OptionsPanel_EditBox_OnLoad( self, option )
 	self:SetCursorPosition(0)
 end
 
--- PostClick for checkbuttons
-function INEED.OptionsPanel_CheckButton_PostClick( self, option )
+-- OnClick for checkbuttons
+function INEED.OptionsPanel_CheckButton_OnClick( self, option )
 	if INEED.oldValues then
 		INEED.oldValues[option] = INEED.oldValues[option] or INEED_options[option]
 	else

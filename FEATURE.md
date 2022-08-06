@@ -1,5 +1,13 @@
 # Feature
 
+## ExpandedOptions
+
+Fix the options panel.  
+SetValue error is happening.
+
+Expand the options.  
+
+
 ## othersNeedUI
 
 After looking at some possible changes, this one seemed to be best.

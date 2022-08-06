@@ -35,7 +35,7 @@
 				<Scripts>
 					<OnLoad>self.tooltip = "Hide list during combat";</OnLoad>
 					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"combatHide","Hide list during combat");</OnShow>
-					<PostClick>INEED.OptionsPanel_CheckButton_PostClick(self,"combatHide")</PostClick>
+					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"combatHide")</OnClick>
 				</Scripts>
 			</CheckButton>
 			<CheckButton name="$parent_ShowProgress" inherits="INEEDOptionsCheckButtonTemplate">
@@ -45,9 +45,9 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
-					<OnLoad>self.tooltip = "Show progress in Alert pane";</OnLoad>
+					<OnLoad>self.tooltip = "Show progress in Alert pane (Like a quest)";</OnLoad>
 					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"showProgress","Show progress in the Alert pane");</OnShow>
-					<PostClick>INEED.OptionsPanel_CheckButton_PostClick(self,"showProgress")</PostClick>
+					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"showProgress")</OnClick>
 				</Scripts>
 			</CheckButton>
 			<CheckButton name="$parent_ShowGlobalProgress" inherits="INEEDOptionsCheckButtonTemplate">
@@ -59,7 +59,7 @@
 				<Scripts>
 					<OnLoad>self.tooltip = "Show progress if others need an item";</OnLoad>
 					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"showGlobal","Show progress if others need an item");</OnShow>
-					<PostClick>INEED.OptionsPanel_CheckButton_PostClick(self,"showGlobal")</PostClick>
+					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"showGlobal")</OnClick>
 				</Scripts>
 			</CheckButton>
 			<CheckButton name="$parent_PrintProgress" inherits="INEEDOptionsCheckButtonTemplate">
@@ -71,7 +71,7 @@
 				<Scripts>
 					<OnLoad>self.tooltip = "Print progress in general chat frame";</OnLoad>
 					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"printProgress","Print progress in general chat frame");</OnShow>
-					<PostClick>INEED.OptionsPanel_CheckButton_PostClick(self,"printProgress")</PostClick>
+					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"printProgress")</OnClick>
 				</Scripts>
 			</CheckButton>
 			<CheckButton name="$parent_IncludeChange" inherits="INEEDOptionsCheckButtonTemplate">
@@ -83,7 +83,7 @@
 				<Scripts>
 					<OnLoad>self.tooltip = "Include amount changed when annoucing progress";</OnLoad>
 					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"includeChange","Include amount changed with progress");</OnShow>
-					<PostClick>INEED.OptionsPanel_CheckButton_PostClick(self,"includeChange")</PostClick>
+					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"includeChange")</OnClick>
 				</Scripts>
 			</CheckButton>
 			<CheckButton name="$parent_AlertOnSuccess" inherits="INEEDOptionsCheckButtonTemplate">
@@ -95,7 +95,7 @@
 				<Scripts>
 					<OnLoad>self.tooltip = "Show alert on success"</OnLoad>
 					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad( self, "showSuccess", "Show alert on Success" )</OnShow>
-					<PostClick>INEED.OptionsPanel_CheckButton_PostClick( self, "showSuccess" )</PostClick>
+					<OnClick>INEED.OptionsPanel_CheckButton_OnClick( self, "showSuccess" )</OnClick>
 				</Scripts>
 			</CheckButton>
 			<CheckButton name="$parent_PrintSuccess" inherits="INEEDOptionsCheckButtonTemplate">
@@ -107,7 +107,7 @@
 				<Scripts>
 					<OnLoad>self.tooltip = "Print success in general chat frame";</OnLoad>
 					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"printSuccess","Print success in general chat frame");</OnShow>
-					<PostClick>INEED.OptionsPanel_CheckButton_PostClick(self,"printSuccess")</PostClick>
+					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"printSuccess")</OnClick>
 				</Scripts>
 			</CheckButton>
 			<CheckButton name="$parent_SuccessScreenShot" inherits="INEEDOptionsCheckButtonTemplate">
@@ -119,7 +119,7 @@
 				<Scripts>
 					<OnLoad>self.tooltip = "Take a screenshot on success"</OnLoad>
 					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad( self, "doScreenShot", "Take a screenshot on success")</OnShow>
-					<PostClick>INEED.OptionsPanel_CheckButton_PostClick( self, "doScreenShot" )</PostClick>
+					<OnClick>INEED.OptionsPanel_CheckButton_OnClick( self, "doScreenShot" )</OnClick>
 				</Scripts>
 			</CheckButton>
 			<CheckButton name="$parent_AudibleAlert" inherits="INEEDOptionsCheckButtonTemplate">
@@ -131,7 +131,7 @@
 				<Scripts>
 					<OnLoad>self.tooltip = "Make a noise on success"</OnLoad>
 					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad( self, "audibleSuccess", "Play alert on Success" )</OnShow>
-					<PostClick>INEED.OptionsPanel_CheckButton_PostClick( self, "audibleSuccess" )</PostClick>
+					<OnClick>INEED.OptionsPanel_CheckButton_OnClick( self, "audibleSuccess" )</OnClick>
 				</Scripts>
 			</CheckButton>
 			<CheckButton name="$parent_DoEmote" inherits="INEEDOptionsCheckButtonTemplate">
@@ -143,7 +143,7 @@
 				<Scripts>
 					<OnLoad>self.tooltip = "Perform an emote on success"</OnLoad>
 					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad( self, "doEmote", "Use Emote:" )</OnShow>
-					<PostClick>INEED.OptionsPanel_CheckButton_PostClick( self, "doEmote" )</PostClick>
+					<OnClick>INEED.OptionsPanel_CheckButton_OnClick( self, "doEmote" )</OnClick>
 				</Scripts>
 			</CheckButton>
 			<EditBox name="$parent_DoEmoteEditBox" inherits="InputBoxTemplate">
