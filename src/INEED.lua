@@ -50,6 +50,7 @@ function INEED.OnLoad()
 	SlashCmdList["INEED"] = function(msg) INEED.command(msg); end
 
 	INEED_Frame:RegisterEvent("ADDON_LOADED")
+	INEED_Frame:RegisterEvent("VARIABLES_LOADED")
 	INEED_Frame:RegisterEvent("BAG_UPDATE")
 	INEED_Frame:RegisterEvent("MERCHANT_SHOW")
 	INEED_Frame:RegisterEvent("MAIL_SHOW")
@@ -212,6 +213,14 @@ function INEED.ADDON_LOADED( _, arg1 )
 		INEED.OptionsPanel_Reset()
 
 		INEED.Print( INEED_MSG_VERSION .. " Loaded" )
+	end
+end
+function INEED.VARIABLES_LOADED( _, arg1 )
+	INEED_Frame:UnregisterEvent("VARIABLES_LOADED")
+	for ts, _ in pairs(INEED_unknown) do
+		if time()-ts > 86400 then
+			INEED_unknown[ts] = nil
+		end
 	end
 end
 function INEED.MAIL_SHOW()
