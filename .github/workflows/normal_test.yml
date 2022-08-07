@@ -48,6 +48,7 @@ jobs:
       - name: Build with ant
         run: ant package
 
+      # https://github.com/marketplace/actions/test-reporter
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()            # run this step even if previous step failed
