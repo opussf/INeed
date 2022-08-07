@@ -231,7 +231,7 @@
 						getglobal( self:GetName().."High" ):SetText( "10" );
 						getglobal( self:GetName().."Low" ):SetText( "1" );
 					</OnLoad>
-					<OnValueChanged></OnValueChanged>
+					<OnValueChanged>INEED.OptionsPanel_Slider_ValueChanged( self, "barCount" )</OnValueChanged>
 				</Scripts>
 			</Slider>
 		</Frames>

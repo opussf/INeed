@@ -13,6 +13,7 @@ INEED_options = {
 	["displayUIListDisplaySeconds"] = 300, -- 5 minute default
 	["autoRepair"] = true,
 	["autoTrain"] = true,
+	["showOldest"] = true,
 }
 
 function INEED.OptionsPanel_OnLoad(panel)
@@ -96,4 +97,10 @@ function INEED.OptionsPanel_EditBox_TextChanged( self, option )
 		INEED.oldValues={[option]=INEED_options[option] }
 	end
 	INEED_options[option] = self:GetText()
+end
+
+-- Slider events
+function INEED.OptionsPanel_Slider_ValueChanged( self, option )
+	INEED.Print("Slider: "..option )
+
 end

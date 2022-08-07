@@ -76,6 +76,17 @@ function INEED.UIListOnUpdate()
 						 ["linkStr"] = (select( 2, GetItemInfo( itemID ) ) or "item:"..itemID)
 				})
 				count = count + 1
+			elseif INEED_options["showOldest"] then
+				table.insert( sortedDisplayItems,
+						{["updated"] = INEED_data[itemID][INEED.realm][INEED.name].added,
+						 ["itemPre"] = "item:",
+						 ["id"] = itemID,  -- itemPre..id can be used to get the link.
+						 ["total"] = INEED_data[itemID][INEED.realm][INEED.name].total,
+						 ["needed"] = INEED_data[itemID][INEED.realm][INEED.name].needed,
+						 ["linkStr"] = SecondsToTime(time()-INEED_data[itemID][INEED.realm][INEED.name].added, true, false, 1)..
+						 			   (select( 2, GetItemInfo( itemID ) ) or "item:"..itemID)
+				})
+				count = count + 1
 			end
 		end
 	end
@@ -144,7 +155,7 @@ function INEED.UIListOnUpdate()
 	if (count == 0 and INEEDUIListFrame:IsShown()) then
 		INEEDUIListFrame:Hide()
 		--INEED.Print("Hide List Frame: "..time())
-		return;
+		return
 	end
 	INEEDUIListFrame:Show()
 	-- sort table by updated, use itemPre..id as subsort
