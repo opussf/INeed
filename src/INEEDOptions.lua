@@ -13,7 +13,8 @@ INEED_options = {
 	["displayUIListDisplaySeconds"] = 300, -- 5 minute default
 	["autoRepair"] = true,
 	["autoTrain"] = true,
-	["showOldest"] = true,
+	["fillBars"] = true,
+
 }
 
 function INEED.OptionsPanel_OnLoad(panel)

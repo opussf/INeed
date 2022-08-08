@@ -76,9 +76,9 @@ function INEED.UIListOnUpdate()
 						 ["linkStr"] = (select( 2, GetItemInfo( itemID ) ) or "item:"..itemID)
 				})
 				count = count + 1
-			elseif INEED_options["showOldest"] then
+			elseif INEED_options["fillBars"] then
 				table.insert( sortedDisplayItems,
-						{["updated"] = INEED_data[itemID][INEED.realm][INEED.name].added,
+						{["updated"] = 0-INEED_data[itemID][INEED.realm][INEED.name].added,
 						 ["itemPre"] = "item:",
 						 ["id"] = itemID,  -- itemPre..id can be used to get the link.
 						 ["total"] = INEED_data[itemID][INEED.realm][INEED.name].total,
