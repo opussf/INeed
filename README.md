@@ -1,6 +1,7 @@
 # INeed
 
 [![Build Status](https://travis-ci.org/opussf/INeed.svg?branch=master)](https://travis-ci.org/opussf/INeed)
+[![Build Statys](https://github.com/opussf/INeed/actions/workflows/ontag.yml/badge.svg)]
 [INeed on CurseForge.com](https://www.curseforge.com/wow/addons/ineed)
 
 This addon is a shopping list, item fulfillment addon for World of Warcraft.
