@@ -20,6 +20,11 @@ Add options to panel:
 * Number of bars to show
 * Height and width of bars
 
+* Slush fund
+* Autorepair from the slush fund
+* Autopurchase receipt
+
+
 
 
 ## othersNeedUI

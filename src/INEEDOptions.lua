@@ -60,8 +60,10 @@ function INEED.OptionsPanel_Refresh()
 
 	INEEDOptionsFrame_DoEmoteEditBox:SetText(INEED_options["emote"])
 	INEEDOptionsFrame_PlaySoundEditBox:SetText(INEED_options["soundFile"])
+	INEEDOptionsFrame_MaxBarSlider:SetValue(INEED_options["barCount"])
 
 	--INEED.Print("Options Panel Refresh: "..INEED_options["emote"])
+
 end
 
 function INEED.OptionsPanel_CheckButton_OnLoad( self, option, text )
@@ -80,6 +82,9 @@ end
 function INEED.OptionsPanel_EditBox_OnLoad( self, option )
 	self:SetText(INEED_options[option])
 	self:SetCursorPosition(0)
+	if self:IsNumeric() then
+		self:SetValue(INEED_options[option])
+	end
 end
 
 -- OnClick for checkbuttons
@@ -97,11 +102,15 @@ function INEED.OptionsPanel_EditBox_TextChanged( self, option )
 	else
 		INEED.oldValues={[option]=INEED_options[option] }
 	end
-	INEED_options[option] = self:GetText()
+	INEED_options[option] = (self:IsNumeric() and tonumber(self:GetText()) or self:GetText())
 end
 
 -- Slider events
 function INEED.OptionsPanel_Slider_ValueChanged( self, option )
-	INEED.Print("Slider: "..option )
-
+	if INEED.oldValues then
+		INEED.oldValues[option] = INEED.oldValues[option] or INEED_options[option]
+	else
+		INEED.oldValues={[option]=INEED_options[option]}
+	end
+	INEED_options[option] = floor(self:GetValue())
 end

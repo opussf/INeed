@@ -3,7 +3,8 @@
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
 
-	<CheckButton name="INEEDOptionsCheckButtonTemplate" inherits="OptionsCheckButtonTemplate" virtual="true">
+<!-- https://github.com/tomrus88/BlizzardInterfaceCode/blob/master/Interface/SharedXML/SharedUIPanelTemplates.xml -->
+	<CheckButton name="INEEDOptionsCheckButtonTemplate" inherits="InterfaceOptionsCheckButtonTemplate" virtual="true">
 		<Scripts>
 			<OnEnter>
 				GameTooltip:SetOwner(self, "ANCHOR_LEFT");
@@ -204,7 +205,7 @@
 					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad( self, "playSoundFile", "Play Sound:" )</OnShow>
 				</Scripts>
 			</CheckButton>
-			<EditBox name="$parent_PlaySoundEditBox" inherits="InputBoxTemplate">
+			<EditBox name="$parent_PlaySoundEditBox" inherits="InputBoxTemplate" autoFocus="false">
 				<Size x="350" y="16"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parent_PlaySound" relativePoint="RIGHT">
@@ -217,23 +218,48 @@
 					<OnTextChanged>INEED.OptionsPanel_EditBox_TextChanged( self, "soundFile" )</OnTextChanged>
 				</Scripts>
 			</EditBox>
-			<Slider name="$parent_MaxBarSlider" inherits="OptionsSlidertemplate" minValue="1" maxValue="10" valueStep="1">
+			<Slider name="$parent_MaxBarSlider" inherits="UISliderTemplateWithLabels" minValue="1" maxValue="10" valueStep="1">
 				<Size x="220" y="16"/>
 				<Anchors>
-					<Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT"/>
+					<Anchor point="LEFT" relativeTo="$parent_Title" relativePoint="LEFT"/>
 					<Anchor point="TOP" relativeTo="$parent_PlaySound" relativePoint="BOTTOM">
 						<Offset x="50" y="-10" />
 					</Anchor>
 				</Anchors>
+				<!-- <ThumbTexture parentKey="Thumb" name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
+					<Size x="32" y="32"/>
+				 </ThumbTexture>
+				 -->
 				<Scripts>
 					<OnLoad>
-						getglobal( self:GetName().."Text" ):SetText( "Maximum Bars" );
-						getglobal( self:GetName().."High" ):SetText( "10" );
-						getglobal( self:GetName().."Low" ):SetText( "1" );
+						_G[self:GetName().."Text"]:SetText( "Maximum Bars" );
+						_G[self:GetName().."High"]:SetText( "10" );
+						_G[self:GetName().."Low" ]:SetText( "1" );
 					</OnLoad>
 					<OnValueChanged>INEED.OptionsPanel_Slider_ValueChanged( self, "barCount" )</OnValueChanged>
 				</Scripts>
 			</Slider>
+
+			<EditBox name="$parent_DisplayFor" inherits="NumericInputSpinnerTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_MaxBarSlider" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+				<Scripts>
+					<OnShow>INEED.OptionsPanel_EditBox_OnLoad( self, "displayUIListDisplaySeconds" )</OnShow>
+					<OnTextChanged>INEED.OptionsPanel_EditBox_TextChanged( self, "displayUIListDisplaySeconds" )</OnTextChanged>
+				</Scripts>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parent_DisplayForText" inherits="GameFontNormalLarge">
+							<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset><AbsDimension x="16" y="-16"/></Offset>
+						</Anchor>
+					</Anchors>
+					</FontString>
+			</Layer>
+		</Layers>
+			</EditBox>
 		</Frames>
 		<Scripts>
 			<OnLoad>
