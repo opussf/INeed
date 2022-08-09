@@ -223,7 +223,7 @@
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parent_Title" relativePoint="LEFT"/>
 					<Anchor point="TOP" relativeTo="$parent_PlaySound" relativePoint="BOTTOM">
-						<Offset x="50" y="-10" />
+						<Offset x="100" y="-15" />
 					</Anchor>
 				</Anchors>
 				<!-- <ThumbTexture parentKey="Thumb" name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
@@ -240,25 +240,29 @@
 				</Scripts>
 			</Slider>
 
-			<EditBox name="$parent_DisplayFor" inherits="NumericInputSpinnerTemplate">
+			<EditBox name="$parent_DisplayFor" inherits="NumericInputSpinnerTemplate" letters="4">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_MaxBarSlider" relativePoint="BOTTOMLEFT"/>
+					<Anchor point="LEFT" relativeTo="$parent_Title" relativePoint="LEFT">
+						<Offset x="50" y="-60"/>
+					</Anchor>
+					<Anchor point="TOP" relativeTo="$parent_MaxBarSlider" relativePoint="BOTTOM"/>
 				</Anchors>
 				<Scripts>
+					<OnLoad>self.tooltip = "Number of seconds to show recently updated items"</OnLoad>
 					<OnShow>INEED.OptionsPanel_EditBox_OnLoad( self, "displayUIListDisplaySeconds" )</OnShow>
 					<OnTextChanged>INEED.OptionsPanel_EditBox_TextChanged( self, "displayUIListDisplaySeconds" )</OnTextChanged>
 				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">
-						<FontString name="$parent_DisplayForText" inherits="GameFontNormalLarge">
+						<FontString name="$parent_DisplayForText" inherits="GameFontWhite" text="Seconds">
 							<Anchors>
-						<Anchor point="TOPLEFT">
-							<Offset><AbsDimension x="16" y="-16"/></Offset>
-						</Anchor>
-					</Anchors>
-					</FontString>
-			</Layer>
-		</Layers>
+								<Anchor point="TOPLEFT">
+									<Offset><AbsDimension x="60" y="-2"/></Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
 			</EditBox>
 		</Frames>
 		<Scripts>

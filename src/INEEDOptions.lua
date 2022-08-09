@@ -61,6 +61,7 @@ function INEED.OptionsPanel_Refresh()
 	INEEDOptionsFrame_DoEmoteEditBox:SetText(INEED_options["emote"])
 	INEEDOptionsFrame_PlaySoundEditBox:SetText(INEED_options["soundFile"])
 	INEEDOptionsFrame_MaxBarSlider:SetValue(INEED_options["barCount"])
+	INEEDOptionsFrame_DisplayFor:SetValue(INEED_options["displayUIListDisplaySeconds"])
 
 	--INEED.Print("Options Panel Refresh: "..INEED_options["emote"])
 
@@ -103,6 +104,9 @@ function INEED.OptionsPanel_EditBox_TextChanged( self, option )
 		INEED.oldValues={[option]=INEED_options[option] }
 	end
 	INEED_options[option] = (self:IsNumeric() and tonumber(self:GetText()) or self:GetText())
+	if self:IsNumeric() then
+		self:SetValue(INEED_options[option])
+	end
 end
 
 -- Slider events
