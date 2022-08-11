@@ -103,6 +103,16 @@ function INEED.UIListOnUpdate()
 					 ["linkStr"] = (C_CurrencyInfo.GetCurrencyLink( tonumber(curID), INEED_currency[curID].total ) or ("currency:"..curID))
 			})
 			count = count + 1
+		elseif INEED_options["fillBars"] then
+			table.insert( sortedDisplayItems,
+					{["updated"] = 0-INEED_data[itemID][INEED.realm][INEED.name].added,
+					 ["itemPre"] = "currency:",
+					 ["id"] = curID,
+					 ["total"] = INEED_currency[curID].total,
+					 ["needed"] = INEED_currency[curID].needed,
+					 ["linkStr"] = (C_CurrencyInfo.GetCurrencyLink( tonumber(curID), INEED_currency[curID].total ) or ("currency:"..curID))
+			})
+			count = count + 1
 		end
 	end
 	if INEED_gold[INEED.realm] and INEED_gold[INEED.realm][INEED.name] then
