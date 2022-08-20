@@ -47,7 +47,7 @@
 				INEED.UIListOnUpdate()
 			</OnUpdate>
 			<OnMouseDown>
-				INEED.UIListOnDragStart()
+				INEED.UIListOnMouseDown()
 			</OnMouseDown>
 			<OnMouseUp>
 				INEED.UIListOnDragStop()

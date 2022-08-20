@@ -14,7 +14,7 @@ INEED_options = {
 	["autoRepair"] = true,
 	["autoTrain"] = true,
 	["fillBars"] = true,
-
+	["displayUIListFillbarsSeconds"] = 300, -- show filled bars for another 5 minutes
 }
 
 function INEED.OptionsPanel_OnLoad(panel)
