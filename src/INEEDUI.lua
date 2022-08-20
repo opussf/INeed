@@ -208,7 +208,7 @@ function INEED.UIListOnMouseDown( arg1, arg2 )
 		INEEDUIListFrame:StartMoving()
 	end
 	INEED.Print( (button or "nil")..":"..(arg1 or "nil")..":"..(arg2 or "nil") )
-	for i = 1, INEED_options["barCount"] do
+	for i = 1, #INEED.UIList_bars do
 		if MouseIsOver( INEED.UIList_bars[i] ) then
 			INEED.Print( INEED.UIList_bars[i].text:GetText() )
 		end
