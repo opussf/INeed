@@ -215,7 +215,7 @@ function INEED.UIListOnMouseDown()
 			itemID = INEED.getItemIdFromLink( barTxt )
 			if itemID then
 				_, itemLink = GetItemInfo( itemID )
-				INEED.Print( itemLink )
+				--INEED.Print( itemLink )
 				SetItemRef( "item:"..itemID, itemLink, button )
 				return
 			end
@@ -223,7 +223,7 @@ function INEED.UIListOnMouseDown()
 			if curID then
 				local curInfo = C_CurrencyInfo.GetCurrencyInfo( tonumber( curID ) )
 				local curLink = C_CurrencyInfo.GetCurrencyLink( tonumber( curID ), 0 ) or ("currency:"..curID)
-				INEED.Print( curLink )
+				--INEED.Print( curLink )
 				SetItemRef( "currency:"..curID, curLink, button )
 				return
 			end

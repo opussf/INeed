@@ -222,6 +222,8 @@ function INEED.VARIABLES_LOADED( _, arg1 )
 			INEED_unknown[ts] = nil
 		end
 	end
+	INEED.highestUpdatedTS = time() + INEED_options["displayUIListFillbarsSeconds"]
+	INEEDUIListFrame:Show()
 end
 function INEED.MAIL_SHOW()
 	INEED.Print("Others on this server need:")
