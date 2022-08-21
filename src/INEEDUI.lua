@@ -202,15 +202,33 @@ function INEED.UIListOnUpdate()
 		end
 	end
 end
-function INEED.UIListOnMouseDown( arg1, arg2 )
+function INEED.UIListOnMouseDown()
 	button = GetMouseButtonClicked()
-	if button == "LeftButton" then
+	--INEED.Print( "Button: "..button )
+	if button == "RightButton" then
 		INEEDUIListFrame:StartMoving()
+		return
 	end
-	INEED.Print( (button or "nil")..":"..(arg1 or "nil")..":"..(arg2 or "nil") )
 	for i = 1, #INEED.UIList_bars do
 		if MouseIsOver( INEED.UIList_bars[i] ) then
-			INEED.Print( INEED.UIList_bars[i].text:GetText() )
+			local barTxt = INEED.UIList_bars[i].text:GetText()
+			itemID = INEED.getItemIdFromLink( barTxt )
+			if itemID then
+				_, itemLink = GetItemInfo( itemID )
+				INEED.Print( itemLink )
+				SetItemRef( "item:"..itemID, itemLink, button )
+				return
+			end
+			curID = INEED.getCurrencyIdFromLink( barTxt )
+			if curID then
+				local curInfo = C_CurrencyInfo.GetCurrencyInfo( tonumber( curID ) )
+				local curLink = C_CurrencyInfo.GetCurrencyLink( tonumber( curID ), 0 ) or ("currency:"..curID)
+				INEED.Print( curLink )
+				SetItemRef( "currency:"..curID, curLink, button )
+				return
+			end
+			INEED.Print( barTxt )
+			--INEED.Print( INEED.UIList_bars[i].text:GetText() )
 		end
 	end
 end
