@@ -115,6 +115,8 @@ Some macro ideas:
 
 ## Versions:
 ```
+0.22    Adding interaction to UI window - click bars
+
 0.10    Crontab feature scrapped.
         Create a "toMake" field for items made from an enchant(profession)
         -- not listed in fulfillment list

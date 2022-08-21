@@ -44,7 +44,6 @@ function INEED.UIListAssureBars( barsNeeded )
 	return max(count, barsNeeded)
 end
 
-
 -- List display functions
 function INEED.UIListOnLoad()
 	INEED.Print("Loading UI - List")

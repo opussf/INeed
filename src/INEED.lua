@@ -222,8 +222,7 @@ function INEED.VARIABLES_LOADED( _, arg1 )
 			INEED_unknown[ts] = nil
 		end
 	end
-	INEED.highestUpdatedTS = time() + INEED_options["displayUIListFillbarsSeconds"]
-	INEEDUIListFrame:Show()
+	INEED.oldest()  -- @TODO, make this an option.
 end
 function INEED.MAIL_SHOW()
 	INEED.Print("Others on this server need:")
@@ -1138,6 +1137,10 @@ function INEED.prune( paramIn )
 		INEED_data[itemID] = nil
 	end
 end
+function INEED.oldest()
+	INEED.highestUpdatedTS = time() + INEED_options["displayUIListFillbarsSeconds"]
+	INEEDUIListFrame:Show()
+end
 
 -- Testing functions
 
@@ -1217,6 +1220,10 @@ INEED.CommandList = {
 	["prune"] = {
 		["func"] = INEED.prune,
 		["help"] = { "<link>", "Prune [link] from all character." },
+	},
+	["oldest"] = {
+		["func"] = INEED.oldest,
+		["help"] = { "", "Show the oldest needed items."}
 	},
 	["test"] = {
 		["func"] = INEED.test,
