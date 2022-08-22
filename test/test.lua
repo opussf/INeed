@@ -357,7 +357,6 @@ function test.testTradeSkill_EnchantId()
 end
 ]]
 -- Tests for currency
---[[
 function test.testGetCurrencyIdFromLink_withLink()
 	assertEquals( "402",
 		INEED.getCurrencyIdFromLink( "|cffffffff|Hcurrency:402|h[Ironpaw Token]|h|r" ) )
@@ -401,6 +400,8 @@ function test.testAddCurrency_CurrencyLink_AlreadyHaveAmount()
 	INEED.command( "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r 1" )
 	assertIsNil( INEED_currency["703"] )
 end
+--[[
+
 function test.testAddCurrency_OverMaxReducedToMax()
 	INEED.command( "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r 10000" )
 	assertEquals( 4000, INEED_currency["703"].needed )
@@ -409,6 +410,10 @@ function test.testAddCurrency_StoreName()
 	INEED.command( "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r 100" )
 	assertEquals( "Fictional Currency", INEED_currency["703"].name )
 end
+
+
+
+
 function test.notestCurrency_showList()
 	-- @TODO...  FIX THIS
 	INEED.command( "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r 100" )

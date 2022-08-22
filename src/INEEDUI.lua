@@ -64,8 +64,10 @@ function INEED.UIListOnUpdate()
 	for itemID in pairs(INEED_data) do
 		if INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] then
 			local updatedTS = INEED_data[itemID][INEED.realm][INEED.name].updated or INEED_data[itemID][INEED.realm][INEED.name].added
-			INEED.highestUpdatedTS = math.max( INEED.highestUpdatedTS or 0,
+			if INEED_options["fillBars"] then
+				INEED.highestUpdatedTS = math.max( INEED.highestUpdatedTS or 0,
 					updatedTS + (INEED_options["displayUIListDisplaySeconds"] or 0) + (INEED_options["displayUIListFillbarsSeconds"] or 0) )
+			end
 			--INEED.Print(itemID..":"..(time()-updatedTS).." <? "..(INEED_options["displayUIListDisplaySeconds"] or "nil") )
 			if ((time() - updatedTS) < (INEED_options["displayUIListDisplaySeconds"] or 0)) then
 					-- I need this item, and it has been updated within the update window
@@ -78,7 +80,7 @@ function INEED.UIListOnUpdate()
 						 ["linkStr"] = (select( 2, GetItemInfo( itemID ) ) or "item:"..itemID)
 				})
 				count = count + 1
-			elseif INEED_options["fillBars"] and time() < INEED.highestUpdatedTS then
+			elseif time() < ( INEED.highestUpdatedTS or 0 ) then
 				--INEED.Print( time().. " <? "..INEED.highestUpdatedTS )
 				table.insert( sortedDisplayItems,
 						{["updated"] = 0-INEED_data[itemID][INEED.realm][INEED.name].added,
@@ -106,7 +108,7 @@ function INEED.UIListOnUpdate()
 					 ["linkStr"] = (C_CurrencyInfo.GetCurrencyLink( tonumber(curID), INEED_currency[curID].total ) or ("currency:"..curID))
 			})
 			count = count + 1
-		elseif INEED_options["fillBars"] and time() < INEED.highestUpdatedTS then
+		elseif time() < ( INEED.highestUpdatedTS or 0 ) then
 			table.insert( sortedDisplayItems,
 					{["updated"] = 0-INEED_currency[curID].added,
 					 ["itemPre"] = "currency:",
