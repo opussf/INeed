@@ -51,18 +51,6 @@
 					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"showProgress")</OnClick>
 				</Scripts>
 			</CheckButton>
-			<Button name="$parent_TestShowProgressButton" inherits="UIPanelButtonTemplate" text="Test Alert">
-				<Size>
-					<AbsDimension x="120" y="24"/>
-				</Size>
-				<Anchors>
-					<Anchor point="TOP" relativeTo="$parent_ShowProgress" relativePoint="TOP">
-					</Anchor>
-					<Anchor point="RIGHT" relativeTo="INEEDOptionsFrame" relativePoint="RIGHT">
-						<Offset><AbsDimension x="-10" y="0" /></Offset>
-					</Anchor>
-				</Anchors>
-			</Button>
 			<CheckButton name="$parent_ShowGlobalProgress" inherits="INEEDOptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_ShowProgress" relativePoint="BOTTOMLEFT">

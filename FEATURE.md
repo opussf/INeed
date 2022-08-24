@@ -25,6 +25,23 @@ Add options to panel:
 * Autopurchase receipt
 
 
+[x] showProgress
+[ ] showSuccess
+[ ] audibleSuccess
+[ ] doEmote
+[ ] emote
+[ ] playSoundFile
+[ ] soundFile
+[ ] showGlobal
+[ ] barCount
+[ ] hideInCombat
+[ ] displayUIList
+[ ] displayUIListDisplaySeconds
+[ ] autoRepair
+[ ] autoTrain
+[ ] fillBars
+[ ] displayUIListFillbarsSeconds
+
 
 
 ## othersNeedUI

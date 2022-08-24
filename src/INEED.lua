@@ -1135,6 +1135,10 @@ function INEED.prune( paramIn )
 			end
 		end
 		INEED_data[itemID] = nil
+	elseif itemID and not INEED_options[itemID] then
+		INEED.Print( "Seems like no one needs this item.")
+	elseif not itemID then
+		INEED.Print( "This cannot be pruned." )
 	end
 end
 function INEED.oldest()

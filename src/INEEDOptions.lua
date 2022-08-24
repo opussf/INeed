@@ -12,7 +12,6 @@ INEED_options = {
 	["displayUIList"] = true,
 	["displayUIListDisplaySeconds"] = 300, -- 5 minute default
 	["autoRepair"] = true,
-	["autoTrain"] = true,
 	["fillBars"] = true,
 	["displayUIListFillbarsSeconds"] = 300, -- show filled bars for another 5 minutes
 }
