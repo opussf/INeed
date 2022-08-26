@@ -4,8 +4,6 @@ INEED_options = {
 	["audibleSuccess"] = true,
 	["doEmote"] = true,
 	["emote"] = "CHEER",
-	["playSoundFile"] = false,
-	["soundFile"] = "Sound\\Creature\\BabyMurloc\\BabyMurlocDance.wav",
 	["showGlobal"] = true,
 	["barCount"] = 6,
 	["hideInCombat"] = true,
@@ -58,7 +56,6 @@ function INEED.OptionsPanel_Refresh()
 --	INEEDOptionsFrame_PlaySound:SetChecked(INEED_options["playSoundFile"])
 
 	INEEDOptionsFrame_DoEmoteEditBox:SetText(INEED_options["emote"])
-	INEEDOptionsFrame_PlaySoundEditBox:SetText(INEED_options["soundFile"])
 	INEEDOptionsFrame_MaxBarSlider:SetValue(INEED_options["barCount"])
 	INEEDOptionsFrame_DisplayFor:SetValue(INEED_options["displayUIListDisplaySeconds"])
 
