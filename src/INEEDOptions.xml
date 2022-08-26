@@ -24,121 +24,137 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
+				<FontString name="$parent_ProgressHeader" inherits="GameFontNormal" text="Progress:">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent_Title" relativePoint="BOTTOMLEFT">
+							<Offset><AbsDimension x="16" y="-10"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_ShowWhereHeader" inherits="GameFontNormal" text="Show Where:">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent_ProgressHeader" relativePoint="BOTTOMLEFT">
+							<Offset><AbsDimension x="16" y="-10"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_ShowProgressHeader" inherits="GameFontNormal" text="Show:">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent_ShowWhereHeader" relativePoint="TOPLEFT">
+							<Offset><AbsDimension x="200" y="0"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_SuccessHeader" inherits="GameFontNormal" text="Success:">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent_ProgressHeader" relativePoint="BOTTOMLEFT">
+							<Offset><AbsDimension x="0" y="-100"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_SuccessWhereHeader" inherits="GameFontNormal" text="Show Where:">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent_SuccessHeader" relativePoint="BOTTOMLEFT">
+							<Offset><AbsDimension x="16" y="-10"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_SuccessActionsHeader" inherits="GameFontNormal" text="Actions">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent_SuccessWhereHeader" relativePoint="TOPLEFT">
+							<Offset><AbsDimension x="200" y="0"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
 			</Layer>
 		</Layers>
 		<Frames>
-			<CheckButton name="$parent_CombatHide" inherits="INEEDOptionsCheckButtonTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_Title" relativePoint="BOTTOMLEFT">
-						<Offset><AbsDimension x="0" y="-10"/></Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>self.tooltip = "Hide list during combat";</OnLoad>
-					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"combatHide","Hide list during combat");</OnShow>
-					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"combatHide")</OnClick>
-				</Scripts>
-			</CheckButton>
 			<CheckButton name="$parent_ShowProgress" inherits="INEEDOptionsCheckButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_CombatHide" relativePoint="BOTTOMLEFT">
-						<Offset><AbsDimension x="0" y="0"/></Offset>
+					<Anchor point="TOPLEFT" relativeTo="$parent_ShowWhereHeader" relativePoint="BOTTOMLEFT">
 					</Anchor>
 				</Anchors>
 				<Scripts>
 					<OnLoad>self.tooltip = "Show progress in Alert pane (Like a quest)";</OnLoad>
-					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"showProgress","Show progress in the Alert pane");</OnShow>
+					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"showProgress","Alert pane");</OnShow>
 					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"showProgress")</OnClick>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_ShowGlobalProgress" inherits="INEEDOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_PrintProgress" inherits="INEEDOptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_ShowProgress" relativePoint="BOTTOMLEFT">
 						<Offset><AbsDimension x="0" y="0"/></Offset>
 					</Anchor>
 				</Anchors>
 				<Scripts>
-					<OnLoad>self.tooltip = "Show progress if others need an item";</OnLoad>
-					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"showGlobal","Show progress if others need an item");</OnShow>
+					<OnLoad>self.tooltip = "Print progress in general chat frame";</OnLoad>
+					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"printProgress","General chat frame");</OnShow>
+					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"printProgress")</OnClick>
+				</Scripts>
+			</CheckButton>
+
+			<CheckButton name="$parent_ShowGlobalProgress" inherits="INEEDOptionsCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_ShowProgressHeader" relativePoint="BOTTOMLEFT">
+						<Offset><AbsDimension x="0" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self.tooltip = "Show progress if others need an item (-=item=-)";</OnLoad>
+					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"showGlobal","If others need an item");</OnShow>
 					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"showGlobal")</OnClick>
 				</Scripts>
 			</CheckButton>
-			<CheckButton name="$parent_PrintProgress" inherits="INEEDOptionsCheckButtonTemplate">
+			<CheckButton name="$parent_IncludeChange" inherits="INEEDOptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_ShowGlobalProgress" relativePoint="BOTTOMLEFT">
 						<Offset><AbsDimension x="0" y="0"/></Offset>
 					</Anchor>
 				</Anchors>
 				<Scripts>
-					<OnLoad>self.tooltip = "Print progress in general chat frame";</OnLoad>
-					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"printProgress","Print progress in general chat frame");</OnShow>
-					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"printProgress")</OnClick>
-				</Scripts>
-			</CheckButton>
-			<CheckButton name="$parent_IncludeChange" inherits="INEEDOptionsCheckButtonTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_PrintProgress" relativePoint="BOTTOMLEFT">
-						<Offset><AbsDimension x="30" y="0"/></Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
 					<OnLoad>self.tooltip = "Include amount changed when annoucing progress";</OnLoad>
-					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"includeChange","Include amount changed with progress");</OnShow>
+					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"includeChange","Amount changed");</OnShow>
 					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"includeChange")</OnClick>
 				</Scripts>
 			</CheckButton>
+
 			<CheckButton name="$parent_AlertOnSuccess" inherits="INEEDOptionsCheckButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_PrintProgress" relativePoint="BOTTOMLEFT">
-						<Offset><AbsDimension x="0" y="-30"/></Offset>
-					</Anchor>
+					<Anchor point="TOPLEFT" relativeTo="$parent_SuccessWhereHeader" relativePoint="BOTTOMLEFT"/>
 				</Anchors>
 				<Scripts>
-					<OnLoad>self.tooltip = "Show alert on success"</OnLoad>
-					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad( self, "showSuccess", "Shows an alert in the middle of the screen." )</OnShow>
+					<OnLoad>self.tooltip = "Show alert on success (like Raid Warning)"</OnLoad>
+					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad( self, "showSuccess", "Alert pane." )</OnShow>
 					<OnClick>INEED.OptionsPanel_CheckButton_OnClick( self, "showSuccess" )</OnClick>
 				</Scripts>
 			</CheckButton>
 			<CheckButton name="$parent_PrintSuccess" inherits="INEEDOptionsCheckButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_AlertOnSuccess" relativePoint="BOTTOMLEFT">
-						<Offset><AbsDimension x="0" y="0"/></Offset>
-					</Anchor>
+					<Anchor point="TOPLEFT" relativeTo="$parent_AlertOnSuccess" relativePoint="BOTTOMLEFT"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>self.tooltip = "Print success in general chat frame";</OnLoad>
-					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"printSuccess","Print success in general chat frame");</OnShow>
+					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"printSuccess","General chat frame");</OnShow>
 					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"printSuccess")</OnClick>
 				</Scripts>
 			</CheckButton>
+
 			<CheckButton name="$parent_SuccessScreenShot" inherits="INEEDOptionsCheckButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_PrintSuccess" relativePoint="BOTTOMLEFT">
+					<Anchor point="TOPLEFT" relativeTo="$parent_SuccessActionsHeader" relativePoint="BOTTOMLEFT">
 						<Offset><AbsDimension x="0" y="0"/></Offset>
 					</Anchor>
 				</Anchors>
 				<Scripts>
 					<OnLoad>self.tooltip = "Take a screenshot on success"</OnLoad>
-					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad( self, "doScreenShot", "Take a screenshot on success")</OnShow>
+					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad( self, "doScreenShot", "Screenshot")</OnShow>
 					<OnClick>INEED.OptionsPanel_CheckButton_OnClick( self, "doScreenShot" )</OnClick>
-				</Scripts>
-			</CheckButton>
-			<CheckButton name="$parent_AudibleAlert" inherits="INEEDOptionsCheckButtonTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_SuccessScreenShot" relativePoint="BOTTOMLEFT">
-						<Offset><AbsDimension x="0" y="-10"/></Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>self.tooltip = "Make a noise on success"</OnLoad>
-					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad( self, "audibleSuccess", "Play alert on Success" )</OnShow>
-					<OnClick>INEED.OptionsPanel_CheckButton_OnClick( self, "audibleSuccess" )</OnClick>
 				</Scripts>
 			</CheckButton>
 			<CheckButton name="$parent_DoEmote" inherits="INEEDOptionsCheckButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_AudibleAlert" relativePoint="BOTTOMLEFT">
-						<Offset><AbsDimension x="30" y="-5"/></Offset>
+					<Anchor point="TOPLEFT" relativeTo="$parent_SuccessScreenShot" relativePoint="BOTTOMLEFT">
+						<Offset><AbsDimension x="0" y="0"/></Offset>
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -151,7 +167,7 @@
 				<Size x="100" y="16"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parent_DoEmote" relativePoint="RIGHT">
-						<Offset x="100" y="0" />
+						<Offset x="80" y="0" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -172,16 +188,33 @@
 				<Scripts>
 					<OnClick>
 						local emote = _G[self:GetParent():GetName() .."_DoEmoteEditBox"]:GetText();
-						local sound = _G[self:GetParent():GetName() .."_PlaySoundEditBox"]:GetText();
 						if _G[self:GetParent():GetName() .."_DoEmote"]:GetChecked() then
 							DoEmote( emote )
-						end
-						if _G[self:GetParent():GetName() .."_PlaySound"]:GetChecked() then
-							PlaySoundFile( sound )
 						end
 					</OnClick>
 				</Scripts>
 			</Button>
+<!--
+			<CheckButton name="$parent_CombatHide" inherits="INEEDOptionsCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_Title" relativePoint="BOTTOMLEFT">
+						<Offset><AbsDimension x="0" y="-10"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self.tooltip = "Hide list during combat";</OnLoad>
+					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"combatHide","Hide list during combat");</OnShow>
+					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"combatHide")</OnClick>
+				</Scripts>
+			</CheckButton>
+
+
+
+
+
+
+
+
 			<CheckButton name="$parent_PlaySound" inherits="INEEDOptionsCheckButtonTemplate">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_DoEmote" relativePoint="BOTTOMLEFT">
@@ -206,6 +239,7 @@
 					<OnTextChanged>INEED.OptionsPanel_EditBox_TextChanged( self, "soundFile" )</OnTextChanged>
 				</Scripts>
 			</EditBox>
+		-->
 			<Slider name="$parent_MaxBarSlider" inherits="UISliderTemplateWithLabels" minValue="1" maxValue="10" valueStep="1">
 				<Size x="220" y="16"/>
 				<Anchors>
