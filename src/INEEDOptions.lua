@@ -56,8 +56,8 @@ function INEED.OptionsPanel_Refresh()
 --	INEEDOptionsFrame_PlaySound:SetChecked(INEED_options["playSoundFile"])
 
 	INEEDOptionsFrame_DoEmoteEditBox:SetText(INEED_options["emote"])
-	INEEDOptionsFrame_MaxBarSlider:SetValue(INEED_options["barCount"])
-	INEEDOptionsFrame_DisplayFor:SetValue(INEED_options["displayUIListDisplaySeconds"])
+	INEEDOptionsFrame_DisplayBarCount:SetValue(INEED_options["barCount"])
+	--INEEDOptionsFrame_DisplayFor:SetValue(INEED_options["displayUIListDisplaySeconds"])
 
 	--INEED.Print("Options Panel Refresh: "..INEED_options["emote"])
 

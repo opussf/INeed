@@ -66,6 +66,21 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
+				<FontString name="$parent_UIHeader" inherits="GameFontNormal" text="UI:">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent_SuccessHeader" relativePoint="BOTTOMLEFT">
+							<Offset><AbsDimension x="0" y="-80"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<!--
+				<FontString name="$parent_ShowBarsHeader" inherits="GameFontNormal" text="Show">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parent_SuccessActionsHeader" relativePoint="LEFT"/>
+						<Anchor point="TOP" relativeTo="$parent_UIHeader" relativePoint="BOTTOM"/>
+					</Anchors>
+				</FontString>
+			-->
 			</Layer>
 		</Layers>
 		<Frames>
@@ -167,7 +182,7 @@
 				<Size x="100" y="16"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parent_DoEmote" relativePoint="RIGHT">
-						<Offset x="80" y="0" />
+						<Offset x="100" y="0" />
 					</Anchor>
 				</Anchors>
 				<Scripts>
@@ -194,89 +209,39 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-<!--
+
 			<CheckButton name="$parent_CombatHide" inherits="INEEDOptionsCheckButtonTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_Title" relativePoint="BOTTOMLEFT">
-						<Offset><AbsDimension x="0" y="-10"/></Offset>
+					<Anchor point="TOPLEFT" relativeTo="$parent_UIHeader" relativePoint="BOTTOMLEFT">
+						<Offset><AbsDimension x="16" y="0"/></Offset>
 					</Anchor>
 				</Anchors>
 				<Scripts>
-					<OnLoad>self.tooltip = "Hide list during combat";</OnLoad>
+					<OnLoad>self.tooltip = "Hide in combat";</OnLoad>
 					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"combatHide","Hide list during combat");</OnShow>
 					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"combatHide")</OnClick>
 				</Scripts>
 			</CheckButton>
-
-
-
-
-
-
-
-
-			<CheckButton name="$parent_PlaySound" inherits="INEEDOptionsCheckButtonTemplate">
+			<EditBox name="$parent_DisplayBarCount" inherits="NumericInputSpinnerTemplate" letters="4">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_DoEmote" relativePoint="BOTTOMLEFT">
-						<Offset><AbsDimension x="0" y="-5"/></Offset>
-					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnLoad>self.tooltip = "Play a sound file on success"</OnLoad>
-					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad( self, "playSoundFile", "Play Sound:" )</OnShow>
-				</Scripts>
-			</CheckButton>
-			<EditBox name="$parent_PlaySoundEditBox" inherits="InputBoxTemplate" autoFocus="false">
-				<Size x="350" y="16"/>
-				<Anchors>
-					<Anchor point="LEFT" relativeTo="$parent_PlaySound" relativePoint="RIGHT">
-						<Offset x="100" y="0" />
-					</Anchor>
+					<Anchor point="LEFT" relativeTo="$parent_DoEmoteEditBox" relativePoint="LEFT"/>
+					<Anchor point="TOP"  relativeTo="$parent_CombatHide" relativePoint="TOP"/>
 				</Anchors>
 				<Scripts>
 					<OnLoad>self:SetAutoFocus( false )</OnLoad>
-					<OnShow>INEED.OptionsPanel_EditBox_OnLoad( self, "soundFile" )</OnShow>
-					<OnTextChanged>INEED.OptionsPanel_EditBox_TextChanged( self, "soundFile" )</OnTextChanged>
-				</Scripts>
-			</EditBox>
-		-->
-			<Slider name="$parent_MaxBarSlider" inherits="UISliderTemplateWithLabels" minValue="1" maxValue="10" valueStep="1">
-				<Size x="220" y="16"/>
-				<Anchors>
-					<Anchor point="LEFT" relativeTo="$parent_Title" relativePoint="LEFT"/>
-					<Anchor point="TOP" relativeTo="$parent_PlaySound" relativePoint="BOTTOM">
-						<Offset x="100" y="-15" />
-					</Anchor>
-				</Anchors>
-				<!-- <ThumbTexture parentKey="Thumb" name="$parentThumb" file="Interface\Buttons\UI-SliderBar-Button-Horizontal">
-					<Size x="32" y="32"/>
-				 </ThumbTexture>
-				 -->
-				<Scripts>
-					<OnLoad>
-						_G[self:GetName().."Text"]:SetText( "Maximum Bars" );
-						_G[self:GetName().."High"]:SetText( "10" );
-						_G[self:GetName().."Low" ]:SetText( "1" );
-					</OnLoad>
-					<OnValueChanged>INEED.OptionsPanel_Slider_ValueChanged( self, "barCount" )</OnValueChanged>
-				</Scripts>
-			</Slider>
-
-			<EditBox name="$parent_DisplayFor" inherits="NumericInputSpinnerTemplate" letters="4">
-				<Anchors>
-					<Anchor point="LEFT" relativeTo="$parent_Title" relativePoint="LEFT">
-						<Offset x="50" y="-60"/>
-					</Anchor>
-					<Anchor point="TOP" relativeTo="$parent_MaxBarSlider" relativePoint="BOTTOM"/>
-				</Anchors>
-				<Scripts>
-					<OnLoad>self.tooltip = "Number of seconds to show recently updated items"</OnLoad>
-					<OnShow>INEED.OptionsPanel_EditBox_OnLoad( self, "displayUIListDisplaySeconds" )</OnShow>
-					<OnTextChanged>INEED.OptionsPanel_EditBox_TextChanged( self, "displayUIListDisplaySeconds" )</OnTextChanged>
+					<OnShow>INEED.OptionsPanel_EditBox_OnLoad( self, "barCount" )</OnShow>
+					<OnTextChanged>INEED.OptionsPanel_EditBox_TextChanged( self, "barCount" )</OnTextChanged>
 				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">
-						<FontString name="$parent_DisplayForText" inherits="GameFontWhite" text="Seconds">
+						<FontString name="$parent_DisplayForPreText" inherits="GameFontWhite" text="Show">
+							<Anchors>
+								<Anchor point="LEFT">
+									<Offset><AbsDimension x="-60" y="-2"/></Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parent_DisplayForPostText" inherits="GameFontWhite" text="bars">
 							<Anchors>
 								<Anchor point="TOPLEFT">
 									<Offset><AbsDimension x="60" y="-2"/></Offset>
@@ -286,6 +251,59 @@
 					</Layer>
 				</Layers>
 			</EditBox>
+			<EditBox name="$parent_DisplayUpdate_Days" inherits="InputBoxTemplate">
+				<Size x="30" y="16"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_CombatHide" relativePoint="BOTTOMLEFT">
+						<Offset><AbsDimension x="200" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetAutoFocus( false )</OnLoad>
+				</Scripts>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parent_DisplayUpdate_Days_PreText" inherits="GameFontWhite" text="Display Updated items for:">
+							<Anchors>
+								<Anchor point="LEFT">
+									<Offset><AbsDimension x="-200" y="0"/></Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parent_DisplayUpdate_Days_PostText" inherits="GameFontWhite" text="days">
+							<Anchors>
+								<Anchor point="RIGHT">
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</EditBox>
+
+
+<!--
+
+
+
+			<Slider name="$parent_MaxBarSlider" inherits="UISliderTemplateWithLabels" minValue="1" maxValue="10" valueStep="1">
+				<Size x="220" y="16"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_Title" relativePoint="LEFT"/>
+					<Anchor point="TOP" relativeTo="$parent_PlaySound" relativePoint="BOTTOM">
+						<Offset x="100" y="-15" />
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						_G[self:GetName().."Text"]:SetText( "Maximum Bars" );
+						_G[self:GetName().."High"]:SetText( "10" );
+						_G[self:GetName().."Low" ]:SetText( "1" );
+					</OnLoad>
+					<OnValueChanged>INEED.OptionsPanel_Slider_ValueChanged( self, "barCount" )</OnValueChanged>
+				</Scripts>
+			</Slider>
+-->
+
 		</Frames>
 		<Scripts>
 			<OnLoad>
