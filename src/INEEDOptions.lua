@@ -105,6 +105,34 @@ function INEED.OptionsPanel_EditBox_TextChanged( self, option )
 	end
 end
 
+-- Duration field events
+function INEED.OptionsPanel_Duration_OnLoad( self, option )
+	if string.find( self:GetName(), "Days" ) then
+		local days = math.floor( INEED_options[option]/86400 )
+		self:SetText( tostring( days ) )
+		INEED.Print( "days: "..days )
+	elseif string.find( self:GetName(), "Hours" ) then
+		local hours = math.floor( (INEED_options[option]/3600)%24 )
+		self:SetText( tostring( hours ) )
+		INEED.Print( "hours: "..hours )
+	elseif string.find( self:GetName(), "Minutes" ) then
+		local minutes = math.floor( (INEED_options[option]/60)%60 )
+		self:SetText( tostring( minutes ) )
+		INEED.Print( "minutes: "..minutes )
+	elseif string.find( self:GetName(), "Seconds" ) then
+		local seconds = math.floor( (INEED_options[option]%60) )
+		self:SetText( tostring( seconds ) )
+		INEED.Print( "seconds: "..seconds )
+	end
+end
+function INEED.OptionsPanel_Duration_TextChanged( self, option )
+	INEED.Print( self:GetName() ..":"..INEED_options[option] )
+	if string.find( self:GetName(), "Days" ) then
+		local days = tonumber( self:GetText() )
+		INEED.Print( "days: "..days..INEED_options[option] )
+	end
+end
+
 -- Slider events
 function INEED.OptionsPanel_Slider_ValueChanged( self, option )
 	if INEED.oldValues then

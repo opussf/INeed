@@ -251,8 +251,8 @@
 					</Layer>
 				</Layers>
 			</EditBox>
-			<EditBox name="$parent_DisplayUpdate_Days" inherits="InputBoxTemplate">
-				<Size x="30" y="16"/>
+			<EditBox name="$parent_DisplayUpdate_Days" inherits="InputBoxTemplate" letters="4" numeric="True" autoFocus="false">
+				<Size x="32" y="16"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_CombatHide" relativePoint="BOTTOMLEFT">
 						<Offset><AbsDimension x="200" y="0"/></Offset>
@@ -260,26 +260,93 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>self:SetAutoFocus( false )</OnLoad>
+					<OnShow>INEED.OptionsPanel_Duration_OnLoad( self, "displayUIListDisplaySeconds" )</OnShow>
+					<OnTextChanged>INEED.OptionsPanel_Duration_TextChanged( self, "displayUIListDisplaySeconds" )</OnTextChanged>
 				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">
 						<FontString name="$parent_DisplayUpdate_Days_PreText" inherits="GameFontWhite" text="Display Updated items for:">
 							<Anchors>
-								<Anchor point="LEFT">
-									<Offset><AbsDimension x="-200" y="0"/></Offset>
+								<Anchor point="RIGHT" relativePoint="LEFT">
+									<Offset><AbsDimension x="-16" y="0"/></Offset>
 								</Anchor>
 							</Anchors>
 						</FontString>
 						<FontString name="$parent_DisplayUpdate_Days_PostText" inherits="GameFontWhite" text="days">
 							<Anchors>
-								<Anchor point="RIGHT">
+								<Anchor point="LEFT" relativePoint="RIGHT">
 								</Anchor>
 							</Anchors>
 						</FontString>
 					</Layer>
 				</Layers>
 			</EditBox>
-
+			<EditBox name="$parent_DisplayUpdate_Hours" inherits="InputBoxTemplate" numeric="true">
+				<Size x="20" y="16"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_DisplayUpdate_Days" relativePoint="RIGHT">
+						<Offset><AbsDimension x="40" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetAutoFocus( false )</OnLoad>
+					<OnShow>INEED.OptionsPanel_Duration_OnLoad( self, "displayUIListDisplaySeconds" )</OnShow>
+				</Scripts>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parent_DisplayUpdate_Hours_PostText" inherits="GameFontWhite" text="hours">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</EditBox>
+			<EditBox name="$parent_DisplayUpdate_Minutes" inherits="InputBoxTemplate" numeric="true">
+				<Size x="20" y="16"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_DisplayUpdate_Hours" relativePoint="RIGHT">
+						<Offset><AbsDimension x="40" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetAutoFocus( false )</OnLoad>
+					<OnShow>INEED.OptionsPanel_Duration_OnLoad( self, "displayUIListDisplaySeconds" )</OnShow>
+				</Scripts>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parent_DisplayUpdate_Minutes_PostText" inherits="GameFontWhite" text="mins">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</EditBox>
+			<EditBox name="$parent_DisplayUpdate_Seconds" inherits="InputBoxTemplate" numeric="true">
+				<Size x="20" y="16"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_DisplayUpdate_Minutes" relativePoint="RIGHT">
+						<Offset><AbsDimension x="40" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetAutoFocus( false )</OnLoad>
+					<OnShow>INEED.OptionsPanel_Duration_OnLoad( self, "displayUIListDisplaySeconds" )</OnShow>
+				</Scripts>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parent_DisplayUpdate_Seconds_PostText" inherits="GameFontWhite" text="seconds">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</EditBox>
 
 <!--
 
