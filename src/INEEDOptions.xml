@@ -252,16 +252,18 @@
 				</Layers>
 			</EditBox>
 			<EditBox name="$parent_DisplayUpdate_Days" inherits="InputBoxTemplate" letters="4" numeric="true" autoFocus="false">
-				<Size x="32" y="16"/>
+				<Size x="48" y="16"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_CombatHide" relativePoint="BOTTOMLEFT">
 						<Offset><AbsDimension x="200" y="0"/></Offset>
 					</Anchor>
 				</Anchors>
 				<Scripts>
-					<OnLoad>self:SetAutoFocus( false )</OnLoad>
 					<OnShow>INEED.OptionsPanel_Duration_OnShow( self, "displayUIListDisplaySeconds" )</OnShow>
 					<OnTextChanged>INEED.OptionsPanel_Duration_TextChanged( self, "displayUIListDisplaySeconds" )</OnTextChanged>
+					<!--
+					<OnEditFocusLost>INEED.OptionsPanel_Duration_OnShow( self, "displayUIListDisplaySeconds" )</OnEditFocusLost>
+					-->
 				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">

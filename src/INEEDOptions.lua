@@ -98,53 +98,63 @@ end
 
 -- Duration field events
 function INEED.OptionsPanel_Duration_OnShow( self, option )
-	local duration = INEED_options[option] or 0
-	INEED.Print( "show: "..self:GetName() ..":"..(option or "nil")..":"..(duration or "nil") )
-	if string.find( self:GetName(), "Days" ) then
-		local days = math.floor( duration/86400 )
-		self:SetNumber( days )
-		--INEED.Print( "days: "..days )
-	elseif string.find( self:GetName(), "Hours" ) then
-		local hours = math.floor( (duration/3600)%24 )
-		self:SetNumber( hours )
-		--INEED.Print( "hours: "..hours )
-	elseif string.find( self:GetName(), "Minutes" ) then
-		local minutes = math.floor( (duration/60)%60 )
-		--self:SetText( tostring( minutes ) )
-		self:SetNumber( minutes )
-		--INEED.Print( "minutes: "..minutes )
-	elseif string.find( self:GetName(), "Seconds" ) then
-		local seconds = math.floor( (duration%60) )
-		--self:SetText( tostring( seconds ) )
-		self:SetNumber( seconds )
-		--INEED.Print( "seconds: "..seconds )
+	if INEED.variables_loaded then
+		local myName = self:GetName()
+		local duration = INEED_options[option] or 0
+		INEED.Print( "show: "..myName ..":"..(duration or "nil") )
+		if string.find( myName, "Days" ) then
+			local days = math.floor( duration/86400 )
+			self:SetNumber( days )
+			--INEED.Print( "days: "..days )
+		elseif string.find( self:GetName(), "Hours" ) then
+			local hours = math.floor( (duration/3600)%24 )
+			self:SetNumber( hours )
+			--INEED.Print( "hours: "..hours )
+		elseif string.find( self:GetName(), "Minutes" ) then
+			local minutes = math.floor( (duration/60)%60 )
+			self:SetNumber( minutes )
+			--INEED.Print( "minutes: "..minutes )
+		elseif string.find( self:GetName(), "Seconds" ) then
+			local seconds = math.floor( (duration%60) )
+			self:SetNumber( seconds )
+			--INEED.Print( "seconds: "..seconds )
+		end
+		self:SetCursorPosition(0)
 	end
 end
 function INEED.OptionsPanel_Duration_TextChanged( self, option )
-	INEED.Print( "Changed: "..self:GetName() ..":"..(option or "nil") )
-	local duration = INEED_options[option] or 0
-	local newValue
-	if string.find( self:GetName(), "Days" ) then
-		local days = tonumber( self:GetText() ) or 0
-		local originalSec = math.floor( duration/86400 ) * 86400
-		newValue = (duration - originalSec) + (days * 86400)
-		--INEED.Print( "days: "..(days or "nil")..":"..INEED_options[option] )
-	elseif string.find( self:GetName(), "Hours" ) then
-		local hours = tonumber( self:GetText() ) or 0
-		local originalSec = math.floor( (duration/3600)%24 ) * 3600
-		newValue = (duration - originalSec) + (hours * 3600)
-		--INEED.Print( "hours: "..(hours or "nil")..":"..INEED_options[option] )
-	elseif string.find( self:GetName(), "Minutes" ) then
-		local minutes = tonumber( self:GetText() ) or 0
-		local originalSec = math.floor( (duration/60)%60 ) * 60
-		newValue = (duration - originalSec) + (minutes * 60)
-	elseif string.find( self:GetName(), "Seconds" ) then
-		local seconds = tonumber( self:GetText() ) or 0
-		local originalSec = math.floor( (duration%60) )
-		newValue = (duration - originalSec) + (seconds ) -- * 1
+	local myName = self:GetName()
+	--INEED.Print( "Changed: "..myName..":"..self:GetNumber()..":"..(self:HasFocus() and "true" or "false") )
+	if self:HasFocus() then
+		local duration = INEED_options[option]
+		local newValue = duration
+		if string.find( myName, "Days" ) then
+			local days = tonumber( self:GetNumber() ) or 0
+			local originalSec = math.floor( duration/86400 ) * 86400
+			newValue = (duration - originalSec) + (days * 86400)
+			--INEED.Print( "("..duration.."-"..originalSec..") + ("..days.."*86400)" )
+			--INEED.Print( myName..": ori: "..originalSec.." new:"..newValue)
+		elseif string.find( self:GetName(), "Hours" ) then
+			local hours = tonumber( self:GetNumber() ) or 0
+			local originalSec = math.floor( (duration/3600)%24 ) * 3600
+			newValue = (duration - originalSec) + (hours * 3600)
+			--INEED.Print( "("..duration.."-"..originalSec..") + ("..hours.."*3600)" )
+			--INEED.Print( myName..": ori: "..originalSec.." new:"..newValue)
+		elseif string.find( self:GetName(), "Minutes" ) then
+			local minutes = tonumber( self:GetNumber() ) or 0
+			local originalSec = math.floor( (duration/60)%60 ) * 60
+			newValue = (duration - originalSec) + (minutes * 60)
+			--INEED.Print( myName..": ori: "..originalSec.." new:"..newValue)
+		elseif string.find( self:GetName(), "Seconds" ) then
+			local seconds = tonumber( self:GetNumber() ) or 0
+			local originalSec = math.floor( (duration)%60 )
+			newValue = (duration - originalSec) + (seconds ) -- * 1
+			--INEED.Print( myName..": ori: "..originalSec.." new:"..newValue)
+		end
+		--INEED.Print( self:GetName().." set to: "..newValue )
+		INEED.OptionPanel_KeepOriginalValue( option )
+		INEED_options[option] = newValue
 	end
-	INEED.OptionPanel_KeepOriginalValue( option )
-	INEED_options[option] = newValue
 end
 
 -- Slider events

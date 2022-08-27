@@ -216,6 +216,7 @@ end
 function INEED.VARIABLES_LOADED( _, arg1 )
 	INEED.Print( "VARIABLES_LOADED" )
 	INEED_Frame:UnregisterEvent("VARIABLES_LOADED")
+	INEED.variables_loaded = true
 	-- Load Options panel
 	INEED.OptionsPanel_Reset()
 	-- Clear unknown list
