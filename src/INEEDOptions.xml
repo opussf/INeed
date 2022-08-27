@@ -199,7 +199,7 @@
 					<OnClick>INEED.OptionsPanel_CheckButton_OnClick( self, "doEmote" )</OnClick>
 				</Scripts>
 			</CheckButton>
-			<EditBox name="$parent_DoEmoteEditBox" inherits="InputBoxTemplate">
+			<EditBox name="$parent_DoEmoteEditBox" inherits="InputBoxTemplate" autoFocus="false">
 				<Size x="100" y="16"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parent_DoEmote" relativePoint="RIGHT">
@@ -207,7 +207,6 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
-					<OnLoad>self:SetAutoFocus( false )</OnLoad>
 					<OnShow>INEED.OptionsPanel_EditBox_OnLoad( self, "emote" )</OnShow>
 					<OnTextChanged>INEED.OptionsPanel_EditBox_TextChanged( self, "emote" )</OnTextChanged>
 				</Scripts>
@@ -496,6 +495,33 @@
 				</Scripts>
 			</CheckButton>
 
+			<EditBox name="$parent_AccountPercent" inherits="InputBoxTemplate" letters="5" autoFocus="false">
+				<Size x="44" y="16"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_AccountInfoHeader" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+				<Scripts>
+					<OnShow>INEED.OptionsPanel_Account_EditBox_OnShow( self, "percent" )</OnShow>
+					<OnTextChanged>INEED.OptionsPanel_Account_EditBox_TextChanged( self, "percent" )</OnTextChanged>
+				</Scripts>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parent_AccountPercent_PreText" inherits="GameFontWhite" text="Slush">
+							<Anchors>
+								<Anchor point="RIGHT" relativePoint="LEFT">
+									<Offset><AbsDimension x="-16" y="0"/></Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parent_AccountPercent_PostText" inherits="GameFontWhite" text="%">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</EditBox>
 
 <!--
 			<Frame name="$parent_Money_Input" inherits="MoneyInputFrameTemplate">

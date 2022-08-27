@@ -82,7 +82,23 @@ function INEED.OptionsPanel_EditBox_OnLoad( self, option )
 		self:SetValue(INEED_options[option])
 	end
 end
-
+function INEED.OptionsPanel_Account_EditBox_OnShow( self, option )
+	if INEED.variables_loaded then
+		INEED.Print( option..":"..(INEED_account[option] or "nil") )
+		self:SetCursorPosition(0)
+		if self:IsNumeric() then
+			self:SetNumber( tonumber(INEED_account[option]) )
+		else
+			self:SetText( INEED_account[option])
+		end
+	end
+end
+function INEED.OptionsPanel_Account_EditBox_TextChanged( self, option )
+	INEED_account[option] = tonumber(self:IsNumeric() and self:GetNumber() or self:GetText())
+	if self:IsNumeric() then
+		self:SetNumber(INEED_account[option])
+	end
+end
 -- OnClick for checkbuttons
 function INEED.OptionsPanel_CheckButton_OnClick( self, option )
 	INEED.OptionPanel_KeepOriginalValue( option )

@@ -44,13 +44,13 @@ function INEED.Print( msg, showName)
 	end
 	DEFAULT_CHAT_FRAME:AddMessage( msg )
 end
+-- https://wowpedia.fandom.com/wiki/AddOn_loading_process
 function INEED.OnLoad()
 	SLASH_INEED1 = "/IN"
 	SLASH_INEED2 = "/INEED"
 	SlashCmdList["INEED"] = function(msg) INEED.command(msg); end
 
 	INEED_Frame:RegisterEvent("ADDON_LOADED")
-	INEED_Frame:RegisterEvent("VARIABLES_LOADED")
 	INEED_Frame:RegisterEvent("BAG_UPDATE")
 	INEED_Frame:RegisterEvent("MERCHANT_SHOW")
 	INEED_Frame:RegisterEvent("MAIL_SHOW")
@@ -209,23 +209,19 @@ function INEED.ADDON_LOADED( _, arg1 )
 		--INEED.Orig_GameTooltip_SetCurrencyToken = GameTooltip.SetCurrencyToken  -- lifted from Altaholic (thanks guys)
 		--GameTooltip.SetCurrencyToken = INEED.hookSetCurrencyToken
 
+		-- Load Options panel
+		INEED.OptionsPanel_Reset()
+		-- Clear unknown list
+		for ts, _ in pairs(INEED_unknown) do
+			if time()-ts > 86400 then
+				INEED_unknown[ts] = nil
+			end
+		end
+		INEED.oldest()  -- @TODO, make this an option.
 
+		INEED.variables_loaded = true
 		INEED.Print( INEED_MSG_VERSION .. " Loaded" )
 	end
-end
-function INEED.VARIABLES_LOADED( _, arg1 )
-	INEED.Print( "VARIABLES_LOADED" )
-	INEED_Frame:UnregisterEvent("VARIABLES_LOADED")
-	INEED.variables_loaded = true
-	-- Load Options panel
-	INEED.OptionsPanel_Reset()
-	-- Clear unknown list
-	for ts, _ in pairs(INEED_unknown) do
-		if time()-ts > 86400 then
-			INEED_unknown[ts] = nil
-		end
-	end
-	INEED.oldest()  -- @TODO, make this an option.
 end
 function INEED.MAIL_SHOW()
 	INEED.Print("Others on this server need:")
@@ -458,7 +454,7 @@ function INEED.PLAYER_MONEY()
 	-- PLAYER_MONEY has changed
 	if INEED_account.percent then  -- look to see if need to add to balance
 		local change = GetMoney() - (INEED_account.current or 0)
-		change = change * INEED_account.percent
+		change = change * ( INEED_account.percent / 100 )
 		if ((not INEED_account.max) or ((INEED_account.balance or 0) < INEED_account.max)) and change>0 then
 			INEED_account.balance = (INEED_account.balance or 0) + change
 			if INEED_account.max and (INEED_account.balance > INEED_account.max) then
@@ -1112,12 +1108,12 @@ function INEED.slush( strIn )
 		--print( "Slush( "..(percent or "nil")..", "..(maxValue or "nil").." )" )
 		--print( percent.."::"..(maxValue or "nil").." -> "..value.."::"..(modify and "true" or "false") )
 
-		INEED_account.percent = percent / 100
+		INEED_account.percent = tonumber( percent )
 		INEED_account.max = (modify) and (INEED_account.max and INEED_account.max + maxValue) or maxValue
 		INEED_account.current = GetMoney()
 	end
 	INEED.updateTitleText( )
-	INEED.Print( "Slush: "..(INEED_account.percent and ((INEED_account.percent * 100).."%") or "")..
+	INEED.Print( "Slush: "..(INEED_account.percent and ((INEED_account.percent).."%") or "")..
 			(INEED_account.max and (" max: "..GetCoinTextureString(INEED_account.max)) or "") )
 end
 function INEED.updateTitleText( )
