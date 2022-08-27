@@ -90,7 +90,7 @@ function INEED.OptionsPanel_CheckButton_OnClick( self, option )
 end
 function INEED.OptionsPanel_EditBox_TextChanged( self, option )
 	INEED.OptionPanel_KeepOriginalValue( option )
-	INEED_options[option] = (self:IsNumeric() and tonumber(self:GetText()) or self:GetText())
+	INEED_options[option] = (self:IsNumeric() and self:GetNumber() or self:GetText())
 	if self:IsNumeric() then
 		self:SetValue(INEED_options[option])
 	end
@@ -101,7 +101,7 @@ function INEED.OptionsPanel_Duration_OnShow( self, option )
 	if INEED.variables_loaded then
 		local myName = self:GetName()
 		local duration = INEED_options[option] or 0
-		INEED.Print( "show: "..myName ..":"..(duration or "nil") )
+		--INEED.Print( "show: "..myName ..":"..(duration or "nil") )
 		if string.find( myName, "Days" ) then
 			local days = math.floor( duration/86400 )
 			self:SetNumber( days )
