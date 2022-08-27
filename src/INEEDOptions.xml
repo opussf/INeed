@@ -73,6 +73,27 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
+				<FontString name="$parent_AccountHeader" inherits="GameFontNormal" text="Account:">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent_UIHeader" relativePoint="BOTTOMLEFT">
+							<Offset><AbsDimension x="0" y="-88"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_UseAccountForHeader" inherits="GameFontNormal" text="Use account for:">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent_AccountHeader" relativePoint="BOTTOMLEFT">
+							<Offset><AbsDimension x="16" y="-10"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parent_AccountInfoHeader" inherits="GameFontNormal" text="Account (per character):">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent_UseAccountForHeader" relativePoint="TOPLEFT">
+							<Offset><AbsDimension x="200" y="0"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
 				<!--
 				<FontString name="$parent_ShowBarsHeader" inherits="GameFontNormal" text="Show">
 					<Anchors>
@@ -353,6 +374,138 @@
 				</Layers>
 			</EditBox>
 
+			<CheckButton name="$parent_FillOldest" inherits="INEEDOptionsCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_CombatHide" relativePoint="BOTTOMLEFT">
+						<Offset><AbsDimension x="0" y="-24"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self.tooltip = "Fill bars with oldest items"</OnLoad>
+					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"fillBars","Fill items")</OnShow>
+					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"fillBars")</OnClick>
+				</Scripts>
+			</CheckButton>
+			<EditBox name="$parent_DisplayFillbars_Days" inherits="InputBoxTemplate" letters="4" numeric="true" autoFocus="false">
+				<Size x="36" y="16"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_DisplayUpdate_Days" relativePoint="BOTTOMLEFT">
+						<Offset><AbsDimension x="0" y="-16"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnShow>INEED.OptionsPanel_Duration_OnShow( self, "displayUIListFillbarsSeconds" )</OnShow>
+					<OnTextChanged>INEED.OptionsPanel_Duration_TextChanged( self, "displayUIListFillbarsSeconds" )</OnTextChanged>
+				</Scripts>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parent_DisplayFillbars_Days_PreText" inherits="GameFontWhite" text="For:">
+							<Anchors>
+								<Anchor point="RIGHT" relativePoint="LEFT">
+									<Offset><AbsDimension x="-16" y="0"/></Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parent_DisplayFillbars_Days_PostText" inherits="GameFontWhite" text="days">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</EditBox>
+			<EditBox name="$parent_DisplayFillbars_Hours" inherits="InputBoxTemplate" letters="2" numeric="true" autoFocus="false">
+				<Size x="20" y="16"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_DisplayFillbars_Days" relativePoint="RIGHT">
+						<Offset><AbsDimension x="40" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetAutoFocus( false )</OnLoad>
+					<OnShow>INEED.OptionsPanel_Duration_OnShow( self, "displayUIListFillbarsSeconds" )</OnShow>
+					<OnTextChanged>INEED.OptionsPanel_Duration_TextChanged( self, "displayUIListFillbarsSeconds" )</OnTextChanged>
+				</Scripts>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parent_DisplayFillbars_Hours_PostText" inherits="GameFontWhite" text="hours">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</EditBox>
+			<EditBox name="$parent_DisplayFillbars_Minutes" inherits="InputBoxTemplate" letters="2" numeric="true" autoFocus="false">
+				<Size x="20" y="16"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_DisplayFillbars_Hours" relativePoint="RIGHT">
+						<Offset><AbsDimension x="40" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetAutoFocus( false )</OnLoad>
+					<OnShow>INEED.OptionsPanel_Duration_OnShow( self, "displayUIListFillbarsSeconds" )</OnShow>
+					<OnTextChanged>INEED.OptionsPanel_Duration_TextChanged( self, "displayUIListFillbarsSeconds" )</OnTextChanged>
+				</Scripts>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parent_DisplayFillbars_Minutes_PostText" inherits="GameFontWhite" text="mins">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</EditBox>
+			<EditBox name="$parent_DisplayFillbars_Seconds" inherits="InputBoxTemplate" letters="2" numeric="true" autoFocus="false">
+				<Size x="20" y="16"/>
+				<Anchors>
+					<Anchor point="LEFT" relativeTo="$parent_DisplayFillbars_Minutes" relativePoint="RIGHT">
+						<Offset><AbsDimension x="40" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetAutoFocus( false )</OnLoad>
+					<OnShow>INEED.OptionsPanel_Duration_OnShow( self, "displayUIListFillbarsSeconds" )</OnShow>
+					<OnTextChanged>INEED.OptionsPanel_Duration_TextChanged( self, "displayUIListFillbarsSeconds" )</OnTextChanged>
+				</Scripts>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parent_DisplayFillbars_Seconds_PostText" inherits="GameFontWhite" text="seconds">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</EditBox>
+
+			<CheckButton name="$parent_AutoRepair" inherits="INEEDOptionsCheckButtonTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_UseAccountForHeader" relativePoint="BOTTOMLEFT"/>
+				</Anchors>
+				<Scripts>
+					<OnLoad>self.tooltip = "Use account to auto perform repairs";</OnLoad>
+					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"autoRepair","Auto Repair");</OnShow>
+					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"autoRepair")</OnClick>
+				</Scripts>
+			</CheckButton>
+
+
+<!--
+			<Frame name="$parent_Money_Input" inherits="MoneyInputFrameTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_DisplayUpdate_Days" relativePoint="BOTTOMLEFT">
+						<Offset><AbsDimension x="0" y="-16"/></Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+-->
 <!--
 
 
