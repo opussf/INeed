@@ -209,14 +209,16 @@ function INEED.ADDON_LOADED( _, arg1 )
 		--INEED.Orig_GameTooltip_SetCurrencyToken = GameTooltip.SetCurrencyToken  -- lifted from Altaholic (thanks guys)
 		--GameTooltip.SetCurrencyToken = INEED.hookSetCurrencyToken
 
-		-- Load Options panel
-		INEED.OptionsPanel_Reset()
 
 		INEED.Print( INEED_MSG_VERSION .. " Loaded" )
 	end
 end
 function INEED.VARIABLES_LOADED( _, arg1 )
+	INEED.Print( "VARIABLES_LOADED" )
 	INEED_Frame:UnregisterEvent("VARIABLES_LOADED")
+	-- Load Options panel
+	INEED.OptionsPanel_Reset()
+	-- Clear unknown list
 	for ts, _ in pairs(INEED_unknown) do
 		if time()-ts > 86400 then
 			INEED_unknown[ts] = nil

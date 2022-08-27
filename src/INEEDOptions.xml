@@ -251,7 +251,7 @@
 					</Layer>
 				</Layers>
 			</EditBox>
-			<EditBox name="$parent_DisplayUpdate_Days" inherits="InputBoxTemplate" letters="4" numeric="True" autoFocus="false">
+			<EditBox name="$parent_DisplayUpdate_Days" inherits="InputBoxTemplate" letters="4" numeric="true" autoFocus="false">
 				<Size x="32" y="16"/>
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parent_CombatHide" relativePoint="BOTTOMLEFT">
@@ -260,7 +260,7 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>self:SetAutoFocus( false )</OnLoad>
-					<OnShow>INEED.OptionsPanel_Duration_OnLoad( self, "displayUIListDisplaySeconds" )</OnShow>
+					<OnShow>INEED.OptionsPanel_Duration_OnShow( self, "displayUIListDisplaySeconds" )</OnShow>
 					<OnTextChanged>INEED.OptionsPanel_Duration_TextChanged( self, "displayUIListDisplaySeconds" )</OnTextChanged>
 				</Scripts>
 				<Layers>
@@ -281,7 +281,7 @@
 					</Layer>
 				</Layers>
 			</EditBox>
-			<EditBox name="$parent_DisplayUpdate_Hours" inherits="InputBoxTemplate" numeric="true">
+			<EditBox name="$parent_DisplayUpdate_Hours" inherits="InputBoxTemplate" letters="2" numeric="true" autoFocus="false">
 				<Size x="20" y="16"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parent_DisplayUpdate_Days" relativePoint="RIGHT">
@@ -290,7 +290,8 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>self:SetAutoFocus( false )</OnLoad>
-					<OnShow>INEED.OptionsPanel_Duration_OnLoad( self, "displayUIListDisplaySeconds" )</OnShow>
+					<OnShow>INEED.OptionsPanel_Duration_OnShow( self, "displayUIListDisplaySeconds" )</OnShow>
+					<OnTextChanged>INEED.OptionsPanel_Duration_TextChanged( self, "displayUIListDisplaySeconds" )</OnTextChanged>
 				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">
@@ -303,7 +304,7 @@
 					</Layer>
 				</Layers>
 			</EditBox>
-			<EditBox name="$parent_DisplayUpdate_Minutes" inherits="InputBoxTemplate" numeric="true">
+			<EditBox name="$parent_DisplayUpdate_Minutes" inherits="InputBoxTemplate" letters="2" numeric="true" autoFocus="false">
 				<Size x="20" y="16"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parent_DisplayUpdate_Hours" relativePoint="RIGHT">
@@ -312,7 +313,8 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>self:SetAutoFocus( false )</OnLoad>
-					<OnShow>INEED.OptionsPanel_Duration_OnLoad( self, "displayUIListDisplaySeconds" )</OnShow>
+					<OnShow>INEED.OptionsPanel_Duration_OnShow( self, "displayUIListDisplaySeconds" )</OnShow>
+					<OnTextChanged>INEED.OptionsPanel_Duration_TextChanged( self, "displayUIListDisplaySeconds" )</OnTextChanged>
 				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">
@@ -325,7 +327,7 @@
 					</Layer>
 				</Layers>
 			</EditBox>
-			<EditBox name="$parent_DisplayUpdate_Seconds" inherits="InputBoxTemplate" numeric="true">
+			<EditBox name="$parent_DisplayUpdate_Seconds" inherits="InputBoxTemplate" letters="2" numeric="true" autoFocus="false">
 				<Size x="20" y="16"/>
 				<Anchors>
 					<Anchor point="LEFT" relativeTo="$parent_DisplayUpdate_Minutes" relativePoint="RIGHT">
@@ -334,7 +336,8 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>self:SetAutoFocus( false )</OnLoad>
-					<OnShow>INEED.OptionsPanel_Duration_OnLoad( self, "displayUIListDisplaySeconds" )</OnShow>
+					<OnShow>INEED.OptionsPanel_Duration_OnShow( self, "displayUIListDisplaySeconds" )</OnShow>
+					<OnTextChanged>INEED.OptionsPanel_Duration_TextChanged( self, "displayUIListDisplaySeconds" )</OnTextChanged>
 				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">
