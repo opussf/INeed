@@ -498,9 +498,12 @@
 			<EditBox name="$parent_AccountPercent" inherits="InputBoxTemplate" letters="5" autoFocus="false">
 				<Size x="44" y="16"/>
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_AccountInfoHeader" relativePoint="BOTTOMLEFT"/>
+					<Anchor point="TOPLEFT" relativeTo="$parent_AccountInfoHeader" relativePoint="BOTTOMLEFT">
+						<Offset><AbsDimension x="0" y="-4"/></Offset>
+					</Anchor>
 				</Anchors>
 				<Scripts>
+					<OnLoad>self.tooltip = "Sets percentage of income to assign to account."</OnLoad>
 					<OnShow>INEED.OptionsPanel_Account_EditBox_OnShow( self, "percent" )</OnShow>
 					<OnTextChanged>INEED.OptionsPanel_Account_EditBox_TextChanged( self, "percent" )</OnTextChanged>
 				</Scripts>
@@ -522,16 +525,42 @@
 					</Layer>
 				</Layers>
 			</EditBox>
-
-<!--
-			<Frame name="$parent_Money_Input" inherits="MoneyInputFrameTemplate">
+			<Frame name="$parent_Money_AccountMax" inherits="MoneyInputFrameTemplate">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativeTo="$parent_DisplayUpdate_Days" relativePoint="BOTTOMLEFT">
-						<Offset><AbsDimension x="0" y="-16"/></Offset>
+					<Anchor point="LEFT" relativeTo="$parent_AccountPercent" relativePoint="RIGHT">
+						<Offset><AbsDimension x="64" y="0"/></Offset>
 					</Anchor>
 				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parent_Money_AccountMax_PreText" inherits="GameFontWhite" text="Max:">
+							<Anchors>
+								<Anchor point="RIGHT" relativePoint="LEFT">
+									<Offset><AbsDimension x="-16" y="0"/></Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
 			</Frame>
--->
+			<Frame name="$parent_Money_AccountCurrent" inherits="MoneyInputFrameTemplate">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent_Money_AccountMax" relativePoint="BOTTOMLEFT">
+						<Offset><AbsDimension x="0" y="-8"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="ARTWORK">
+						<FontString name="$parent_Money_AccountCurrent_PreText" inherits="GameFontWhite" text="Current:">
+							<Anchors>
+								<Anchor point="RIGHT" relativePoint="LEFT">
+									<Offset><AbsDimension x="-16" y="0"/></Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
+			</Frame>
 <!--
 
 
