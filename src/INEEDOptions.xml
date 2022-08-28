@@ -531,7 +531,7 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
-					<OnShow>MoneyInputFrame_SetCopper( self, math.floor(INEED_account.max) or 0)</OnShow>
+					<OnShow>MoneyInputFrame_SetCopper( self, math.floor(INEED_account.max or 0) )</OnShow>
 				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">
@@ -552,7 +552,7 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
-					<OnShow>MoneyInputFrame_SetCopper( self, math.floor(INEED_account.balance) or 0)</OnShow>
+					<OnShow>MoneyInputFrame_SetCopper( self, math.floor(INEED_account.balance or 0) )</OnShow>
 				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">
