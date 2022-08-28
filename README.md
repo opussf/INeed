@@ -33,6 +33,12 @@ Optional iterface is "/in".
 /ineed account 1g       -- sets account to 1 Gold
 /ineed account 1g20s5c  -- sets account to 1 Gold, 20 Silver, and 5 Copper
 /ineed remove <charName>-<realmName> -- removes tracking of all items for a specific character
+/ineed options          -- open the options panel
+/ineed arch             -- add all archaeology currencies you are currently tracking
+/ineed slush [percent%] [MaxAmount] -- Sets a slush % and max amount to slush off of your income to the account.
+/ineed combat           -- Toggle showing during combat
+/ineed prune <itemLink> -- Prune an item from all characters (say if it is removed from the game)
+/ineed oldest           -- Show the oldest items in your list
 ```
 
 ## Goals:
@@ -116,7 +122,13 @@ Some macro ideas:
 ## Versions:
 ```
 0.22    Adding interaction to UI window - click bars
-
+        -- Can now shift-click, ctrl-click, left-click, right-click.
+        -- only right clicking will drag the window.
+        Adding expanded options for showing items.
+        -- updated options will still show for a period of time
+        -- older items can be set to fill the given bars after the updated items time out
+        Updating the options screen (HUGE rewrite)
+        Minor breaking functionality, percent is stored as 0-100%, not 0-1.  Reset the percentages.
 0.10    Crontab feature scrapped.
         Create a "toMake" field for items made from an enchant(profession)
         -- not listed in fulfillment list
