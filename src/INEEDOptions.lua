@@ -90,8 +90,8 @@ function INEED.OptionsPanel_Account_EditBox_OnShow( self, option )
 	end
 end
 function INEED.OptionsPanel_Account_EditBox_TextChanged( self, option )
-	if INEED.variables_loaded then
-		INEED_account[option] = tonumber(self:IsNumeric() and self:GetNumber() or self:GetText()) or 0
+	if self:HasFocus() then
+		INEED_account[option] = tonumber(self:IsNumeric() and self:GetNumber() or self:GetText())
 		if self:IsNumeric() then
 			self:SetNumber(INEED_account[option])
 		end

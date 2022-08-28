@@ -503,7 +503,7 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
-					<OnLoad>self.tooltip = "Sets percentage of income to assign to account."</OnLoad>
+
 					<OnShow>INEED.OptionsPanel_Account_EditBox_OnShow( self, "percent" )</OnShow>
 					<OnTextChanged>INEED.OptionsPanel_Account_EditBox_TextChanged( self, "percent" )</OnTextChanged>
 				</Scripts>
@@ -531,6 +531,9 @@
 						<Offset><AbsDimension x="64" y="0"/></Offset>
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnShow>MoneyInputFrame_SetCopper( self, INEED_account.max or 0)</OnShow>
+				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">
 						<FontString name="$parent_Money_AccountMax_PreText" inherits="GameFontWhite" text="Max:">
@@ -549,6 +552,9 @@
 						<Offset><AbsDimension x="0" y="-8"/></Offset>
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnShow>MoneyInputFrame_SetCopper( self, INEED_account.balance or 0)</OnShow>
+				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">
 						<FontString name="$parent_Money_AccountCurrent_PreText" inherits="GameFontWhite" text="Current:">
