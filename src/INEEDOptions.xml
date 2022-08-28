@@ -503,7 +503,6 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
-
 					<OnShow>INEED.OptionsPanel_Account_EditBox_OnShow( self, "percent" )</OnShow>
 					<OnTextChanged>INEED.OptionsPanel_Account_EditBox_TextChanged( self, "percent" )</OnTextChanged>
 				</Scripts>
@@ -532,7 +531,7 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
-					<OnShow>MoneyInputFrame_SetCopper( self, INEED_account.max or 0)</OnShow>
+					<OnShow>MoneyInputFrame_SetCopper( self, math.floor(INEED_account.max) or 0)</OnShow>
 				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">
@@ -553,7 +552,7 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
-					<OnShow>MoneyInputFrame_SetCopper( self, INEED_account.balance or 0)</OnShow>
+					<OnShow>MoneyInputFrame_SetCopper( self, math.floor(INEED_account.balance) or 0)</OnShow>
 				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">

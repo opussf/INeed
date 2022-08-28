@@ -34,6 +34,8 @@ end
 function INEED.OptionsPanel_OKAY()
 	-- Data was recorded, clear the temp
 	INEED.oldValues = nil
+	INEED_account["max"] = MoneyInputFrame_GetCopper(INEEDOptionsFrame_Money_AccountMax)
+	INEED_account["balance"] = MoneyInputFrame_GetCopper(INEEDOptionsFrame_Money_AccountCurrent)
 end
 function INEED.OptionsPanel_Cancel()
 	-- reset to temp and update the UI
@@ -169,6 +171,10 @@ function INEED.OptionsPanel_Duration_TextChanged( self, option )
 		INEED.OptionPanel_KeepOriginalValue( option )
 		INEED_options[option] = newValue
 	end
+end
+
+function INEED.OptionsPanel_MaxGold_Changed()
+	-- Leave this here
 end
 
 -- Slider events
