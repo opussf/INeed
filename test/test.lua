@@ -1082,6 +1082,7 @@ end
 function test.testHide_HideUnset_CombatStarts_isShown()
 	INEED_options.combatHide = nil
 	INEED.hide = nil
+	INEEDUIListFrame:Show()
 	INEED.PLAYER_REGEN_DISABLED()
 	assertTrue( INEEDUIListFrame:IsVisible() )
 end
