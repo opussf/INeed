@@ -380,8 +380,8 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
-					<OnLoad>self.tooltip = "Fill bars with oldest items"</OnLoad>
-					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"fillBars","Fill items")</OnShow>
+					<OnLoad>self.tooltip = "Show oldest items in the list for an additional amount of time."</OnLoad>
+					<OnShow>INEED.OptionsPanel_CheckButton_OnLoad(self,"fillBars","Show Oldest Items")</OnShow>
 					<OnClick>INEED.OptionsPanel_CheckButton_OnClick(self,"fillBars")</OnClick>
 				</Scripts>
 			</CheckButton>
