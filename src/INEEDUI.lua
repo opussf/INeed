@@ -44,7 +44,6 @@ function INEED.UIListAssureBars( barsNeeded )
 	return max(count, barsNeeded)
 end
 
-
 -- List display functions
 function INEED.UIListOnLoad()
 	INEED.Print("Loading UI - List")
@@ -60,10 +59,15 @@ function INEED.UIListOnUpdate()
 	local count = 0
 	local sortedDisplayItems = {}
 
+
 	-- need progress, link, updated..  for items that I need.
 	for itemID in pairs(INEED_data) do
 		if INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] then
 			local updatedTS = INEED_data[itemID][INEED.realm][INEED.name].updated or INEED_data[itemID][INEED.realm][INEED.name].added
+			if INEED_options["fillBars"] then
+				INEED.highestUpdatedTS = math.max( INEED.highestUpdatedTS or 0,
+					updatedTS + (INEED_options["displayUIListDisplaySeconds"] or 0) + (INEED_options["displayUIListFillbarsSeconds"] or 0) )
+			end
 			--INEED.Print(itemID..":"..(time()-updatedTS).." <? "..(INEED_options["displayUIListDisplaySeconds"] or "nil") )
 			if ((time() - updatedTS) < (INEED_options["displayUIListDisplaySeconds"] or 0)) then
 					-- I need this item, and it has been updated within the update window
@@ -74,6 +78,18 @@ function INEED.UIListOnUpdate()
 						 ["total"] = INEED_data[itemID][INEED.realm][INEED.name].total,
 						 ["needed"] = INEED_data[itemID][INEED.realm][INEED.name].needed,
 						 ["linkStr"] = (select( 2, GetItemInfo( itemID ) ) or "item:"..itemID)
+				})
+				count = count + 1
+			elseif time() < ( INEED.highestUpdatedTS or 0 ) then
+				--INEED.Print( time().. " <? "..INEED.highestUpdatedTS )
+				table.insert( sortedDisplayItems,
+						{["updated"] = 0-INEED_data[itemID][INEED.realm][INEED.name].added,
+						 ["itemPre"] = "item:",
+						 ["id"] = itemID,  -- itemPre..id can be used to get the link.
+						 ["total"] = INEED_data[itemID][INEED.realm][INEED.name].total,
+						 ["needed"] = INEED_data[itemID][INEED.realm][INEED.name].needed,
+						 ["linkStr"] = SecondsToTime(time()-INEED_data[itemID][INEED.realm][INEED.name].added, true, false, 1)..
+						 			   (select( 2, GetItemInfo( itemID ) ) or "item:"..itemID)
 				})
 				count = count + 1
 			end
@@ -90,6 +106,17 @@ function INEED.UIListOnUpdate()
 					 ["total"] = INEED_currency[curID].total,
 					 ["needed"] = INEED_currency[curID].needed,
 					 ["linkStr"] = (C_CurrencyInfo.GetCurrencyLink( tonumber(curID), INEED_currency[curID].total ) or ("currency:"..curID))
+			})
+			count = count + 1
+		elseif time() < ( INEED.highestUpdatedTS or 0 ) then
+			table.insert( sortedDisplayItems,
+					{["updated"] = 0-INEED_currency[curID].added,
+					 ["itemPre"] = "currency:",
+					 ["id"] = curID,
+					 ["total"] = INEED_currency[curID].total,
+					 ["needed"] = INEED_currency[curID].needed,
+					 ["linkStr"] = SecondsToTime(time()-INEED_currency[curID].added, true, false, 1)..
+					               (C_CurrencyInfo.GetCurrencyLink( tonumber(curID), INEED_currency[curID].total ) or ("currency:"..curID))
 			})
 			count = count + 1
 		end
@@ -144,7 +171,7 @@ function INEED.UIListOnUpdate()
 	if (count == 0 and INEEDUIListFrame:IsShown()) then
 		INEEDUIListFrame:Hide()
 		--INEED.Print("Hide List Frame: "..time())
-		return;
+		return
 	end
 	INEEDUIListFrame:Show()
 	-- sort table by updated, use itemPre..id as subsort
@@ -176,8 +203,35 @@ function INEED.UIListOnUpdate()
 		end
 	end
 end
-function INEED.UIListOnDragStart()
-	INEEDUIListFrame:StartMoving()
+function INEED.UIListOnMouseDown()
+	button = GetMouseButtonClicked()
+	--INEED.Print( "Button: "..button )
+	if button == "RightButton" then
+		INEEDUIListFrame:StartMoving()
+		return
+	end
+	for i = 1, #INEED.UIList_bars do
+		if MouseIsOver( INEED.UIList_bars[i] ) then
+			local barTxt = INEED.UIList_bars[i].text:GetText()
+			itemID = INEED.getItemIdFromLink( barTxt )
+			if itemID then
+				_, itemLink = GetItemInfo( itemID )
+				--INEED.Print( itemLink )
+				SetItemRef( "item:"..itemID, itemLink, button )
+				return
+			end
+			curID = INEED.getCurrencyIdFromLink( barTxt )
+			if curID then
+				local curInfo = C_CurrencyInfo.GetCurrencyInfo( tonumber( curID ) )
+				local curLink = C_CurrencyInfo.GetCurrencyLink( tonumber( curID ), 0 ) or ("currency:"..curID)
+				--INEED.Print( curLink )
+				SetItemRef( "currency:"..curID, curLink, button )
+				return
+			end
+			INEED.Print( barTxt )
+			--INEED.Print( INEED.UIList_bars[i].text:GetText() )
+		end
+	end
 end
 function INEED.UIListOnDragStop()
 	INEEDUIListFrame:StopMovingOrSizing()

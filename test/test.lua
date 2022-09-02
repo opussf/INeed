@@ -357,7 +357,6 @@ function test.testTradeSkill_EnchantId()
 end
 ]]
 -- Tests for currency
---[[
 function test.testGetCurrencyIdFromLink_withLink()
 	assertEquals( "402",
 		INEED.getCurrencyIdFromLink( "|cffffffff|Hcurrency:402|h[Ironpaw Token]|h|r" ) )
@@ -401,6 +400,8 @@ function test.testAddCurrency_CurrencyLink_AlreadyHaveAmount()
 	INEED.command( "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r 1" )
 	assertIsNil( INEED_currency["703"] )
 end
+--[[
+
 function test.testAddCurrency_OverMaxReducedToMax()
 	INEED.command( "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r 10000" )
 	assertEquals( 4000, INEED_currency["703"].needed )
@@ -409,6 +410,10 @@ function test.testAddCurrency_StoreName()
 	INEED.command( "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r 100" )
 	assertEquals( "Fictional Currency", INEED_currency["703"].name )
 end
+
+
+
+
 function test.notestCurrency_showList()
 	-- @TODO...  FIX THIS
 	INEED.command( "|cffffffff|Hcurrency:703|h[Fictional Currency]|h|r 100" )
@@ -972,33 +977,33 @@ end
 -- Slush Tests
 function test.testSlush_setPercent_noMax()
 	INEED.command( "slush 10%" )
-	assertEquals( 0.1, INEED_account.percent )
+	assertEquals( 10, INEED_account.percent )
 end
 function test.testSlush_setPercent_withMax()
 	INEED.command( "slush 5% 100g" )
-	assertEquals( 0.05, INEED_account.percent )
+	assertEquals( 5, INEED_account.percent )
 	assertEquals( 1000000, INEED_account.max )
 end
 function test.testSlush_setPercent_withMax_withGoldAndSilver()
 	INEED.command( "slush 5% 100g 10s" )
-	assertEquals( 0.05, INEED_account.percent )
+	assertEquals( 5, INEED_account.percent )
 	assertEquals( 1001000, INEED_account.max )
 end
 function test.testSlush_setPercent_greaterThan100()
 	INEED.command( "slush 500%" )
-	assertEquals( 5, INEED_account.percent )
+	assertEquals( 500, INEED_account.percent )
 end
 function test.testSlush_setPercent_withMax_accountDoesNotChange()
 	INEED.command( "account 100g" )
 	INEED.command( "slush 1% 50g" )
 	assertEquals( 1000000, INEED_account.balance )
-	assertEquals( 0.01, INEED_account.percent )
+	assertEquals( 1, INEED_account.percent )
 	assertEquals( 500000, INEED_account.max )
 end
 function test.testSlush_setSlush_preFillAccountWithMoreThanMax()
 	INEED.command( "slush 2% 75g" )
 	INEED.command( "account 90g" )
-	assertEquals( 0.02, INEED_account.percent )
+	assertEquals( 2, INEED_account.percent )
 	assertEquals( 750000, INEED_account.max )
 	assertEquals( 900000, INEED_account.balance )
 end
@@ -1077,6 +1082,7 @@ end
 function test.testHide_HideUnset_CombatStarts_isShown()
 	INEED_options.combatHide = nil
 	INEED.hide = nil
+	INEEDUIListFrame:Show()
 	INEED.PLAYER_REGEN_DISABLED()
 	assertTrue( INEEDUIListFrame:IsVisible() )
 end

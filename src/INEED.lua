@@ -44,6 +44,7 @@ function INEED.Print( msg, showName)
 	end
 	DEFAULT_CHAT_FRAME:AddMessage( msg )
 end
+-- https://wowpedia.fandom.com/wiki/AddOn_loading_process
 function INEED.OnLoad()
 	SLASH_INEED1 = "/IN"
 	SLASH_INEED2 = "/INEED"
@@ -210,7 +211,15 @@ function INEED.ADDON_LOADED( _, arg1 )
 
 		-- Load Options panel
 		INEED.OptionsPanel_Reset()
+		-- Clear unknown list
+		for ts, _ in pairs(INEED_unknown) do
+			if time()-ts > 86400 then
+				INEED_unknown[ts] = nil
+			end
+		end
+		INEED.oldest()  -- @TODO, make this an option.
 
+		INEED.variables_loaded = true
 		INEED.Print( INEED_MSG_VERSION .. " Loaded" )
 	end
 end
@@ -445,7 +454,7 @@ function INEED.PLAYER_MONEY()
 	-- PLAYER_MONEY has changed
 	if INEED_account.percent then  -- look to see if need to add to balance
 		local change = GetMoney() - (INEED_account.current or 0)
-		change = change * INEED_account.percent
+		change = change * ( INEED_account.percent / 100 )
 		if ((not INEED_account.max) or ((INEED_account.balance or 0) < INEED_account.max)) and change>0 then
 			INEED_account.balance = (INEED_account.balance or 0) + change
 			if INEED_account.max and (INEED_account.balance > INEED_account.max) then
@@ -1099,12 +1108,12 @@ function INEED.slush( strIn )
 		--print( "Slush( "..(percent or "nil")..", "..(maxValue or "nil").." )" )
 		--print( percent.."::"..(maxValue or "nil").." -> "..value.."::"..(modify and "true" or "false") )
 
-		INEED_account.percent = percent / 100
+		INEED_account.percent = tonumber( percent )
 		INEED_account.max = (modify) and (INEED_account.max and INEED_account.max + maxValue) or maxValue
 		INEED_account.current = GetMoney()
 	end
 	INEED.updateTitleText( )
-	INEED.Print( "Slush: "..(INEED_account.percent and ((INEED_account.percent * 100).."%") or "")..
+	INEED.Print( "Slush: "..(INEED_account.percent and ((INEED_account.percent).."%") or "")..
 			(INEED_account.max and (" max: "..GetCoinTextureString(INEED_account.max)) or "") )
 end
 function INEED.updateTitleText( )
@@ -1125,7 +1134,15 @@ function INEED.prune( paramIn )
 			end
 		end
 		INEED_data[itemID] = nil
+	elseif itemID and not INEED_options[itemID] then
+		INEED.Print( "Seems like no one needs this item.")
+	elseif not itemID then
+		INEED.Print( "This cannot be pruned." )
 	end
+end
+function INEED.oldest()
+	INEED.highestUpdatedTS = time() + INEED_options["displayUIListFillbarsSeconds"]
+	INEEDUIListFrame:Show()
 end
 
 -- Testing functions
@@ -1206,6 +1223,10 @@ INEED.CommandList = {
 	["prune"] = {
 		["func"] = INEED.prune,
 		["help"] = { "<link>", "Prune [link] from all character." },
+	},
+	["oldest"] = {
+		["func"] = INEED.oldest,
+		["help"] = { "", "Show the oldest needed items."}
 	},
 	["test"] = {
 		["func"] = INEED.test,
