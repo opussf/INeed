@@ -1,5 +1,49 @@
 # Feature
 
+## ExpandedOptions
+
+Fix the options panel.  
+SetValue error is happening.
+
+Expand the options.
+
+Add options to control:
+* number of bars to show (Already part of it, set up in options panel)
+* to fill bars (with older items) (limit of older items?)
+	- 5 of the oldest items would reduce the size of the window.
+* to use added (oldest first) or to use updated (oldest still drops off)
+* Height and width of bars (possible)
+* Header info (name and account amount)
+
+Add options to panel:
+* How long to show an updated item
+* Number of bars to show
+* Height and width of bars
+
+* Slush fund
+* Autorepair from the slush fund
+* Autopurchase receipt
+
+
+[x] showProgress
+[ ] showSuccess
+[ ] audibleSuccess
+[ ] doEmote
+[ ] emote
+[ ] playSoundFile
+[ ] soundFile
+[ ] showGlobal
+[ ] barCount
+[ ] hideInCombat
+[ ] displayUIList
+[ ] displayUIListDisplaySeconds
+[ ] autoRepair
+[ ] autoTrain
+[ ] fillBars
+[ ] displayUIListFillbarsSeconds
+
+
+
 ## othersNeedUI
 
 After looking at some possible changes, this one seemed to be best.

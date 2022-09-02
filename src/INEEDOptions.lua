@@ -4,19 +4,17 @@ INEED_options = {
 	["audibleSuccess"] = true,
 	["doEmote"] = true,
 	["emote"] = "CHEER",
-	["playSoundFile"] = false,
-	["soundFile"] = "Sound\\Creature\\BabyMurloc\\BabyMurlocDance.wav",
 	["showGlobal"] = true,
 	["barCount"] = 6,
 	["hideInCombat"] = true,
 	["displayUIList"] = true,
 	["displayUIListDisplaySeconds"] = 300, -- 5 minute default
 	["autoRepair"] = true,
-	["autoTrain"] = true,
+	["fillBars"] = true,
+	["displayUIListFillbarsSeconds"] = 300, -- show filled bars for another 5 minutes
 }
 
 function INEED.OptionsPanel_OnLoad(panel)
-	INEED.Print("OptionsPanel_OnLoad")
 	panel.name = "INeed";
 	INEEDOptionsFrame_Title:SetText(INEED_MSG_ADDONNAME.." "..INEED_MSG_VERSION);
 	--panel.parent=""
@@ -36,6 +34,9 @@ end
 function INEED.OptionsPanel_OKAY()
 	-- Data was recorded, clear the temp
 	INEED.oldValues = nil
+	INEED_account["max"] = MoneyInputFrame_GetCopper(INEEDOptionsFrame_Money_AccountMax)
+	INEED_account["balance"] = MoneyInputFrame_GetCopper(INEEDOptionsFrame_Money_AccountCurrent)
+	INEED.updateTitleText()
 end
 function INEED.OptionsPanel_Cancel()
 	-- reset to temp and update the UI
@@ -57,9 +58,19 @@ function INEED.OptionsPanel_Refresh()
 --	INEEDOptionsFrame_PlaySound:SetChecked(INEED_options["playSoundFile"])
 
 	INEEDOptionsFrame_DoEmoteEditBox:SetText(INEED_options["emote"])
-	INEEDOptionsFrame_PlaySoundEditBox:SetText(INEED_options["soundFile"])
+	INEEDOptionsFrame_DisplayBarCount:SetValue(INEED_options["barCount"])
+	--INEEDOptionsFrame_DisplayFor:SetValue(INEED_options["displayUIListDisplaySeconds"])
 
 	--INEED.Print("Options Panel Refresh: "..INEED_options["emote"])
+
+end
+
+function INEED.OptionPanel_KeepOriginalValue( option )
+	if INEED.oldValues then
+		INEED.oldValues[option] = INEED.oldValues[option] or INEED_options[option];
+	else
+		INEED.oldValues={[option]=INEED_options[option]};
+	end
 end
 
 function INEED.OptionsPanel_CheckButton_OnLoad( self, option, text )
@@ -67,33 +78,99 @@ function INEED.OptionsPanel_CheckButton_OnLoad( self, option, text )
 	getglobal(self:GetName().."Text"):SetText(text);
 	self:SetChecked(INEED_options[option]);
 end
-function INEED.OptionsPanel_CheckButton_PostClick( self, option )
-	if INEED.oldValues then
-		INEED.oldValues[option] = INEED.oldValues[option] or INEED_options[option];
-	else
-		INEED.oldValues={[option]=INEED_options[option]};
-	end
-	INEED_options[option] = self:GetChecked();
-end
 function INEED.OptionsPanel_EditBox_OnLoad( self, option )
-	self:SetText(INEED_options[option])
+	self:SetText( tostring( INEED_options[option] ) )
 	self:SetCursorPosition(0)
+	if self:IsNumeric() then
+		self:SetValue(INEED_options[option])
+	end
+end
+function INEED.OptionsPanel_Account_EditBox_OnShow( self, option )
+	self:SetText( tostring( INEED_account[option] ) )
+	self:SetCursorPosition(0)
+	if self:IsNumeric() then
+		self:SetValue( INEED_account[option] )
+	end
+end
+function INEED.OptionsPanel_Account_EditBox_TextChanged( self, option )
+	if self:HasFocus() then
+		INEED_account[option] = tonumber(self:IsNumeric() and self:GetNumber() or self:GetText())
+		if self:IsNumeric() then
+			self:SetNumber(INEED_account[option])
+		end
+	end
+end
+-- OnClick for checkbuttons
+function INEED.OptionsPanel_CheckButton_OnClick( self, option )
+	INEED.OptionPanel_KeepOriginalValue( option )
+	INEED_options[option] = self:GetChecked()
+end
+function INEED.OptionsPanel_EditBox_TextChanged( self, option )
+	INEED.OptionPanel_KeepOriginalValue( option )
+	INEED_options[option] = (self:IsNumeric() and self:GetNumber() or self:GetText())
+	if self:IsNumeric() then
+		self:SetValue(INEED_options[option])
+	end
 end
 
--- PostClick for checkbuttons
-function INEED.OptionsPanel_CheckButton_PostClick( self, option )
+-- Duration field events
+function INEED.OptionsPanel_Duration_OnShow( self, option )
+	if INEED.variables_loaded then
+		local myName = self:GetName()
+		local duration = INEED_options[option] or 0
+		if string.find( myName, "Days" ) then
+			local days = math.floor( duration/86400 )
+			self:SetNumber( days )
+		elseif string.find( myName, "Hours" ) then
+			local hours = math.floor( (duration/3600)%24 )
+			self:SetNumber( hours )
+		elseif string.find( myName, "Minutes" ) then
+			local minutes = math.floor( (duration/60)%60 )
+			self:SetNumber( minutes )
+		elseif string.find( myName, "Seconds" ) then
+			local seconds = math.floor( (duration%60) )
+			self:SetNumber( seconds )
+		end
+		self:SetCursorPosition(0)
+	end
+end
+function INEED.OptionsPanel_Duration_TextChanged( self, option )
+	local myName = self:GetName()
+	if self:HasFocus() then
+		local duration = INEED_options[option]
+		local newValue = duration
+		if string.find( myName, "Days" ) then
+			local days = tonumber( self:GetNumber() ) or 0
+			local originalSec = math.floor( duration/86400 ) * 86400
+			newValue = (duration - originalSec) + (days * 86400)
+		elseif string.find( myName, "Hours" ) then
+			local hours = tonumber( self:GetNumber() ) or 0
+			local originalSec = math.floor( (duration/3600)%24 ) * 3600
+			newValue = (duration - originalSec) + (hours * 3600)
+		elseif string.find( myName, "Minutes" ) then
+			local minutes = tonumber( self:GetNumber() ) or 0
+			local originalSec = math.floor( (duration/60)%60 ) * 60
+			newValue = (duration - originalSec) + (minutes * 60)
+		elseif string.find( myName, "Seconds" ) then
+			local seconds = tonumber( self:GetNumber() ) or 0
+			local originalSec = math.floor( (duration)%60 )
+			newValue = (duration - originalSec) + (seconds ) -- * 1
+		end
+		INEED.OptionPanel_KeepOriginalValue( option )
+		INEED_options[option] = newValue
+	end
+end
+
+function INEED.OptionsPanel_MaxGold_Changed()
+	-- Leave this here
+end
+
+-- Slider events
+function INEED.OptionsPanel_Slider_ValueChanged( self, option )
 	if INEED.oldValues then
 		INEED.oldValues[option] = INEED.oldValues[option] or INEED_options[option]
 	else
 		INEED.oldValues={[option]=INEED_options[option]}
 	end
-	INEED_options[option] = self:GetChecked()
-end
-function INEED.OptionsPanel_EditBox_TextChanged( self, option )
-	if INEED.oldValues then
-		INEED.oldValues[option] = INEED.oldValues[option] or INEED_options[option]
-	else
-		INEED.oldValues={[option]=INEED_options[option] }
-	end
-	INEED_options[option] = self:GetText()
+	INEED_options[option] = floor(self:GetValue())
 end
