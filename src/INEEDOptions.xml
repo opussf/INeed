@@ -249,7 +249,6 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>self:SetAutoFocus( false )</OnLoad>
-					<OnShow>INEED.OptionsPanel_EditBox_OnLoad( self, "barCount" )</OnShow>
 					<OnTextChanged>INEED.OptionsPanel_EditBox_TextChanged( self, "barCount" )</OnTextChanged>
 				</Scripts>
 				<Layers>
@@ -530,9 +529,6 @@
 						<Offset><AbsDimension x="64" y="0"/></Offset>
 					</Anchor>
 				</Anchors>
-				<Scripts>
-					<OnShow>MoneyInputFrame_SetCopper( self, math.floor(INEED_account.max or 0) )</OnShow>
-				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">
 						<FontString name="$parent_Money_AccountMax_PreText" inherits="GameFontWhite" text="Max:">
@@ -551,9 +547,6 @@
 						<Offset><AbsDimension x="0" y="-8"/></Offset>
 					</Anchor>
 				</Anchors>
-				<Scripts>
-					<OnShow>MoneyInputFrame_SetCopper( self, math.floor(INEED_account.balance or 0) )</OnShow>
-				</Scripts>
 				<Layers>
 					<Layer level="ARTWORK">
 						<FontString name="$parent_Money_AccountCurrent_PreText" inherits="GameFontWhite" text="Current:">

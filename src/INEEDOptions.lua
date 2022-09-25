@@ -51,18 +51,35 @@ end
 
 function INEED.OptionsPanel_Refresh()
 	-- Called when options panel is opened.
---	INEEDOptionsFrame_ShowProgress:SetChecked(INEED_options["showProgress"])
---	INEEDOptionsFrame_AlertOnSuccess:SetChecked(INEED_options["showSuccess"])
---	INEEDOptionsFrame_AudibleAlert:SetChecked(INEED_options["audibleSuccess"])
---	INEEDOptionsFrame_DoEmote:SetChecked(INEED_options["doEmote"])
---	INEEDOptionsFrame_PlaySound:SetChecked(INEED_options["playSoundFile"])
+	INEEDOptionsFrame_ShowProgress:SetChecked(INEED_options["showProgress"])
+	INEEDOptionsFrame_PrintProgress:SetChecked(INEED_options["printProgress"])
+	INEEDOptionsFrame_ShowGlobalProgress:SetChecked(INEED_options["showGlobal"])
+	INEEDOptionsFrame_IncludeChange:SetChecked(INEED_options["includeChange"])
 
-	INEEDOptionsFrame_DoEmoteEditBox:SetText(INEED_options["emote"])
-	INEEDOptionsFrame_DisplayBarCount:SetValue(INEED_options["barCount"])
-	--INEEDOptionsFrame_DisplayFor:SetValue(INEED_options["displayUIListDisplaySeconds"])
+	INEEDOptionsFrame_AlertOnSuccess:SetChecked(INEED_options["showSuccess"])
+	INEEDOptionsFrame_PrintSuccess:SetChecked(INEED_options["printSuccess"])
+	INEEDOptionsFrame_SuccessScreenShot:SetChecked(INEED_options["doScreenShot"])
+	INEEDOptionsFrame_DoEmote:SetChecked(INEED_options["doEmote"])
+	INEED.OptionsPanel_EditBox_OnLoad( INEEDOptionsFrame_DoEmoteEditBox, "emote" )
+
+	INEEDOptionsFrame_CombatHide:SetChecked(INEED_options["combatHide"])
+	INEED.OptionsPanel_EditBox_OnLoad( INEEDOptionsFrame_DisplayBarCount, "barCount" )
+	INEEDOptionsFrame_FillOldest:SetChecked(INEED_options["fillBars"])
+
+	INEEDOptionsFrame_AutoRepair:SetChecked(INEED_options["autoRepair"])
+
+	-- Slush
+	INEED.OptionsPanel_Account_EditBox_OnShow( INEEDOptionsFrame_AccountPercent, "percent" )
+	MoneyInputFrame_SetCopper( INEEDOptionsFrame_Money_AccountMax, math.floor(INEED_account.max or 0) )
+	INEEDOptionsFrame_Money_AccountMax.gold:SetCursorPosition(0)
+	INEEDOptionsFrame_Money_AccountMax.silver:SetCursorPosition(0)
+	INEEDOptionsFrame_Money_AccountMax.copper:SetCursorPosition(0)
+	MoneyInputFrame_SetCopper( INEEDOptionsFrame_Money_AccountCurrent, math.floor(INEED_account.balance or 0) )
+	INEEDOptionsFrame_Money_AccountCurrent.gold:SetCursorPosition(0)
+	INEEDOptionsFrame_Money_AccountCurrent.silver:SetCursorPosition(0)
+	INEEDOptionsFrame_Money_AccountCurrent.copper:SetCursorPosition(0)
 
 	--INEED.Print("Options Panel Refresh: "..INEED_options["emote"])
-
 end
 
 function INEED.OptionPanel_KeepOriginalValue( option )
