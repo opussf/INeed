@@ -51,18 +51,35 @@ end
 
 function INEED.OptionsPanel_Refresh()
 	-- Called when options panel is opened.
---	INEEDOptionsFrame_ShowProgress:SetChecked(INEED_options["showProgress"])
---	INEEDOptionsFrame_AlertOnSuccess:SetChecked(INEED_options["showSuccess"])
---	INEEDOptionsFrame_AudibleAlert:SetChecked(INEED_options["audibleSuccess"])
---	INEEDOptionsFrame_DoEmote:SetChecked(INEED_options["doEmote"])
---	INEEDOptionsFrame_PlaySound:SetChecked(INEED_options["playSoundFile"])
+	INEEDOptionsFrame_ShowProgress:SetChecked(INEED_options["showProgress"])
+	INEEDOptionsFrame_PrintProgress:SetChecked(INEED_options["printProgress"])
+	INEEDOptionsFrame_ShowGlobalProgress:SetChecked(INEED_options["showGlobal"])
+	INEEDOptionsFrame_IncludeChange:SetChecked(INEED_options["includeChange"])
 
-	INEEDOptionsFrame_DoEmoteEditBox:SetText(INEED_options["emote"])
-	INEEDOptionsFrame_DisplayBarCount:SetValue(INEED_options["barCount"])
-	--INEEDOptionsFrame_DisplayFor:SetValue(INEED_options["displayUIListDisplaySeconds"])
+	INEEDOptionsFrame_AlertOnSuccess:SetChecked(INEED_options["showSuccess"])
+	INEEDOptionsFrame_PrintSuccess:SetChecked(INEED_options["printSuccess"])
+	INEEDOptionsFrame_SuccessScreenShot:SetChecked(INEED_options["doScreenShot"])
+	INEEDOptionsFrame_DoEmote:SetChecked(INEED_options["doEmote"])
+	INEED.OptionsPanel_EditBox_OnLoad( INEEDOptionsFrame_DoEmoteEditBox, "emote" )
+
+	INEEDOptionsFrame_CombatHide:SetChecked(INEED_options["combatHide"])
+	INEED.OptionsPanel_EditBox_OnLoad( INEEDOptionsFrame_DisplayBarCount, "barCount" )
+	INEEDOptionsFrame_FillOldest:SetChecked(INEED_options["fillBars"])
+
+	INEEDOptionsFrame_AutoRepair:SetChecked(INEED_options["autoRepair"])
+
+	-- Slush
+	INEED.OptionsPanel_Account_EditBox_OnShow( INEEDOptionsFrame_AccountPercent, "percent" )
+	MoneyInputFrame_SetCopper( INEEDOptionsFrame_Money_AccountMax, math.floor(INEED_account.max or 0) )
+	INEEDOptionsFrame_Money_AccountMax.gold:SetCursorPosition(0)
+	INEEDOptionsFrame_Money_AccountMax.silver:SetCursorPosition(0)
+	INEEDOptionsFrame_Money_AccountMax.copper:SetCursorPosition(0)
+	MoneyInputFrame_SetCopper( INEEDOptionsFrame_Money_AccountCurrent, math.floor(INEED_account.balance or 0) )
+	INEEDOptionsFrame_Money_AccountCurrent.gold:SetCursorPosition(0)
+	INEEDOptionsFrame_Money_AccountCurrent.silver:SetCursorPosition(0)
+	INEEDOptionsFrame_Money_AccountCurrent.copper:SetCursorPosition(0)
 
 	--INEED.Print("Options Panel Refresh: "..INEED_options["emote"])
-
 end
 
 function INEED.OptionPanel_KeepOriginalValue( option )
@@ -112,49 +129,33 @@ function INEED.OptionsPanel_EditBox_TextChanged( self, option )
 		self:SetValue(INEED_options[option])
 	end
 end
-
+INEED.durationKeys = {
+	["Days"]    = {86400, 1000000000000},
+	["Hours"]   = {3600, 24},
+	["Minutes"] = {60, 60},
+	["Seconds"] = {1, 60}
+}
 -- Duration field events
 function INEED.OptionsPanel_Duration_OnShow( self, option )
-	if INEED.variables_loaded then
-		local myName = self:GetName()
+	local myName = strmatch(self:GetName(), "_(%a*)$")
+	local calcStruct = INEED.durationKeys[myName]
+	if calcStruct then
 		local duration = INEED_options[option] or 0
-		if string.find( myName, "Days" ) then
-			local days = math.floor( duration/86400 )
-			self:SetNumber( days )
-		elseif string.find( myName, "Hours" ) then
-			local hours = math.floor( (duration/3600)%24 )
-			self:SetNumber( hours )
-		elseif string.find( myName, "Minutes" ) then
-			local minutes = math.floor( (duration/60)%60 )
-			self:SetNumber( minutes )
-		elseif string.find( myName, "Seconds" ) then
-			local seconds = math.floor( (duration%60) )
-			self:SetNumber( seconds )
-		end
-		self:SetCursorPosition(0)
+		local displayValue = math.floor( (duration/calcStruct[1])%calcStruct[2] )
+		self:SetNumber( displayValue )
 	end
+	self:SetCursorPosition(0)
 end
 function INEED.OptionsPanel_Duration_TextChanged( self, option )
-	local myName = self:GetName()
 	if self:HasFocus() then
+		local myName = strmatch(self:GetName(), "_(%a*)$")
 		local duration = INEED_options[option]
 		local newValue = duration
-		if string.find( myName, "Days" ) then
-			local days = tonumber( self:GetNumber() ) or 0
-			local originalSec = math.floor( duration/86400 ) * 86400
-			newValue = (duration - originalSec) + (days * 86400)
-		elseif string.find( myName, "Hours" ) then
-			local hours = tonumber( self:GetNumber() ) or 0
-			local originalSec = math.floor( (duration/3600)%24 ) * 3600
-			newValue = (duration - originalSec) + (hours * 3600)
-		elseif string.find( myName, "Minutes" ) then
-			local minutes = tonumber( self:GetNumber() ) or 0
-			local originalSec = math.floor( (duration/60)%60 ) * 60
-			newValue = (duration - originalSec) + (minutes * 60)
-		elseif string.find( myName, "Seconds" ) then
-			local seconds = tonumber( self:GetNumber() ) or 0
-			local originalSec = math.floor( (duration)%60 )
-			newValue = (duration - originalSec) + (seconds ) -- * 1
+		local calcStruct = INEED.durationKeys[myName]
+		if calcStruct then
+			local displayValue = tonumber( self:GetNumber() ) or 0
+			local originalSec = math.floor( (duration/calcStruct[1])%calcStruct[2] ) * calcStruct[1]
+			newValue = ( duration - originalSec ) + ( displayValue * calcStruct[1] )
 		end
 		INEED.OptionPanel_KeepOriginalValue( option )
 		INEED_options[option] = newValue
