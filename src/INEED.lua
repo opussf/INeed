@@ -31,10 +31,12 @@ INEED.bindTypes = {
 	[ITEM_SOULBOUND] = "Bound",
 	[ITEM_BIND_ON_PICKUP] = "Bound",
 }
+--[[ 100002 Changes
 INEED.scanTip = CreateFrame( "GameTooltip", "INEEDTip", UIParent, "GameTooltipTemplate" )
 INEED.scanTip2 = _G["INEEDTipTextLeft2"]
 INEED.scanTip3 = _G["INEEDTipTextLeft3"]
 INEED.scanTip4 = _G["INEEDTipTextLeft4"]
+]]
 
 function INEED.Print( msg, showName)
 	-- print to the chat frame
@@ -204,8 +206,10 @@ function INEED.ADDON_LOADED( _, arg1 )
 		INEED.faction = UnitFactionGroup("player")
 
 		-- Setup game settings
-		GameTooltip:HookScript("OnTooltipSetItem", INEED.hookSetItem)
-		ItemRefTooltip:HookScript("OnTooltipSetItem", INEED.hookSetItem)
+		--GameTooltip:HookScript("OnTooltipSetItem", INEED.hookSetItem)
+		--ItemRefTooltip:HookScript("OnTooltipSetItem", INEED.hookSetItem)
+		TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, INEED.onTooltipSetItem)
+
 		--INEED.Orig_GameTooltip_SetCurrencyToken = GameTooltip.SetCurrencyToken  -- lifted from Altaholic (thanks guys)
 		--GameTooltip.SetCurrencyToken = INEED.hookSetCurrencyToken
 
@@ -605,34 +609,23 @@ function INEED.clearData()
 		INEED_gold = {}
 	end
 end
-function INEED.hookSetItem(tooltip, ...)  -- is passed the tooltip frame as a table
-	local item, link = tooltip:GetItem()  -- name, link
-	local itemID = INEED.getItemIdFromLink( link )
-
---[[
-	local tooltipName = tooltip:GetName()
-	local tooltipLine2 = _G[tooltipName.."TextLeft2"]
-	local tooltipLine3 = _G[tooltipName.."TextLeft3"]
-	local tooltipLine4 = _G[tooltipName.."TextLeft4"]
-	local BindTypes = {
-		[ITEM_SOULBOUND] = "Bound",
-		[ITEM_BIND_ON_PICKUP] = "Bound",
-	}
-
-
-	INEED.Print( "tooltip:name = "..( tooltipName or "unknown" ).." "..
-			( ( BindTypes[tooltipLine2:GetText()] or BindTypes[tooltipLine3:GetText()] or BindTypes[tooltipLine4:GetText()] ) and "isBound" or "isNotBound" ) )
-]]
-	-- local ScanTip2 = _G["AppraiserTipTextLeft2"]
-	--.." "..ITEM_SOULBOUND.." "..ITEM_BIND_ON_PICKUP )
-	-- INEED.Print("item: "..(item or "nil").." ID: "..itemID)
+-- https://github.com/Ketho/wow-ui-source-df/blob/e6d3542fc217592e6144f5934bf22c5d599c1f6c/Interface/SharedXML/Tooltip/TooltipDataHandler.lua
+function INEED.onTooltipSetItem(tooltip, data)  -- is passed the tooltip frame as a table
+	-- INEED.lineData = {
+	-- 	["leftText"] = data.id
+	-- }
+	-- tooltip:AddLineDataText(INEED.lineData)
+	itemID = tostring(data.id)
 
 	if itemID and INEED_data[itemID] then
 		for realm in pairs(INEED_data[itemID]) do
 			if realm == INEED.realm then
 				for name, data in pairs(INEED_data[itemID][realm]) do
-					tooltip:AddDoubleLine(string.format("%s", name),
-							string.format("Needs: %i / %i", data.total + (data.inMail or 0), data.needed) )
+					INEED.lineData = {
+						["leftText"] = name,
+						["rightText"] = string.format("Needs: %i / %i", data.total + (data.inMail or 0), data.needed)
+					}
+					tooltip:AddLineDataText(INEED.lineData)
 				end
 			end
 		end
@@ -736,6 +729,7 @@ function INEED.addItem( itemLink, quantity )
 				--INEED.Print( "Needing :"..recipeID )
 				local madeItemLink = C_TradeSkillUI.GetRecipeItemLink( recipeID )
 				local minMade, maxMade = C_TradeSkillUI.GetRecipeNumItemsProduced( recipeID )
+
 				INEED.addItem( madeItemLink, minMade * quantity ) -- If a tradeskill makes more than one at a time.
 
 				local numReagents = C_TradeSkillUI.GetRecipeNumReagents( recipeID )
@@ -947,6 +941,7 @@ end
 function INEED.itemIsSoulbound( itemLink )
 	-- return 1 or nil to reflect if the item is BOP or bound
 	if itemLink then
+		--[[ 100002 changes
 		INEED.scanTip:SetOwner(UIParent, "ANCHOR_NONE")
 		INEED.scanTip:ClearLines()
 		INEED.scanTip:SetHyperlink( itemLink )
@@ -954,7 +949,7 @@ function INEED.itemIsSoulbound( itemLink )
 		local boundType = ( scanTip2 and INEED.bindTypes[INEED.scanTip2:GetText()] ) or
 				( scanTip3 and INEED.bindTypes[INEED.scanTip3:GetText()] ) or
 				( scanTip4 and INEED.bindTypes[INEED.scanTip4:GetText()] )
-
+		]]
 		return boundType
 	else
 		INEED.Print("itemIsSoulbound was called with a 'nil' value.")
