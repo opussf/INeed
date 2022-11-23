@@ -610,12 +610,13 @@ function INEED.clearData()
 	end
 end
 -- https://github.com/Ketho/wow-ui-source-df/blob/e6d3542fc217592e6144f5934bf22c5d599c1f6c/Interface/SharedXML/Tooltip/TooltipDataHandler.lua
-function INEED.onTooltipSetItem(tooltip, data)  -- is passed the tooltip frame as a table
+-- https://github.com/Ketho/wow-ui-source-df/blob/e6d3542fc217592e6144f5934bf22c5d599c1f6c/Interface/SharedXML/Tooltip/TooltipDataHandler.lua#L324
+function INEED.onTooltipSetItem(tooltip, tooltipdata)  -- is passed the tooltip frame as a table
 	-- INEED.lineData = {
-	-- 	["leftText"] = data.id
+	-- 	["leftText"] = tooltipdata.id
 	-- }
 	-- tooltip:AddLineDataText(INEED.lineData)
-	itemID = tostring(data.id)
+	itemID = tostring(tooltipdata.id)
 
 	if itemID and INEED_data[itemID] then
 		for realm in pairs(INEED_data[itemID]) do
@@ -723,30 +724,28 @@ function INEED.addItem( itemLink, quantity )
 	local enchantID = INEED.getEnchantIdFromLink( itemLink )
 	if enchantID and string.len( enchantID ) > 0 then
 		INEED.Print( string.format( "You need: %i %s (enchant:%s)", quantity, itemLink, enchantID ) )
-		local recipeTable = C_TradeSkillUI.GetAllRecipeIDs()
-		for i,recipeID in pairs(recipeTable) do
-			if recipeID == tonumber(enchantID) then -- found the enchant link just needed
-				--INEED.Print( "Needing :"..recipeID )
-				local madeItemLink = C_TradeSkillUI.GetRecipeItemLink( recipeID )
-				local minMade, maxMade = C_TradeSkillUI.GetRecipeNumItemsProduced( recipeID )
+		local recipeSchematic = C_TradeSkillUI.GetRecipeSchematic( enchantID, false )  -- isRecraft?
 
-				INEED.addItem( madeItemLink, minMade * quantity ) -- If a tradeskill makes more than one at a time.
+		--INEED.Print( recipeSchematic.outputItemID.." (x"..recipeSchematic.quantityMin..")" )
+		if recipeSchematic.outputItemID then
+			INEED.addItem( "item:"..recipeSchematic.outputItemID, recipeSchematic.quantityMin * quantity )
+		end
 
-				local numReagents = C_TradeSkillUI.GetRecipeNumReagents( recipeID )
-				for reagentIndex = 1, numReagents do
-					local _, _, reagentCount = C_TradeSkillUI.GetRecipeReagentInfo( recipeID, reagentIndex )
-					local reagentLink = C_TradeSkillUI.GetRecipeReagentItemLink( recipeID, reagentIndex )
-					INEED.addItem( reagentLink, reagentCount * quantity )
-				end
-				local toolName = C_TradeSkillUI.GetRecipeTools( recipeID )
-				if toolName then
-					INEED.Print( toolName )
-					local _, toolLink = GetItemInfo( toolName )
-					INEED.addItem( toolLink, 1 )
-				end
+		for _, reagentSlotSchematic in pairs( recipeSchematic.reagentSlotSchematics ) do
+			--INEED.Print( "Needs: "..reagentSlotSchematic.reagents[1].itemID.." (x"..reagentSlotSchematic.quantityRequired..")")
+			if reagentSlotSchematic.reagents.reagentType == 1 then
+				INEED.addItem( "item:"..reagentSlotSchematic.reagents[1].itemID, reagentSlotSchematic.quantityRequired * quantity )
 			end
 		end
-		return itemLink -- return done
+
+		-- @TODO: Look for the tool code.
+		-- 		local toolName = C_TradeSkillUI.GetRecipeTools( recipeID )
+		-- 		if toolName then
+		-- 			INEED.Print( toolName )
+		-- 			local _, toolLink = GetItemInfo( toolName )
+		-- 			INEED.addItem( toolLink, 1 )
+		-- 		end
+		return recipeSchematic.outputItemID and "item:"..recipeSchematic.outputItemID or nil-- itemLink -- return done
 	end
 	local currencyID = INEED.getCurrencyIdFromLink( itemLink )
 	if currencyID and string.len( currencyID ) > 0 then
