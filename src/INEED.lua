@@ -733,7 +733,7 @@ function INEED.addItem( itemLink, quantity )
 
 		for _, reagentSlotSchematic in pairs( recipeSchematic.reagentSlotSchematics ) do
 			--INEED.Print( "Needs: "..reagentSlotSchematic.reagents[1].itemID.." (x"..reagentSlotSchematic.quantityRequired..")")
-			if reagentSlotSchematic.reagents.reagentType == 1 then
+			if reagentSlotSchematic.reagentType == 1 then
 				INEED.addItem( "item:"..reagentSlotSchematic.reagents[1].itemID, reagentSlotSchematic.quantityRequired * quantity )
 			end
 		end
