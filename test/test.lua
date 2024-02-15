@@ -22,6 +22,7 @@ INEED.realm = "testRealm"
 INEED.faction = "Alliance"
 
 function test.before()
+	chatLog = {}
 	myInventory = { ["7073"] = 52, ["9799"] = 52, ["9999"] = 52, }
 	myCurrencies = { [703] = 5, }  -- Fictional currency?
 	INEED_currency = {}

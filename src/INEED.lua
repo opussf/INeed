@@ -726,9 +726,9 @@ function INEED.addItem( itemLink, quantity )
 				INEED.clearData()
 			end
 		end
-		if INEED.isMerchantOpen then
-			INEED.MERCHANT_SHOW()  -- Allow a newly added item to trigger a purchase with
-		end
+		-- if INEED.isMerchantOpen then  -- This is buggy.  Figure out how to fix this
+		-- 	INEED.MERCHANT_SHOW()  -- Allow a newly added item to trigger a purchase with
+		-- end
 		return itemLink   -- return early
 	end
 	local enchantID = INEED.getEnchantIdFromLink( itemLink )

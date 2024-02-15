@@ -1,7 +1,7 @@
 -----------------------------------------
--- Author  :  $Author:$
--- Date    :  $Date:$
--- Revision:  $Revision:$
+-- Author  :  Opussf
+-- Date    :  February 12 2024
+-- Revision:  9.1.5
 -----------------------------------------
 -- This is an uber simple unit test implementation
 -- It creates a dictionary called test.
@@ -63,12 +63,6 @@ end
 
 -- intercept the lua's print function
 --print = test.print
---io.write = test.print
---out = test.print
--------
---http://cegui.org.uk/wiki/Redirecting_Lua_Output
---http://lua-users.org/lists/lua-l/2008-10/msg00369.html
-
 
 function test.toXML()
 	if test.outFileName then
