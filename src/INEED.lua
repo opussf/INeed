@@ -207,6 +207,7 @@ function INEED.ADDON_LOADED( _, arg1 )
 		INEED.name = UnitName("player")
 		INEED.realm = GetRealmName()
 		INEED.faction = UnitFactionGroup("player")
+		INEED.faction = "BOTH"
 
 		-- Setup game settings
 		--GameTooltip:HookScript("OnTooltipSetItem", INEED.hookSetItem)
@@ -548,7 +549,7 @@ function INEED.makeOthersNeed()
 		for realm, _ in pairs( INEED_data[itemID] ) do
 			INEED.othersNeed[itemID][realm] = {}
 			for name, data in pairs( INEED_data[itemID][realm] ) do
-				local faction = INEED_data[itemID][realm][name].faction or ""
+				--local faction = INEED_data[itemID][realm][name].faction or ""
 				if data.faction and not ((realm == INEED.realm) and (name == INEED.name)) then
 					INEED.othersNeed[itemID][realm][data.faction] =
 							(INEED.othersNeed[itemID][realm][data.faction] and INEED.othersNeed[itemID][realm][data.faction]
