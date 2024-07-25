@@ -400,7 +400,7 @@ function INEED.MERCHANT_SHOW()
 				-- INEED.Print("I have "..GetCoinTextureString( INEED_account.balance or 0).." to spend")
 				-- INEED.Print("I can afford "..canAffordQuantity.." items")
 				local purchaseQuantity = math.min( canAffordQuantity, neededQuantity )
-				INEED.Print(purchaseQuantity.." "..itemName.." @"..GetCoinTextureString( price / quantity ))
+				INEED.Print(purchaseQuantity.." "..itemName.." @"..C_CurrencyInfo.GetCoinTextureString( price / quantity ))
 
 				local bought = 0
 				for lcv = 1, math.ceil(purchaseQuantity / maxStackPurchase), 1 do
@@ -444,13 +444,13 @@ function INEED.MERCHANT_SHOW()
 			RepairAllItems()
 			INEED_account.balance = INEED_account.balance - repairAllCost
 			purchaseAmount = purchaseAmount + repairAllCost
-			INEED.Print( "Repair Items: "..GetCoinTextureString( repairAllCost ) )
+			INEED.Print( "Repair Items: "..C_CurrencyInfo.GetCoinTextureString( repairAllCost ) )
 		end
 	end
 	if purchaseAmount > 0 then
 		INEED.Print("==========================")
-		INEED.Print("Total:   "..GetCoinTextureString(purchaseAmount) )
-		INEED.Print("Balance: "..GetCoinTextureString( INEED_account.balance or 0 ) )
+		INEED.Print("Total:   "..C_CurrencyInfo.GetCoinTextureString(purchaseAmount) )
+		INEED.Print("Balance: "..C_CurrencyInfo.GetCoinTextureString( INEED_account.balance or 0 ) )
 	end
 	--[[
 	GetMerchantItemLink(index) - Returns an itemLink for the given purchasable item
@@ -495,10 +495,11 @@ function INEED.PLAYER_MONEY()
 				if total < needed then
 					if INEED_options.showProgress or INEED_options.printProgress then
 						local progressString = string.format("%s/%s %s",
-								GetCoinTextureString(total), GetCoinTextureString(needed),
+								C_CurrencyInfo.GetCoinTextureString(total),
+								C_CurrencyInfo.GetCoinTextureString(needed),
 								(INEED_options.includeChange and
 									string.format(" (%s%s%s%s) ", ((gained > 0) and COLOR_GREEN or COLOR_RED), ((gained > 0) and "+" or "-"),
-										GetCoinTextureString(math.abs(gained)), COLOR_END)
+										C_CurrencyInfo.GetCoinTextureString(math.abs(gained)), COLOR_END)
 									or "")
 								)
 						_ = INEED_options.showProgress and UIErrorsFrame:AddMessage( progressString, 1.0, 1.0, 0.1, 1.0 )
@@ -508,9 +509,9 @@ function INEED.PLAYER_MONEY()
 				elseif total >= needed then
 					_ = INEED_options.showSuccess and
 							INEED.showSplash( string.format("%s/%s",
-									GetCoinTextureString(total), GetCoinTextureString(needed) ) )
+									C_CurrencyInfo.GetCoinTextureString(total), C_CurrencyInfo.GetCoinTextureString(needed) ) )
 					_ = INEED_options.printSuccess and
-							INEED.Print( string.format( "Reached goal of %s.", GetCoinTextureString( needed ) ) )
+							INEED.Print( string.format( "Reached goal of %s.", C_CurrencyInfo.GetCoinTextureString( needed ) ) )
 					INEED_gold[INEED.realm][INEED.name] = nil
 					INEED.clearData()
 					itemFulfilled = true
@@ -802,7 +803,7 @@ function INEED.addItem( itemLink, quantity )
 		--print("Need gold amount: "..(needGoldAmount or "nil") )
 		if curAmount < needGoldAmount then
 			INEED.Print( string.format( "Needing: %s/%s",
-					GetCoinTextureString(curAmount), GetCoinTextureString(needGoldAmount) ) )
+					C_CurrencyInfo.GetCoinTextureString(curAmount), C_CurrencyInfo.GetCoinTextureString(needGoldAmount) ) )
 			INEED_gold[INEED.realm] = INEED_gold[INEED.realm] or {}
 			INEED_gold[INEED.realm][INEED.name] = INEED_gold[INEED.realm][INEED.name] or {}
 			INEED_gold[INEED.realm][INEED.name] = INEED.addItemToTable( INEED_gold[INEED.realm][INEED.name], needGoldAmount, curAmount )
@@ -930,7 +931,7 @@ function INEED.showList( searchTerm )
 				table.insert( updatedItems, {
 						["updated"] = (data.updated or data.added or 1),
 						["displayStr"] = string.format("%s/%s for %s of %s",
-								GetCoinTextureString( data.total ), GetCoinTextureString( data.needed ),
+								C_CurrencyInfo.GetCoinTextureString( data.total ), C_CurrencyInfo.GetCoinTextureString( data.needed ),
 								name, realm )
 				} )
 			end
@@ -1041,7 +1042,7 @@ function INEED.accountInfo( value )
 	end
 	INEED.updateTitleText( )
 	INEED.Print( "The current autoSpend account balance is: "..
-			( INEED_account.balance and GetCoinTextureString( INEED_account.balance ) or "0" ) )
+			( INEED_account.balance and C_CurrencyInfo.GetCoinTextureString( INEED_account.balance ) or "0" ) )
 end
 function INEED.remove( nameIn )
 	local delName, delRealm = strmatch( nameIn , "^(.*)-(.*)$")
@@ -1119,10 +1120,10 @@ function INEED.slush( strIn )
 	end
 	INEED.updateTitleText( )
 	INEED.Print( "Slush: "..(INEED_account.percent and ((INEED_account.percent).."%") or "")..
-			(INEED_account.max and (" max: "..GetCoinTextureString(INEED_account.max)) or "") )
+			(INEED_account.max and (" max: "..C_CurrencyInfo.GetCoinTextureString(INEED_account.max)) or "") )
 end
 function INEED.updateTitleText( )
-	local accountBalanceStr = INEED_account.balance and GetCoinTextureString( INEED_account.balance )
+	local accountBalanceStr = INEED_account.balance and C_CurrencyInfo.GetCoinTextureString( INEED_account.balance )
 	INEED.UITitleText = "INEED"..( accountBalanceStr and " - "..accountBalanceStr or "" )
 	INEEDUIListFrame_TitleText:SetText( INEED.UITitleText )
 end

@@ -4,17 +4,14 @@ require "wowTest"
 
 test.outFileName = "testOut.xml"
 
--- Figure out how to parse the XML here, until then....
+-- require the file to test
+ParseTOC( "../src/INEED.toc" )
+
+INEEDUIListFrame_TitleText = INEEDUIListFrame.CreateFontString()
+SendMailNameEditBox = CreateFontString("SendMailNameEditBox")
 INEED_SplashFrame = { ["Show"] = function() end,
 		["AddMessage"] = function(msg) print( "SPLASHFRAME:", (msg or "")) end,
 }
-INEED_Frame = CreateFrame()
-SendMailNameEditBox = CreateFontString("SendMailNameEditBox")
-INEEDUIListFrame = CreateFrame()
-INEEDUIListFrame_TitleText = INEEDUIListFrame.CreateFontString()
-
--- require the file to test
-ParseTOC( "../src/INEED.toc" )
 
 -- addon setup
 INEED.name = "testName"
@@ -890,8 +887,8 @@ function test.notestGoldValue_showList()  -- @TODO - FIX THIS
 	INEED.command("+1g")
 	INEED.PLAYER_MONEY()
 	listDictionary = INEED.showList()
-	haveStr = GetCoinTextureString( myCopper )
-	needStr = GetCoinTextureString( myCopper + 10000 )
+	haveStr = C_CurrencyInfo.GetCoinTextureString( myCopper )
+	needStr = C_CurrencyInfo.GetCoinTextureString( myCopper + 10000 )
 	for k,v in pairs(listDictionary) do
 		if v.displayStr == string.format("%s/%s for testName of testRealm", haveStr, needStr) then
 			return -- found the string, pass the test
