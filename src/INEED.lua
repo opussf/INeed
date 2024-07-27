@@ -238,6 +238,7 @@ end
 function INEED.PLAYER_ENTERING_WORLD() -- Variables should be loaded here
 	--INEED_Frame:RegisterEvent("UNIT_INVENTORY_CHANGED")
 	INEED_Frame:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	INEED_options.autoRepair = false
 	-- Build data structure to track what other players need.
 	INEED.makeOthersNeed()
 
@@ -1204,7 +1205,7 @@ INEED.CommandList = {
 		["help"] = {"[quantity]", "Set quantity needed of <link>"},
 	},
 	["options"] = {
-		["func"] = function() InterfaceOptionsFrame_OpenToCategory( INEED_MSG_ADDONNAME ) end,
+		["func"] = function() Settings.OpenToCategory( INEEDOptionsFrame.category:GetID() ) end,
 		["help"] = {"", "Open the options panel"},
 	},
 	["remove"] = {

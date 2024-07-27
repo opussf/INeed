@@ -1793,6 +1793,12 @@ function C_ToyBox.IsToyUsable( id )
 	return toyList[id] and toyList[id][1]
 end
 
+---------
+-- 110000
+---------
+Settings = {}
+Settings.category = {}
+
 -- A SAX parser takes a content handler, which provides these methods:
 --     startDocument()                 -- called at the start of the Document
 --     endDocument()                   -- called at the end of the Document

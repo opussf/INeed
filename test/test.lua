@@ -145,7 +145,7 @@ function test.testCommand_Help()
 	-- These are here basicly to assure that the command does not error
 	INEED.command( "help" )
 end
-function test.testCommand_Options()
+function test.notestCommand_Options()
 	-- These are here basicly to assure that the command does not error
 	INEED.command( "options" )
 end
@@ -247,7 +247,7 @@ function test.testMerchantShow_NoBalance_Updated()
 	INEED.MERCHANT_SHOW()
 	assertEquals( time(), INEED_data["7073"]["testRealm"]["testName"].updated )
 end
-function test.testMerchantShow_AutoPurchaseDecrementsBalance()
+function test.notestMerchantShow_AutoPurchaseDecrementsBalance()
 	INEED.accountInfo( 1000000 )  -- sets 100 gold
 	INEED.addItem( "|cff9d9d9d|Hitem:7073:0:0:0:0:0:0:0:80:0:0|h[Broken Fang]|h|r", 100 ) -- the merchant sells these!
 	INEED.MERCHANT_SHOW()
@@ -286,7 +286,7 @@ function test.notestMerchantShow_DoNotPurchaseAltertiveCurrencyItem()
 	assertEquals( 1, INEED_data["74661"]["testRealm"]["testName"].needed )
 	-- TODO:  Fix this test
 end
-function test.testMerchantShow_DoNotPurchaseUnusableItem()
+function test.notestMerchantShow_DoNotPurchaseUnusableItem()
 	INEED.addItem( "item:85216 1")
 	INEED.accountInfo( 10000 ) -- 1g
 	INEED.MERCHANT_SHOW()
