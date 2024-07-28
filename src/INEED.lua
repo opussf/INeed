@@ -1124,7 +1124,7 @@ function INEED.slush( strIn )
 			(INEED_account.max and (" max: "..C_CurrencyInfo.GetCoinTextureString(INEED_account.max)) or "") )
 end
 function INEED.updateTitleText( )
-	local accountBalanceStr = INEED_account.balance and C_CurrencyInfo.GetCoinTextureString( INEED_account.balance )
+	local accountBalanceStr = (INEED_account.balance and INEED_account.balance > 0) and C_CurrencyInfo.GetCoinTextureString( INEED_account.balance )
 	INEED.UITitleText = "INEED"..( accountBalanceStr and " - "..accountBalanceStr or "" )
 	INEEDUIListFrame_TitleText:SetText( INEED.UITitleText )
 end
