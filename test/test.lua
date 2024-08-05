@@ -15,7 +15,7 @@ INEED_SplashFrame = { ["Show"] = function() end,
 
 -- addon setup
 INEED.name = "testName"
-INEED.realm = "testRealm"
+INEED.realm = "Test Realm"
 INEED.faction = "Alliance"
 
 function test.before()
@@ -78,25 +78,25 @@ function test.testGetAchievementIdFromLink( )
 end
 function test.testAddItem_ItemStr()
 	INEED.addItem( "item:9798" )
-	assertEquals( 1, INEED_data["9798"]["testRealm"]["testName"].needed )
+	assertEquals( 1, INEED_data["9798"]["Test Realm"]["testName"].needed )
 end
 function test.testAddItem_ItemLink_NeededIsSet()
 	INEED.addItem( "|cff9d9d9d|Hitem:7073:0:0:0:0:0:0:0:80:0:0|h[Broken Fang]|h|r", 55 )
-	assertEquals( 55, INEED_data["7073"]["testRealm"]["testName"].needed )
+	assertEquals( 55, INEED_data["7073"]["Test Realm"]["testName"].needed )
 end
 function test.testAddItem_ItemLink_TotalIsSet()
 	INEED.addItem( "|cff9d9d9d|Hitem:7073:0:0:0:0:0:0:0:80:0:0|h[Broken Fang]|h|r", 55 )
-	assertEquals( 52, INEED_data["7073"]["testRealm"]["testName"].total )
+	assertEquals( 52, INEED_data["7073"]["Test Realm"]["testName"].total )
 end
 function test.testAddItem_TimeStampSet()
 	INEED.command( "item:9799 55" )
 	local now = os.time()
-	assertEquals( now, INEED_data["9799"]["testRealm"]["testName"].added )
+	assertEquals( now, INEED_data["9799"]["Test Realm"]["testName"].added )
 end
 function test.testAddItem_SetsUpdated()
 	INEED.command( "item:9799 55" )
 	local now = os.time()
-	assertEquals( now, INEED_data["9799"]["testRealm"]["testName"].updated )
+	assertEquals( now, INEED_data["9799"]["Test Realm"]["testName"].updated )
 end
 function test.testAddItem_AlreadyHaveOverTheAmountNeeded()
 	INEED.addItem( "|cff9d9d9d|Hitem:7073:0:0:0:0:0:0:0:80:0:0|h[Broken Fang]|h|r", 10 )
@@ -104,7 +104,7 @@ function test.testAddItem_AlreadyHaveOverTheAmountNeeded()
 end
 function test.testAddItem_SetsFaction()
 	INEED.command( "item:74661" )
-	assertEquals( "Alliance", INEED_data["74661"]["testRealm"]["testName"].faction )
+	assertEquals( "Alliance", INEED_data["74661"]["Test Realm"]["testName"].faction )
 end
 function test.testRemoveItem_UseZero()
 	INEED.addItem( "|cff9d9d9d|Hitem:7073:0:0:0:0:0:0:0:80:0:0|h[Broken Fang]|h|r", 10 )
@@ -128,14 +128,14 @@ function test.testItemFulfilled_ObtainItem_NotFulfilled()
 	INEED.UNIT_INVENTORY_CHANGED()
 	myInventory["7073"] = 59
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 59, INEED_data["7073"]["testRealm"]["testName"].total )
+	assertEquals( 59, INEED_data["7073"]["Test Realm"]["testName"].total )
 end
 function test.testItemUpdated_SetsTimeStamp()
 	INEED.command( "|cff9d9d9d|Hitem:7073:0:0:0:0:0:0:0:80:0:0|h[Broken Fang]|h|r 60" )
 	INEED.UNIT_INVENTORY_CHANGED()
 	myInventory["7073"] = 59
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( time(), INEED_data["7073"]["testRealm"]["testName"].updated )
+	assertEquals( time(), INEED_data["7073"]["Test Realm"]["testName"].updated )
 end
 function test.testCommand_Blank()
 	-- These are here basicly to assure that the command does not error
@@ -243,9 +243,9 @@ function test.testAccountInfo_SubtractValue_Copper_SubZero()
 end
 function test.testMerchantShow_NoBalance_Updated()
 	INEED.addItem( "|cff9d9d9d|Hitem:7073:0:0:0:0:0:0:0:80:0:0|h[Broken Fang]|h|r", 100 ) -- the merchant sells these!
-	INEED_data["7073"]["testRealm"]["testName"].updated = 0
+	INEED_data["7073"]["Test Realm"]["testName"].updated = 0
 	INEED.MERCHANT_SHOW()
-	assertEquals( time(), INEED_data["7073"]["testRealm"]["testName"].updated )
+	assertEquals( time(), INEED_data["7073"]["Test Realm"]["testName"].updated )
 end
 function test.notestMerchantShow_AutoPurchaseDecrementsBalance()
 	INEED.accountInfo( 1000000 )  -- sets 100 gold
@@ -272,7 +272,7 @@ function test.testMerchantShow_AutoPurchaseAbidesByAccountBalance_TwoItems()
 	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
 	INEED.showList()
 	local balance = INEED_account.balance -- 10s
-	local haveNum = INEED_data["6742"]["testRealm"]["testName"].total -- 1
+	local haveNum = INEED_data["6742"]["Test Realm"]["testName"].total -- 1
 
 	assertEquals( 1000, balance )
 	assertEquals( 1, haveNum )
@@ -283,7 +283,7 @@ function test.notestMerchantShow_DoNotPurchaseAltertiveCurrencyItem()
 	INEED.MERCHANT_SHOW()      -- trigger purchase
 	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
 
-	assertEquals( 1, INEED_data["74661"]["testRealm"]["testName"].needed )
+	assertEquals( 1, INEED_data["74661"]["Test Realm"]["testName"].needed )
 	-- TODO:  Fix this test
 end
 function test.notestMerchantShow_DoNotPurchaseUnusableItem()
@@ -295,8 +295,8 @@ function test.notestMerchantShow_DoNotPurchaseUnusableItem()
 	-- @TODO: this takes into account autorepair
 end
 function test.testShowFulfillList_ReturnsExpectedValue()
-	INEED_data["7073"] = { ["testRealm"]={ ["otherTestName"] = { ['needed'] = 10,['faction']='Alliance'} } }
-	INEED_data["7073"]["testRealm"]["otherTestName"].total = 0
+	INEED_data["7073"] = { ["Test Realm"]={ ["otherTestName"] = { ['needed'] = 10,['faction']='Alliance'} } }
+	INEED_data["7073"]["Test Realm"]["otherTestName"].total = 0
 	assertEquals( 52, INEED.showFulfillList() )
 end
 function test.testShowFulfillList_ReturnsNil()
@@ -304,7 +304,7 @@ function test.testShowFulfillList_ReturnsNil()
 	assertIsNil( INEED.showFulfillList() )
 end
 function test.testShowFulfillList_NoCrossFaction()
-	INEED_data["7073"]={["testRealm"]={["otherTestName"]={['needed']=10,['faction']='Horde',['total']=0,}}}
+	INEED_data["7073"]={["Test Realm"]={["otherTestName"]={['needed']=10,['faction']='Horde',['total']=0,}}}
 	assertIsNil( INEED.showFulfillList() )
 end
 function test.testShowFulfillList_filtersSoulboundItems()
@@ -324,34 +324,34 @@ function test.testShowFulfillList_filersBindOnPickup()
 	assertIsNil( INEED.showFulfillList() )
 end
 function test.testRemoveChar_NoName()
-	INEED_data["7073"] = { ["testRealm"]={ ["otherTestName"]={ ['needed']=10 } } }
+	INEED_data["7073"] = { ["Test Realm"]={ ["otherTestName"]={ ['needed']=10 } } }
 	INEED.command( "remove" )
-	assertEquals( 10, INEED_data["7073"]["testRealm"]["otherTestName"].needed )
+	assertEquals( 10, INEED_data["7073"]["Test Realm"]["otherTestName"].needed )
 end
 function test.testRemoveChar_OtherRealm()
 	INEED_data["7073"] = {
-			["testRealm"]={ ["otherTestName"]={ ['needed']=10 } },
+			["Test Realm"]={ ["otherTestName"]={ ['needed']=10 } },
 			["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10 }, -- del
 								 ["otherTestName2"]={ ['needed']=10 } },
 	}
 	INEED.command( "remove otherTestName-otherTestRealm" )
 	assertIsNil( INEED_data["7073"]["otherTestRealm"]["otherTestName"] )
-	assertEquals( 10, INEED_data["7073"]["testRealm"]["otherTestName"].needed )
+	assertEquals( 10, INEED_data["7073"]["Test Realm"]["otherTestName"].needed )
 	assertEquals( 10, INEED_data["7073"]["otherTestRealm"]["otherTestName2"].needed )
 end
 --[[
 function test.testTradeSkill_Link()
 	INEED.command( "|cffffffff|Henchant:44157|h[Engineering: Turbo-Charged Flying Machine]|h|r" )
-	assertEquals( 1, INEED_data["34061"]["testRealm"]["testName"].needed ) -- item to make
-	--assertIsNil( INEED_data["34061"]["testRealm"]["testName"].needed )
-	assertEquals( 8, INEED_data["23786"]["testRealm"]["testName"].needed )
+	assertEquals( 1, INEED_data["34061"]["Test Realm"]["testName"].needed ) -- item to make
+	--assertIsNil( INEED_data["34061"]["Test Realm"]["testName"].needed )
+	assertEquals( 8, INEED_data["23786"]["Test Realm"]["testName"].needed )
 end
 
 function test.testTradeSkill_EnchantId()
 	INEED.command( "enchant:44157" )
-	assertEquals( 1, INEED_data["34061"]["testRealm"]["testName"].needed ) -- item to make
-	--assertIsNil( INEED_data["34061"]["testRealm"]["testName"].needed )
-	assertEquals( 8, INEED_data["23786"]["testRealm"]["testName"].needed )
+	assertEquals( 1, INEED_data["34061"]["Test Realm"]["testName"].needed ) -- item to make
+	--assertIsNil( INEED_data["34061"]["Test Realm"]["testName"].needed )
+	assertEquals( 8, INEED_data["23786"]["Test Realm"]["testName"].needed )
 end
 ]]
 -- Tests for currency
@@ -460,13 +460,13 @@ end
 -------
 function test.testGlobal_filterMyTrackingInfoFromOthersNeed()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["testName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, -- del
 							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 	}
 	INEED.makeOthersNeed()
-	assertEquals( 10, INEED.othersNeed["7073"]["testRealm"]["Alliance"].needed )
+	assertEquals( 10, INEED.othersNeed["7073"]["Test Realm"]["Alliance"].needed )
 end
 function test.testGlobal_newItem_nooneTrackingIt()
 	-- this really should not do anything extra.
@@ -477,41 +477,41 @@ function test.testGlobal_newItem_nooneTrackingIt()
 end
 function test.testGlobal_newItem_oneTrackingIt_sameRealm_sameFaction_setsNeeded()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" } },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" } },
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 10, INEED.othersNeed["7073"]["testRealm"]["Alliance"].needed )
+	assertEquals( 10, INEED.othersNeed["7073"]["Test Realm"]["Alliance"].needed )
 end
 function test.testGlobal_newItem_oneTrackingIt_sameRealm_sameFaction_setsTotal()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" } },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" } },
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
+	assertEquals( 1, INEED.othersNeed["7073"]["Test Realm"]["Alliance"].total )
 end
 function test.testGlobal_newItem_oneTrackingIt_sameRealm_diffFaction_setsNeeded()
 	-- This is done as a reminder, or if the item is 'account bound' and can be sent across factions
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 10, INEED.othersNeed["7073"]["testRealm"]["Horde"].needed )
+	assertEquals( 10, INEED.othersNeed["7073"]["Test Realm"]["Horde"].needed )
 end
 function test.testGlobal_newItem_oneTrackingIt_sameRealm_diffFaction_setsTotal()
 	-- This is done as a reminder, or if the item is 'account bound' and can be sent across factions
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Horde" } },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Horde" } },
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Horde"].total )
+	assertEquals( 1, INEED.othersNeed["7073"]["Test Realm"]["Horde"].total )
 end
 function test.testGlobal_newItem_oneTrackingIt_diffRealm_sameFaction_setsNeeded()
 	-- This is done as a reminder, or if the item is 'account bound' and can be sent across realms
@@ -555,71 +555,71 @@ function test.testGlobal_newItem_oneTrackingIt_diffRealm_diffFaction_setsTotal()
 end
 function test.testGlobal_newItem_twoTrackingItSingleFaction_setsNeeded()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["yetAnotherName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 20, INEED.othersNeed["7073"]["testRealm"]["Alliance"].needed )
+	assertEquals( 20, INEED.othersNeed["7073"]["Test Realm"]["Alliance"].needed )
 end
 function test.testGlobal_newItem_twoTrackingItSingleFaction_setsTotal()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
 						["yetAnotherName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
+	assertEquals( 1, INEED.othersNeed["7073"]["Test Realm"]["Alliance"].total )
 end
 function test.testGlobal_newItem_twoTrackingItTwoFaction_setsNeeded()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["yetAnotherName"]={ ['needed']=10, ['total']=0, ['faction']="Horde" } },
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 10, INEED.othersNeed["7073"]["testRealm"]["Alliance"].needed )
-	assertEquals( 10, INEED.othersNeed["7073"]["testRealm"]["Horde"].needed )
+	assertEquals( 10, INEED.othersNeed["7073"]["Test Realm"]["Alliance"].needed )
+	assertEquals( 10, INEED.othersNeed["7073"]["Test Realm"]["Horde"].needed )
 end
 function test.testGlobal_newItem_twoTrackingItTwoFaction_setsTotal()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
 						["yetAnotherName"]={ ['needed']=10, ['total']=2, ['faction']="Horde" } },
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 1, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
-	assertEquals( 2, INEED.othersNeed["7073"]["testRealm"]["Horde"].total )
+	assertEquals( 1, INEED.othersNeed["7073"]["Test Realm"]["Alliance"].total )
+	assertEquals( 2, INEED.othersNeed["7073"]["Test Realm"]["Horde"].total )
 end
 function test.testGlobal_newItem_manyTrackingItSingleFaction_setsNeeded()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["yetAnotherName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["third"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, }
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 30, INEED.othersNeed["7073"]["testRealm"]["Alliance"].needed )
+	assertEquals( 30, INEED.othersNeed["7073"]["Test Realm"]["Alliance"].needed )
 end
 function test.testGlobal_newItem_manyTrackingItSingleFaction_setsTotal()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
 						["yetAnotherName"]={ ['needed']=10, ['total']=2, ['faction']="Alliance" },
 						["third"]={ ['needed']=10, ['total']=4, ['faction']="Alliance" }, }
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 7, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
+	assertEquals( 7, INEED.othersNeed["7073"]["Test Realm"]["Alliance"].total )
 end
 function test.testGlobal_newItem_IAndOthersTracking()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
 						["testName"]={ ['needed']=10, ['total']=2, ['faction']="Alliance" } },
 		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=4, ['faction']="Alliance" }, -- del
 							 ["otherTestName2"]={ ['needed']=10, ['total']=8, ['faction']="Alliance" } },
@@ -627,13 +627,13 @@ function test.testGlobal_newItem_IAndOthersTracking()
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 1, INEED.othersNeed['7073']['testRealm']['Alliance'].total )
+	assertEquals( 1, INEED.othersNeed['7073']['Test Realm']['Alliance'].total )
 	assertEquals( 12, INEED.othersNeed['7073']['otherTestRealm']['Alliance'].total )
 
 end
 function test.testGlobal_newItem_setsMine()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["testName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, -- del
 							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
@@ -641,44 +641,44 @@ function test.testGlobal_newItem_setsMine()
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 52, INEED.othersNeed["7073"]["testRealm"]["Alliance"].mine )
+	assertEquals( 52, INEED.othersNeed["7073"]["Test Realm"]["Alliance"].mine )
 end
 function test.testGlobal_previousItem_manyTrackingItSingleFaction_setsTotal()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
 						["yetAnotherName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
 						["third"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" }, }
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 3, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
+	assertEquals( 3, INEED.othersNeed["7073"]["Test Realm"]["Alliance"].total )
 end
 function test.testGlobal_previousItem_manyTrackingItSingleFaction_setsTotal_withInMail()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance", ['inMail']=1 },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance", ['inMail']=1 },
 						["yetAnotherName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
 						["third"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" }, }
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 4, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
+	assertEquals( 4, INEED.othersNeed["7073"]["Test Realm"]["Alliance"].total )
 end
 function test.testGlobal_missingFactionInData()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance", ['inMail']=1 },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance", ['inMail']=1 },
 						["yetAnotherName"]={ ['needed']=10, ['total']=1, ['faction']="Alliance" },
 						["third"]={ ['needed']=10, ['total']=1 }, }
 	}
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertEquals( 3, INEED.othersNeed["7073"]["testRealm"]["Alliance"].total )
+	assertEquals( 3, INEED.othersNeed["7073"]["Test Realm"]["Alliance"].total )
 end
 function test.testGlobal_dontTrackInGlobalWhatINeed()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["testName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, -- del
 							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
@@ -686,7 +686,7 @@ function test.testGlobal_dontTrackInGlobalWhatINeed()
 	INEED.makeOthersNeed()
 	myInventory["7073"] = 1
 	INEED.UNIT_INVENTORY_CHANGED()
-	assertIsNil( INEED.othersNeed["7073"]["testRealm"]["testName"] )
+	assertIsNil( INEED.othersNeed["7073"]["Test Realm"]["testName"] )
 end
 --[[
 function test.testAddSpecialCurrency_CurrencyNotCurrentlyNeeded()
@@ -715,7 +715,7 @@ function test.testAddSpecialCurrencyItem_CurrencyItemNotCurrentlyNeeded()
 	INEED.MERCHANT_SHOW()      -- trigger purchase
 	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
 
-	assertEquals( 1, INEED_data["49927"]["testRealm"]["testName"].needed )
+	assertEquals( 1, INEED_data["49927"]["Test Realm"]["testName"].needed )
 end
 function test.testAddSpecialCurrencyItem_CurrencyItemCurrentlyNeeded()
 	-- If a needed item can be purchased, but needs special currency, Not 100% what I want it to do here.
@@ -725,7 +725,7 @@ function test.testAddSpecialCurrencyItem_CurrencyItemCurrentlyNeeded()
 	INEED.MERCHANT_SHOW()      -- trigger purchase
 	INEED.UNIT_INVENTORY_CHANGED() -- trigger update
 
-	assertEquals( 8, INEED_data["49916"]["testRealm"]["testName"].needed )
+	assertEquals( 8, INEED_data["49916"]["Test Realm"]["testName"].needed )
 end
 function test.testAddSpecialCurrency_AlreadyHaveMoreThanNeeded()
 	-- Needing an item that can be purchased with a special currency (not gold)
@@ -804,47 +804,47 @@ end
 --------- Gold Value
 function test.testGoldValue_addNeededValue_gold()
 	INEED.command( "25g" )
-	assertEquals( 250000, INEED_gold["testRealm"]["testName"].needed )
+	assertEquals( 250000, INEED_gold["Test Realm"]["testName"].needed )
 end
 function test.testGoldValue_addNeededValue_silver()
 	INEED.command( "25s" )
-	assertEquals( 2500, INEED_gold["testRealm"]["testName"].needed )
+	assertEquals( 2500, INEED_gold["Test Realm"]["testName"].needed )
 end
 function test.testGoldValue_addNeededValue_copper()
 	INEED.command( "25c" )
-	assertEquals( 25, INEED_gold["testRealm"]["testName"].needed )
+	assertEquals( 25, INEED_gold["Test Realm"]["testName"].needed )
 end
 function test.testGoldValue_addNeededValue_added()
 	INEED.command( "25c" )
-	assertEquals( time(), INEED_gold["testRealm"]["testName"].added )
+	assertEquals( time(), INEED_gold["Test Realm"]["testName"].added )
 end
 function test.testGoldValue_addNeededValue_updated()
 	INEED.command( "25c" )
-	assertEquals( time(), INEED_gold["testRealm"]["testName"].updated )
+	assertEquals( time(), INEED_gold["Test Realm"]["testName"].updated )
 end
 function test.testGoldValue_addNeededValue_0clears()
 	INEED.command( "25g" )
 	INEED.command( "0g" )
-	assertIsNil( INEED_gold["testRealm"]["testName"] )  -- clearData will clear the rest later
+	assertIsNil( INEED_gold["Test Realm"]["testName"] )  -- clearData will clear the rest later
 end
 function test.testGoldValue_haveMoreThanNeed()
 	myCopper = 150000
 	INEED.command( "25c" )
-	assertIsNil( INEED_gold["testRealm"] )
+	assertIsNil( INEED_gold["Test Realm"] )
 end
 function test.testGoldValue_clearsData()
 	INEED.command( "25g" )
-	assertEquals( 250000, INEED_gold["testRealm"]["testName"].needed )
+	assertEquals( 250000, INEED_gold["Test Realm"]["testName"].needed )
 	myCopper = 300000
 	INEED.PLAYER_MONEY()
-	assertIsNil( INEED_gold["testRealm"] )
+	assertIsNil( INEED_gold["Test Realm"] )
 end
 function test.testGoldValue_doesNotAffectOthers_SameRealm()
-	INEED_gold={["testRealm"]={["otherName"]={["needed"] = 250000, ["total"] = 5, ["added"]=0, ["updated"]=0 },},}
+	INEED_gold={["Test Realm"]={["otherName"]={["needed"] = 250000, ["total"] = 5, ["added"]=0, ["updated"]=0 },},}
 	INEED.command( "25g" )
 	myCopper = 300000
 	INEED.PLAYER_MONEY()
-	assertIsNil( INEED_gold["testRealm"] )
+	assertIsNil( INEED_gold["Test Realm"] )
 end
 function test.testGoldValue_doesNotAffectOthers_SameRealm()
 	INEED_gold={["otherRealm"]={["otherName"]={["needed"] = 250000, ["total"] = 5, ["added"]=0, ["updated"]=0 },},}
@@ -858,13 +858,13 @@ function test.testGoldValue_updated_isUpdated()
 	INEED.command("25g")
 	myCopper = 1005
 	INEED.PLAYER_MONEY()
-	assertEquals( time(), INEED_gold["testRealm"]["testName"].updated )
+	assertEquals( time(), INEED_gold["Test Realm"]["testName"].updated )
 end
 function test.testGoldValue_plus()
 	myCopper = 10000
 	INEED.command("+29g")
 	INEED.PLAYER_MONEY()
-	assertEquals( 300000, INEED_gold["testRealm"]["testName"].needed )
+	assertEquals( 300000, INEED_gold["Test Realm"]["testName"].needed )
 end
 function test.testGoldValue_plusPreValue()
 	INEED.command("5g")
@@ -872,14 +872,14 @@ function test.testGoldValue_plusPreValue()
 	INEED.PLAYER_MONEY()
 	INEED.command("+29g")
 	INEED.PLAYER_MONEY()
-	assertEquals( 300000, INEED_gold["testRealm"]["testName"].needed )
+	assertEquals( 300000, INEED_gold["Test Realm"]["testName"].needed )
 end
 function test.testGoldValue_neg()
 	-- does this even make sense?  a negative value would put the target value below the current value
 	myCopper = 10000
 	INEED.command("-1g")
 	INEED.PLAYER_MONEY()
-	assertIsNil( INEED_gold["testRealm"] )
+	assertIsNil( INEED_gold["Test Realm"] )
 end
 function test.notestGoldValue_showList()  -- @TODO - FIX THIS
 	-- Does the gold value show up in the list of things needed
@@ -966,7 +966,7 @@ end
 -- Achievement Tests
 function test.testAddAchievement_incomplete_addsItems()
 	INEED.command( "achievement:10722" )
-	assertEquals( 1, INEED_data["6742"]["testRealm"]["testName"].needed )
+	assertEquals( 1, INEED_data["6742"]["Test Realm"]["testName"].needed )
 end
 function test.testAddAchievement_complete_noItemsNeeded()
 	INEED.command( "achievement:10722" )
@@ -1143,7 +1143,7 @@ end
 ------------------------------------------
 function test.testPrune_item()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["testName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, -- del
 							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
@@ -1153,7 +1153,7 @@ function test.testPrune_item()
 end
 function test.testPrune_link()
 	INEED_data["7073"] = {
-		["testRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
+		["Test Realm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" },
 						["testName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
 		["otherTestRealm"]={ ["otherTestName"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" }, -- del
 							 ["otherTestName2"]={ ['needed']=10, ['total']=0, ['faction']="Alliance" } },
