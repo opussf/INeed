@@ -705,11 +705,12 @@ function INEED.addItem( itemLink, quantity )
 	if itemID and string.len( itemID ) > 0 then
 		local youHave =  GetItemCount( itemID, true ) -- include bank
 		local inBags = GetItemCount( itemID, false ) -- only in bags
+		local inAccount = C_Item.GetItemCount( itemID, false, false, false, true ) - inBags
 		if quantity > 0 then
 			local linkString = select( 2, GetItemInfo( itemID ) ) or "item:"..itemID
 			if quantity > youHave then
-				INEED.Print( string.format( "Needing: %i/%i %s (item:%s Bags: %i Bank: %i)",
-						youHave, quantity, linkString, itemID, inBags, youHave-inBags ) )
+				INEED.Print( string.format( "Needing: %i/%i %s (item:%s Bags: %i Bank: %i WB: %i)",
+						youHave, quantity, linkString, itemID, inBags, youHave-inBags, inAccount ), false )
 				INEED_data[itemID] = INEED_data[itemID] or {}
 				INEED_data[itemID][INEED.realm] = INEED_data[itemID][INEED.realm] or {}
 				INEED_data[itemID][INEED.realm][INEED.name] = INEED_data[itemID][INEED.realm][INEED.name] or {}
@@ -717,8 +718,8 @@ function INEED.addItem( itemLink, quantity )
 				INEED_data[itemID][INEED.realm][INEED.name] = INEED.addItemToTable( INEED_data[itemID][INEED.realm][INEED.name],
 						quantity, youHave, true, linkString )
 			else
-				INEED.Print( string.format( COLOR_RED.."-------"..COLOR_END..": %i/%i %s (item:%s Bags: %i Bank: %i)",
-						youHave, quantity, linkString, itemID, inBags, youHave-inBags ) )
+				INEED.Print( string.format( COLOR_RED.."-------"..COLOR_END..": %i/%i %s (item:%s Bags: %i Bank: %i WB: %i)",
+						youHave, quantity, linkString, itemID, inBags, youHave-inBags, inAccount ), false )
 			end
 		elseif quantity == 0 then
 			if INEED_data[itemID] and
@@ -775,7 +776,7 @@ function INEED.addItem( itemLink, quantity )
 		if quantity > 0 then
 			if quantity > iHaveNum then
 				INEED.Print( string.format( "Needing: %i/%i %s (currency:%s)",
-						iHaveNum, quantity, currencyLink, currencyID ) )
+						iHaveNum, quantity, currencyLink, currencyID ), false )
 				INEED_currency[currencyID] = INEED_currency[currencyID] or {}
 
 				INEED_currency[currencyID] = INEED.addItemToTable( INEED_currency[currencyID], quantity, iHaveNum, false)
@@ -784,7 +785,7 @@ function INEED.addItem( itemLink, quantity )
 			else
 				--local currencyLink = GetCurrencyLink( currencyID )
 				INEED.Print( string.format( COLOR_RED.."-------"..COLOR_END..": %s %i / %i",
-						currencyLink, iHaveNum, quantity ) )
+						currencyLink, iHaveNum, quantity ), false )
 
 			end
 		elseif quantity == 0 then
@@ -804,7 +805,7 @@ function INEED.addItem( itemLink, quantity )
 		--print("Need gold amount: "..(needGoldAmount or "nil") )
 		if curAmount < needGoldAmount then
 			INEED.Print( string.format( "Needing: %s/%s",
-					C_CurrencyInfo.GetCoinTextureString(curAmount), C_CurrencyInfo.GetCoinTextureString(needGoldAmount) ) )
+					C_CurrencyInfo.GetCoinTextureString(curAmount), C_CurrencyInfo.GetCoinTextureString(needGoldAmount) ), false )
 			INEED_gold[INEED.realm] = INEED_gold[INEED.realm] or {}
 			INEED_gold[INEED.realm][INEED.name] = INEED_gold[INEED.realm][INEED.name] or {}
 			INEED_gold[INEED.realm][INEED.name] = INEED.addItemToTable( INEED_gold[INEED.realm][INEED.name], needGoldAmount, curAmount )
