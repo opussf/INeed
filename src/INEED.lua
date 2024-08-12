@@ -247,7 +247,7 @@ end
 function INEED.BAG_UPDATE()
 	local itemFulfilled = false   -- has an item been fulfilled yet?
 	for itemID, _ in pairs(INEED_data) do  -- loop over the stored data structure
-		local iHaveNum = GetItemCount( itemID, true ) -- include bank
+		local iHaveNum = GetItemCount( itemID, true, nil, true ) -- include bank
 		local _, itemLink = GetItemInfo( itemID )
 		if itemLink and INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] then
 			INEED_data[itemID][INEED.realm][INEED.name].faction = INEED.faction -- force update incase faction is changed
@@ -546,7 +546,7 @@ function INEED.makeOthersNeed()
 	--INEED.Print("-=-=-=-=-  makeOthersNeed  -=-=-=-=-=-")
 	INEED.othersNeed = { }
 	for itemID, _ in pairs(INEED_data) do  -- loop over the stored data structure
-		local iHaveNum = GetItemCount( itemID, true ) or 0 -- include bank
+		local iHaveNum = GetItemCount( itemID, true, nil, true ) or 0 -- include bank
 		INEED.othersNeed[itemID] = {}
 		for realm, _ in pairs( INEED_data[itemID] ) do
 			INEED.othersNeed[itemID][realm] = {}
@@ -703,7 +703,7 @@ function INEED.addItem( itemLink, quantity )
 	quantity = quantity or 1
 	local itemID = INEED.getItemIdFromLink( itemLink )
 	if itemID and string.len( itemID ) > 0 then
-		local youHave =  GetItemCount( itemID, true ) -- include bank
+		local youHave =  GetItemCount( itemID, true, nil, true ) -- include bank
 		local inBags = GetItemCount( itemID, false ) -- only in bags
 		local inAccount = C_Item.GetItemCount( itemID, false, false, false, true ) - inBags
 		if quantity > 0 then
@@ -984,7 +984,7 @@ function INEED.showFulfillList()
 						isSoulBound = INEED.itemIsSoulbound( itemLink )
 						--INEED.Print( "Looking at "..itemLink..". Which is "..( INEED.itemIsSoulbound( itemLink ) and "soulbound" or "not soulbound" ) )
 						if not isSoulBound then
-							local youHaveNum = GetItemCount( itemID, true )
+							local youHaveNum = GetItemCount( itemID, true, nil, true )
 							local neededValue = data.needed - data.total - ( data.inMail or 0 )
 							if (youHaveNum > 0) and (neededValue > 0) then
 								youHaveTotal = youHaveTotal and youHaveTotal + youHaveNum or youHaveNum
