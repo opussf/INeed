@@ -238,7 +238,6 @@ end
 function INEED.PLAYER_ENTERING_WORLD() -- Variables should be loaded here
 	--INEED_Frame:RegisterEvent("UNIT_INVENTORY_CHANGED")
 	INEED_Frame:UnregisterEvent("PLAYER_ENTERING_WORLD")
-	INEED_options.autoRepair = false
 	-- Build data structure to track what other players need.
 	INEED.makeOthersNeed()
 
@@ -439,6 +438,7 @@ function INEED.MERCHANT_SHOW()
 		repairAllCost, canRepair = GetRepairAllCost()
 		if( repairAllCost > 0 ) then  -- need to repair
 			RepairAllItems( true ) -- True to use guild repairAllCost
+			INEED.Print( "Guild Repair Items: "..C_CurrencyInfo.GetCoinTextureString( repairAllCost ) )
 		end
 		repairAllCost, canRepair = GetRepairAllCost()
 		if( INEED_account.balance and  repairAllCost > 0 and repairAllCost <= INEED_account.balance ) then
