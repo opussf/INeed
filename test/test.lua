@@ -12,6 +12,8 @@ SendMailNameEditBox = CreateFontString("SendMailNameEditBox")
 INEED_SplashFrame = { ["Show"] = function() end,
 		["AddMessage"] = function(msg) print( "SPLASHFRAME:", (msg or "")) end,
 }
+MerchantGuildBankRepairButton = CreateButton()
+MerchantRepairAllButton = CreateButton()
 
 -- addon setup
 INEED.name = "testName"

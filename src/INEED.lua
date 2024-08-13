@@ -1,19 +1,19 @@
-INEED_SLUG, INEED = ...
-INEED_MSG_ADDONNAME = GetAddOnMetadata( INEED_SLUG, "Title" )
-INEED_MSG_VERSION   = GetAddOnMetadata( INEED_SLUG, "Version" )
-INEED_MSG_AUTHOR    = GetAddOnMetadata( INEED_SLUG, "Author" )
+INEED_SLUG, INEED   = ...
+INEED_MSG_ADDONNAME = C_AddOns.GetAddOnMetadata( INEED_SLUG, "Title" )
+INEED_MSG_VERSION   = C_AddOns.GetAddOnMetadata( INEED_SLUG, "Version" )
+INEED_MSG_AUTHOR    = C_AddOns.GetAddOnMetadata( INEED_SLUG, "Author" )
 
 -- Colours
-COLOR_RED = "|cffff0000";
-COLOR_GREEN = "|cff00ff00";
-COLOR_BLUE = "|cff0000ff";
-COLOR_PURPLE = "|cff700090";
-COLOR_YELLOW = "|cffffff00";
-COLOR_ORANGE = "|cffff6d00";
-COLOR_GREY = "|cff808080";
-COLOR_GOLD = "|cffcfb52b";
-COLOR_NEON_BLUE = "|cff4d4dff";
-COLOR_END = "|r";
+COLOR_RED = "|cffff0000"
+COLOR_GREEN = "|cff00ff00"
+COLOR_BLUE = "|cff0000ff"
+COLOR_PURPLE = "|cff700090"
+COLOR_YELLOW = "|cffffff00"
+COLOR_ORANGE = "|cffff6d00"
+COLOR_GREY = "|cff808080"
+COLOR_GOLD = "|cffcfb52b"
+COLOR_NEON_BLUE = "|cff4d4dff"
+COLOR_END = "|r"
 
 INEED_data = {}
 INEED_currency = {}
