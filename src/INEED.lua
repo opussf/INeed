@@ -74,6 +74,7 @@ function INEED.OnLoad()
 	-- Hide display
 	INEED_Frame:RegisterEvent("PLAYER_REGEN_ENABLED")
 	INEED_Frame:RegisterEvent("PLAYER_REGEN_DISABLED")
+	INEED_Frame:RegisterEvent("PLAYER_INTERACTION_MANAGER_FRAME_SHOW")
 end
 function INEED.TRADE_SKILL_SHOW()
 	--INEED.Print("TradeSkill window opened.")
@@ -434,20 +435,6 @@ function INEED.MERCHANT_SHOW()
 			end
 		end
 	end
-	if( INEED_options.autoRepair ) then
-		repairAllCost, canRepair = GetRepairAllCost()
-		if( repairAllCost > 0 ) then  -- need to repair
-			RepairAllItems( true ) -- True to use guild repairAllCost
-			INEED.Print( "Guild Repair Items: "..C_CurrencyInfo.GetCoinTextureString( repairAllCost ) )
-		end
-		repairAllCost, canRepair = GetRepairAllCost()
-		if( INEED_account.balance and  repairAllCost > 0 and repairAllCost <= INEED_account.balance ) then
-			RepairAllItems()
-			INEED_account.balance = INEED_account.balance - repairAllCost
-			purchaseAmount = purchaseAmount + repairAllCost
-			INEED.Print( "Repair Items: "..C_CurrencyInfo.GetCoinTextureString( repairAllCost ) )
-		end
-	end
 	if purchaseAmount > 0 then
 		INEED.Print("==========================")
 		INEED.Print("Total:   "..C_CurrencyInfo.GetCoinTextureString(purchaseAmount) )
@@ -534,6 +521,34 @@ function INEED.PLAYER_REGEN_ENABLED()
 	-- combat ends
 	INEED.hide = nil
 	INEEDUIListFrame:Show()
+end
+function INEED.PLAYER_INTERACTION_MANAGER_FRAME_SHOW(...)
+	-- 1 is table, 2 is Enum.PlayerInteractionType (https://wowpedia.fandom.com/wiki/PLAYER_INTERACTION_MANAGER_FRAME_SHOW)
+	-- can ignore, and just look for the buttons being enabled.
+
+	-- try to guild repair first  -- set as an option later?
+	if( INEED_options.autoRepair ) then
+		repairAllCost, canRepair = GetRepairAllCost()
+		-- print( repairAllCost, canRepair )
+		if canRepair then
+			if CanGuildBankRepair() then  -- also CanMerchantRepair()
+				-- print( "can repair, and can guild repair." )
+				if MerchantGuildBankRepairButton:IsEnabled() then
+					-- print( "Guild repair button is enabled." )
+					RepairAllItems( true ) -- True to use guild repairAllCost
+					INEED.Print( "Guild Repair Items: "..C_CurrencyInfo.GetCoinTextureString( repairAllCost ) )
+				end
+			end
+			repairAllCost, canRepair = GetRepairAllCost() -- get it again, incase guild is cheap, or you have exceeded your costs
+
+			if( MerchantRepairAllButton:IsEnabled() and INEED_account.balance and repairAllCost > 0 and repairAllCost <= INEED_account.balance ) then
+				RepairAllItems()  -- use own money
+				INEED_account.balance = INEED_account.balance - repairAllCost
+				--purchaseAmount = purchaseAmount + repairAllCost
+				INEED.Print( "Repair Items: "..C_CurrencyInfo.GetCoinTextureString( repairAllCost ) )
+			end
+		end
+	end
 end
 function INEED.OnUpdate()
 end
