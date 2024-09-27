@@ -56,7 +56,7 @@ function INEED.OnLoad()
 	INEED_Frame:RegisterEvent("BAG_UPDATE")
 	INEED_Frame:RegisterEvent("MERCHANT_SHOW")
 	INEED_Frame:RegisterEvent("MERCHANT_CLOSED")
-	INEED_Frame:RegisterEvent("MAIL_SHOW")
+	--INEED_Frame:RegisterEvent("MAIL_SHOW")
 	INEED_Frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 	INEED_Frame:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
 	-- Mail Events
@@ -129,23 +129,6 @@ function INEED.MAIL_SEND_INFO_UPDATE()
 		end
 	end
 end
---[[  This code could be used to populate out going emails
-	for i in pairs( INEED_data ) do
-		--INEED.Print("item:"..i.." for "..(INEED.mailInfo.mailTo or 'nil').."-"..INEED.realm)
-		if INEED_data[i][INEED.realm] and INEED_data[i][INEED.realm][INEED.mailInfo.mailTo] then  -- has record
-			local theirRecord = INEED_data[i][INEED.realm][INEED.mailInfo.mailTo]
-			local theyHave = (theirRecord.inMail or 0) + theirRecord.total
-			INEED.Print( "   They have: "..theyHave )
-			if (theirRecord.needed > theyHave) -- still need
-					and (theirRecord.faction == INEED.faction) -- same faction
-					and (GetItemCount( i, false ) > 0) then -- you have in bags
-				INEED.Print( "   I have: "..GetItemCount( i, false ))
-				INEED.Print( "I would use "..select( 2, GetItemInfo( i ) ) )
-			end
-		end
-	end
-end
-]]
 function INEED.MAIL_SEND_SUCCESS()
 	--INEED.Print("Send mail SUCCESS")
 	if INEED.mailInfo then
@@ -637,43 +620,20 @@ end
 -- https://github.com/Ketho/wow-ui-source-df/blob/e6d3542fc217592e6144f5934bf22c5d599c1f6c/Interface/SharedXML/Tooltip/TooltipDataHandler.lua
 -- https://github.com/Ketho/wow-ui-source-df/blob/e6d3542fc217592e6144f5934bf22c5d599c1f6c/Interface/SharedXML/Tooltip/TooltipDataHandler.lua#L324
 function INEED.onTooltipSetItem(tooltip, tooltipdata)  -- is passed the tooltip frame as a table
-	-- INEED.lineData = {
-	-- 	["leftText"] = tooltipdata.id
-	-- }
-	-- tooltip:AddLineDataText(INEED.lineData)
 	itemID = tostring(tooltipdata.id)
 
 	if itemID and INEED_data[itemID] then
 		for realm in pairs(INEED_data[itemID]) do
-			if realm == INEED.realm then
-				for name, data in pairs(INEED_data[itemID][realm]) do
-					INEED.lineData = {
-						["leftText"] = name,
-						["rightText"] = string.format("Needs: %i / %i", data.total + (data.inMail or 0), data.needed)
-					}
-					tooltip:AddLineDataText(INEED.lineData)
-				end
+			for name, data in pairs(INEED_data[itemID][realm]) do
+				INEED.lineData = {
+					["leftText"] = name..(realm ~= INEED.realm and "-"..realm or ""),
+					["rightText"] = string.format("Needs: %i / %i", data.total + (data.inMail or 0), data.needed)
+				}
+				tooltip:AddLineDataText(INEED.lineData)
 			end
 		end
 	end
 end
---[[ Figure out how to do this later.
-function INEED.hookSetCurrencyToken(tooltip, index, ...)
-	INEED.Orig_GameTooltip_SetCurrencyToken( tooltip, index, ... )
-	if not index then return end
-	local currency, _, _, _, _, ec, _, _, currencyID = GetCurrencyListInfo( index )
-	local a,        b, c, d, e, f,  g, h, i = GetCurrencyListInfo( index )
-	INEED.Print("a:"..a)
-	INEED.Print("b:"..(b and "true" or "false"))
-	INEED.Print("c:"..(c and "true" or "false"))
-	INEED.Print("d:"..(d and "true" or "false"))
-	INEED.Print("e:"..(e and "true" or "false"))
-	INEED.Print("f:"..f)
-	INEED.Print("g:"..g)
-	INEED.Print("h:"..h)
-	INEED.Print("i:"..(i or "nil"))
-end
-]]--
 function INEED.addItemToTable( tableIn, needed, total, includeFaction, link )
 	-- given a table, make sure that the 'normal' structure exists.
 	-- needed: how many are needed (required )
@@ -859,7 +819,7 @@ function INEED.getItemIdFromLink( itemLink )
 	-- returns just the integer itemID
 	-- itemLink can be a full link, or just "item:999999999"
 	if itemLink then
-		return strmatch( itemLink, "item:(%d*)" )
+		return strmatch( itemLink, "item:(%d*)" ) or strmatch( itemLink, "i:(%d*)" )
 	end
 end
 function INEED.getEnchantIdFromLink( enchantLink )
@@ -882,12 +842,12 @@ function INEED.getAchievementIdFromLink( achievementLink )
 end
 function INEED.command(msg)
 	local cmd, param = INEED.parseCmd(msg);
-	--INEED.Print("cl:"..cmd.." p:"..(param or "nil") )
+	INEED.Print("cl:"..cmd.." p:"..(param or "nil") )
 	local cmdFunc = INEED.CommandList[cmd];
 	if cmdFunc then
 		cmdFunc.func(param);
 	elseif ( cmd and cmd ~= "") then  -- exists and not empty
-		--INEED.Print("cl:"..cmd.." p:"..(param or "nil"))
+		INEED.Print("cl:"..cmd.." p:"..(param or "nil"))
 		--param, targetString = INEED.parseTarget( param )
 		INEED.addItem( cmd, tonumber(param) )
 		INEED.makeOthersNeed()

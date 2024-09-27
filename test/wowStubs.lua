@@ -619,6 +619,7 @@ end
 EditBox = {
 		["SetText"] = function(self,text) self.text=text; end,
 		["SetCursorPosition"] = function(self,pos) self.cursorPosition=pos; end,
+		["IsNumeric"] = function() end,
 }
 function CreateEditBox( name, ... )
 	me = {}
@@ -2079,28 +2080,21 @@ function ParseXML( xmlFile )
 	parents = {}
 	ch = contentHandler
 	ch.startElement = function( self, tagIn, attribs )
-		print( "tagIn:"..tagIn..">"..(attribs.name or "").."::"..(attribs.virtual or "") )
-		print( "virtual: ", attribs.virtual )
 		if _G["Create"..tagIn] then
-			print( "Create"..tagIn.." exists." )
 			if (attribs.name and (not attribs.virtual or attribs.virtual == "false")) then
-				print("Create: "..attribs.name..">"..(#parents > 0 and string.gsub(attribs.name, "$parent", parents[#parents]) or "") )
+				-- print("Create: "..attribs.name..">"..(#parents > 0 and string.gsub(attribs.name, "$parent", parents[#parents]) or "") )
 				frameName = (#parents > 0 and string.gsub(attribs.name, "$parent", parents[#parents]) or attribs.name)
-				print( "frameName: "..frameName )
 				_G[frameName] = _G["Create"..tagIn]( frameName )
 				_G[frameName].framename = frameName
 			end
 		end
 		if string.find( tagIn, "Frame$") then
 			table.insert( parents, attribs.name )
-			print( tagIn )
 		end
 	end
 	ch.endElement = function( self, tagIn )
-		print('endElement:'..tagIn)
 		if string.find( tagIn, "Frame$" ) then
 			table.remove( parents )
-			print( tagIn )
 		end
 	end
 	parser = saxParser.makeParser()
@@ -2160,7 +2154,6 @@ function ParseTOC( tocFile, useRequire )
 					loadedfile( addonName, sharedTable )
 				end
 			elseif( f[1] == "xml" ) then
-				print( includePath..f[2]..".xml" )
 				ParseXML( includePath..f[2]..".xml" )
 			end
 		end

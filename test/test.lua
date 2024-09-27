@@ -3,17 +3,21 @@
 require "wowTest"
 
 test.outFileName = "testOut.xml"
+test.coberturaFileName = "../coverage.xml"
 
 -- require the file to test
 ParseTOC( "../src/INEED.toc" )
 
-INEEDUIListFrame_TitleText = INEEDUIListFrame.CreateFontString()
+-- these are global from WoW
 SendMailNameEditBox = CreateFontString("SendMailNameEditBox")
+MerchantGuildBankRepairButton = CreateButton()
+MerchantRepairAllButton = CreateButton()
+
+
+-- INEEDUIListFrame_TitleText = INEEDUIListFrame.CreateFontString()
 INEED_SplashFrame = { ["Show"] = function() end,
 		["AddMessage"] = function(msg) print( "SPLASHFRAME:", (msg or "")) end,
 }
-MerchantGuildBankRepairButton = CreateButton()
-MerchantRepairAllButton = CreateButton()
 
 -- addon setup
 INEED.name = "testName"
@@ -28,6 +32,7 @@ function test.before()
 	INEED_gold = {}
 	myCopper = 0
 	INEED.OnLoad()
+	-- INEED.ADDON_LOADED( "", "INEED" )
 end
 function test.after()
 	INEED_data = {}
@@ -37,6 +42,9 @@ function test.after()
 end
 function test.testParseCmdItemStr_GetsItemInfo()
 	assertEquals( "item:9999", INEED.parseCmd( "item:9999 2" ) )
+end
+function test.testParseCmdItemStr_GetsItemInfo_shortCut()
+	assertEquals( "i:9999", INEED.parseCmd( "i:9999 2" ) )
 end
 function test.testParseCmdItemStr_GetsQuantity()
 	assertEquals( "2", select(2, INEED.parseCmd( "item:9999 2" ) ) )
@@ -79,8 +87,12 @@ function test.testGetAchievementIdFromLink( )
 	assertEquals( "10722", INEED.getAchievementIdFromLink( "achievement:10722" ) )
 end
 function test.testAddItem_ItemStr()
-	INEED.addItem( "item:9798" )
-	assertEquals( 1, INEED_data["9798"]["Test Realm"]["testName"].needed )
+	INEED.addItem( "item:9798", 2 )
+	assertEquals( 2, INEED_data["9798"]["Test Realm"]["testName"].needed )
+end
+function test.testAddItem_ItemStr_ShortCut()
+	INEED.addItem( "i:9798", 2 )
+	assertEquals( 2, INEED_data["9798"]["Test Realm"]["testName"].needed )
 end
 function test.testAddItem_ItemLink_NeededIsSet()
 	INEED.addItem( "|cff9d9d9d|Hitem:7073:0:0:0:0:0:0:0:80:0:0|h[Broken Fang]|h|r", 55 )
