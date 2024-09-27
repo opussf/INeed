@@ -2076,15 +2076,31 @@ function saxParser.parse( fileIn )
 	end
 end
 function ParseXML( xmlFile )
+	parents = {}
 	ch = contentHandler
 	ch.startElement = function( self, tagIn, attribs )
+		print( "tagIn:"..tagIn..">"..(attribs.name or "").."::"..(attribs.virtual or "") )
+		print( "virtual: ", attribs.virtual )
 		if _G["Create"..tagIn] then
-			if attribs.name then
-				_G[attribs.name] = _G["Create"..tagIn]( attribs.name )
-				_G[attribs.name].framename = attribs.name
-			else
-				fail("A "..tagIn.." needs a name")
+			print( "Create"..tagIn.." exists." )
+			if (attribs.name and (not attribs.virtual or attribs.virtual == "false")) then
+				print("Create: "..attribs.name..">"..(#parents > 0 and string.gsub(attribs.name, "$parent", parents[#parents]) or "") )
+				frameName = (#parents > 0 and string.gsub(attribs.name, "$parent", parents[#parents]) or attribs.name)
+				print( "frameName: "..frameName )
+				_G[frameName] = _G["Create"..tagIn]( frameName )
+				_G[frameName].framename = frameName
 			end
+		end
+		if string.find( tagIn, "Frame$") then
+			table.insert( parents, attribs.name )
+			print( tagIn )
+		end
+	end
+	ch.endElement = function( self, tagIn )
+		print('endElement:'..tagIn)
+		if string.find( tagIn, "Frame$" ) then
+			table.remove( parents )
+			print( tagIn )
 		end
 	end
 	parser = saxParser.makeParser()
@@ -2144,6 +2160,7 @@ function ParseTOC( tocFile, useRequire )
 					loadedfile( addonName, sharedTable )
 				end
 			elseif( f[1] == "xml" ) then
+				print( includePath..f[2]..".xml" )
 				ParseXML( includePath..f[2]..".xml" )
 			end
 		end
