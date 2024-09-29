@@ -191,7 +191,6 @@ function INEED.ADDON_LOADED( _, arg1 )
 		INEED.name = UnitName("player")
 		INEED.realm = GetRealmName()
 		INEED.faction = UnitFactionGroup("player")
-		INEED.faction = "BOTH"
 
 		-- Setup game settings
 		--GameTooltip:HookScript("OnTooltipSetItem", INEED.hookSetItem)
@@ -233,7 +232,8 @@ function INEED.BAG_UPDATE()
 		local iHaveNum = GetItemCount( itemID, true, nil, true ) -- include bank
 		local _, itemLink = GetItemInfo( itemID )
 		if itemLink and INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] then
-			INEED_data[itemID][INEED.realm][INEED.name].faction = INEED.faction -- force update incase faction is changed
+			INEED_data[itemID][INEED.realm][INEED.name].faction = INEED.faction -- force update incase faction has changed
+			INEED_data[itemID][INEED.realm][INEED.name].link = itemLink  -- update link
 			--INEED.("I have a record for item "..itemLink)
 			local gained = iHaveNum - INEED_data[itemID][INEED.realm][INEED.name].total
 			if INEED_data[itemID][INEED.realm][INEED.name].total ~= iHaveNum then
@@ -275,21 +275,19 @@ function INEED.BAG_UPDATE()
 				itemFulfilled = true
 			end
 		elseif itemLink and INEED.othersNeed
-						and INEED.othersNeed[itemID]
-						and INEED.othersNeed[itemID][INEED.realm]
-						and INEED.othersNeed[itemID][INEED.realm][INEED.faction] then
+						and INEED.othersNeed[itemID] then
 			-- valid item, and it is needed by someone (if it got here, it is not needed by current player - anymore )
 
-			local gained = iHaveNum - INEED.othersNeed[itemID][INEED.realm][INEED.faction].mine
+			local gained = iHaveNum - INEED.othersNeed[itemID].mine
 			if gained ~= 0 then
-				INEED.othersNeed[itemID][INEED.realm][INEED.faction].mine = iHaveNum
-				INEED.othersNeed[itemID][INEED.realm][INEED.faction].updated = time()
+				INEED.othersNeed[itemID].mine = iHaveNum
+				INEED.othersNeed[itemID].updated = time()
 				if INEED_options.showGlobal or INEED_options.printProgress then
 					local progressString = string.format("-=%i/%i %s%s=-",
-							(INEED.othersNeed[itemID][INEED.realm][INEED.faction].total
-								+ (INEED.othersNeed[itemID][INEED.realm][INEED.faction].inMail and INEED.othersNeed[itemID][INEED.realm][INEED.faction].inMail or 0)
+							(INEED.othersNeed[itemID].total
+								+ (INEED.othersNeed[itemID].inMail and INEED.othersNeed[itemID].inMail or 0)
 								+ iHaveNum),
-							INEED.othersNeed[itemID][INEED.realm][INEED.faction].needed,
+							INEED.othersNeed[itemID].needed,
 							(INEED_options.includeChange
 								and string.format("(%s%+i%s) ", ((gained > 0) and COLOR_GREEN or COLOR_RED), gained, COLOR_END)
 								or ""),
@@ -545,19 +543,13 @@ function INEED.makeOthersNeed()
 	INEED.othersNeed = { }
 	for itemID, _ in pairs(INEED_data) do  -- loop over the stored data structure
 		local iHaveNum = GetItemCount( itemID, true, nil, true ) or 0 -- include bank
-		INEED.othersNeed[itemID] = {}
+		INEED.othersNeed[itemID] = { ['needed'] = 0, ['total'] = 0, ['mine'] = iHaveNum }
 		for realm, _ in pairs( INEED_data[itemID] ) do
-			INEED.othersNeed[itemID][realm] = {}
 			for name, data in pairs( INEED_data[itemID][realm] ) do
 				--local faction = INEED_data[itemID][realm][name].faction or ""
-				if data.faction and not ((realm == INEED.realm) and (name == INEED.name)) then
-					INEED.othersNeed[itemID][realm][data.faction] =
-							(INEED.othersNeed[itemID][realm][data.faction] and INEED.othersNeed[itemID][realm][data.faction]
-							or { ['needed'] = 0, ['total'] = 0, ['mine'] = iHaveNum })
-					INEED.othersNeed[itemID][realm][data.faction].needed =
-							INEED.othersNeed[itemID][realm][data.faction].needed + data.needed
-					INEED.othersNeed[itemID][realm][data.faction].total =
-							INEED.othersNeed[itemID][realm][data.faction].total + data.total + (data.inMail and data.inMail or 0)
+				if not (realm == INEED.realm and name == INEED.name) then
+					INEED.othersNeed[itemID].needed = INEED.othersNeed[itemID].needed + data.needed
+					INEED.othersNeed[itemID].total  = INEED.othersNeed[itemID].total + data.total + (data.inMail and data.inMail or 0)
 				end
 			end
 		end
