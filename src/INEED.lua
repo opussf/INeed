@@ -826,28 +826,28 @@ function INEED.getEnchantIdFromLink( enchantLink )
 	-- returns just the integer enchantID
 	-- enchantLink can be a full link, or just "enchant:999999999"
 	if enchantLink then
-		return strmatch( enchantLink, "enchant:(%d*)" )
+		return strmatch( enchantLink, "enchant:(%d*)" ) or strmatch( enchantLink, "e:(%d*)" )
 	end
 end
 function INEED.getCurrencyIdFromLink( currencyLink )
 	-- currency:402
 	if currencyLink then
-		return strmatch( currencyLink, "currency:(%d*)" )
+		return strmatch( currencyLink, "currency:(%d*)" ) or strmatch( currencyLink, "c:(%d*)" )
 	end
 end
 function INEED.getAchievementIdFromLink( achievementLink )
 	if achievementLink then
-		return strmatch( achievementLink, "achievement:(%d*)" )
+		return strmatch( achievementLink, "achievement:(%d*)" ) or strmatch( achievementLink, "a:(%d*)" )
 	end
 end
 function INEED.command(msg)
 	local cmd, param = INEED.parseCmd(msg);
-	INEED.Print("cl:"..cmd.." p:"..(param or "nil") )
+	-- INEED.Print("cl:"..cmd.." p:"..(param or "nil") )
 	local cmdFunc = INEED.CommandList[cmd];
 	if cmdFunc then
 		cmdFunc.func(param);
 	elseif ( cmd and cmd ~= "") then  -- exists and not empty
-		INEED.Print("cl:"..cmd.." p:"..(param or "nil"))
+		-- INEED.Print("cl:"..cmd.." p:"..(param or "nil"))
 		--param, targetString = INEED.parseTarget( param )
 		INEED.addItem( cmd, tonumber(param) )
 		INEED.makeOthersNeed()
