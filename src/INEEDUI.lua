@@ -155,8 +155,7 @@ function INEED.UIListOnUpdate()
 							{["updated"] = updatedTS,
 							 ["itemPre"] = "item:",
 							 ["id"] = itemID,
-							 ["total"] =  (INEED.othersNeed[itemID].mine or 0) +
-							 		(INEED.othersNeed[itemID].total or 0),
+							 ["total"] =  (INEED.othersNeed[itemID].mine or 0) + (INEED.othersNeed[itemID].total or 0),
 							 ["needed"] =  INEED.othersNeed[itemID].needed,
 							 ["linkStr"] = "-->"..( select( 2, GetItemInfo( itemID ) ) or "item:"..itemID ).."<--"
 					})
