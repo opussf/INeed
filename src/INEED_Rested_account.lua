@@ -2,13 +2,13 @@
 _, INEED = ...
 
 function INEED.SaveAccount()
-	Rested.me.account = INEED_account.balance
+	Rested.me.account = math.floor(INEED_account.balance)
 end
 
 function INEED.RestedAccountReport( realm, name, charStruct )
 	local rn = Rested.FormatName( realm, name )
 
-	local c = charStruct.account or 0
+	local c = math.floor(charStruct.account or 0)
 	Rested.accountMax = math.max( Rested.accountMax or 1, c )
 
 	g, s, c = Rested.GoldSilverCopperFromCopper( charStruct.account or 0 )
@@ -22,7 +22,7 @@ Rested.EventCallback( "PLAYER_MONEY", INEED.SaveAccount )
 Rested.EventCallback( "PLAYER_ENTERING_WORLD", INEED.SaveAccount )
 
 Rested.dropDownMenuTable["INEED Account"] = "account"
-Rested.CommandList["account"] = {["help"] = {"","INeed Account"}, ["func"] = function()
+Rested.commandList["account"] = {["help"] = {"","INeed Account"}, ["func"] = function()
 		Rested.reportName = "INEED Account"
 		Rested.UIShowReport( INEED.RestedAccountReport )
 	end
