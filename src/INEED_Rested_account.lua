@@ -2,7 +2,9 @@
 _, INEED = ...
 
 function INEED.SaveAccount()
-	Rested.me.account = math.floor(INEED_account.balance)
+	if INEED_account and INEED_account.balance then
+		Rested.me.account = math.floor(INEED_account.balance)
+	end
 end
 
 function INEED.RestedAccountReport( realm, name, charStruct )
