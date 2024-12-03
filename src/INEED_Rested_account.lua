@@ -18,12 +18,14 @@ function INEED.RestedAccountReport( realm, name, charStruct )
 	return 1
 end
 
-Rested.EventCallback( "PLAYER_MONEY", INEED.SaveAccount )
-Rested.EventCallback( "PLAYER_ENTERING_WORLD", INEED.SaveAccount )
+if Rested then
+	Rested.EventCallback( "PLAYER_MONEY", INEED.SaveAccount )
+	Rested.EventCallback( "PLAYER_ENTERING_WORLD", INEED.SaveAccount )
 
-Rested.dropDownMenuTable["INEED Account"] = "account"
-Rested.commandList["account"] = {["help"] = {"","INeed Account"}, ["func"] = function()
-		Rested.reportName = "INEED Account"
-		Rested.UIShowReport( INEED.RestedAccountReport )
-	end
-}
+	Rested.dropDownMenuTable["INEED Account"] = "account"
+	Rested.commandList["account"] = {["help"] = {"","INeed Account"}, ["func"] = function()
+			Rested.reportName = "INEED Account"
+			Rested.UIShowReport( INEED.RestedAccountReport )
+		end
+	}
+end
