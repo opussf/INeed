@@ -5,6 +5,10 @@ require "wowTest"
 test.outFileName = "testOut.xml"
 test.coberturaFileName = "../coverage.xml"
 
+Rested={}
+Rested.EventCallback = function() end
+Rested.dropDownMenuTable = {}
+Rested.commandList = {}
 -- require the file to test
 ParseTOC( "../src/INEED.toc" )
 
