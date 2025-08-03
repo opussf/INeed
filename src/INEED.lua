@@ -1208,5 +1208,11 @@ INEED.CommandList = {
 		["func"] = INEED.test,
 		["help"] = {"","Do something helpful"},
 	},
+	["token"] = {
+		["func"] = function()
+				INEED.addItem( C_WowTokenPublic.GetCurrentMarketPrice() )
+			end,
+		["help"] = {"", "Need a token's amount of gold."},
+	},
 }
 
