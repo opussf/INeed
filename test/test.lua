@@ -1176,5 +1176,28 @@ function test.testPrune_link()
 	INEED.command( "prune |cff9d9d9d|Hitem:7073:0:0:0:0:0:0:0:80:0:0|h[Broken Fang]|h|r" )
 	assertIsNil( INEED_data["7073"] )
 end
+-- Token
+------------------------------------------
+function test.testToken_noParameter()
+	INEED.command( "token" )
+	assertEquals( 123456, INEED_gold["Test Realm"]["testName"].needed )
+end
+function test.testToken_num()
+	INEED.command( "token 2" )
+	assertEquals( 246912, INEED_gold["Test Realm"]["testName"].needed )
+end
+function test.testToken_float()
+	INEED.command( "token 2.5" )
+	assertEquals( 308640, INEED_gold["Test Realm"]["testName"].needed )
+end
+function test.testToken_non_num()
+	INEED.command( "token hello" )
+	assertEquals( 123456, INEED_gold["Test Realm"]["testName"].needed )
+end
+function test.testToken_negative()
+	-- negative values should not work
+	INEED.command( "token -1" )
+	assertIsNil( INEED_gold["Test Realm"] )
+end
 
 test.run()
