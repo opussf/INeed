@@ -1153,7 +1153,7 @@ function test.testShowAccount_changeOnAccountSet()
 	INEED_account = {}  -- clears the account info
 	myCopper = 400000  -- 40g
 	INEED.command( 'account 15s16c20g' )
-	assertEquals( 'INEED - 20G 15S 16.0C', INEED.UITitleText )  -- @TODO.  FiX THIS?
+	assertEquals( 'INEED - 20G 15S 16C', INEED.UITitleText )  -- @TODO.  FiX THIS?
 end
 -- Prune
 ------------------------------------------
