@@ -5,17 +5,52 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\..\FrameXML\UI.xsd">
 
-	<Frame name="INEED_Item_template" enableMouse="true" virtual="true">
+	<Frame name="INEEDItemTemplate" enableMouse="true" virtual="true">
 		<Size x="32" y="32"/>
-		<Anchors><Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT"/></Anchors>
 		<Layers>
-			<Layer level="ARTWORK">
-				<Texture name="$parent_Icon">
-					<Size x="32" y="32"/>
-					<Anchors><Anchor point="LEFT"/></Anchors>
+			<Layer level="BORDER">
+				<Texture parentKey="Icon">
+					<Size x="50" y="50"/>
+					<Anchors>
+						<Anchor point="TOPLEFT" x="2" y="-2"/>
+					</Anchors>
+					<TexCoords left="0" right="1" top="0" bottom="1"/>
 				</Texture>
 			</Layer>
+			<Layer level="OVERLAY">
+				<FontString parentKey="Count" inherits="NumberFontNormal" justifyH="RIGHT" hidden="true">
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT" x="-5" y="2"/>
+					</Anchors>
+				</FontString>
+			</Layer>
 		</Layers>
+		<!--
+			<Scripts>
+					<OnEnter>
+						local parent = self:GetParent();
+						parent:LockHighlight();
+						if ( parent.itemLink ) then
+							GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+							GameTooltip:SetHyperlink(parent.itemLink);
+						else
+							GameTooltip:Hide();
+						end
+					</OnEnter>
+					<OnLeave>
+						local parent = self:GetParent();
+						parent:UnlockHighlight();
+						GameTooltip:Hide();
+					</OnLeave>
+					<OnClick>
+						if ( IsModifiedClick() ) then
+							HandleModifiedItemClick(self:GetParent().itemLink);
+						else
+							self:GetParent():OnClick(button, down);
+						end
+					</OnClick>
+				</Scripts>
+			-->
 	</Frame>
 
 
@@ -23,6 +58,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 		<Size x="350" y="600"/>
 		<Anchors>
 			<Anchor point="TOPLEFT" relativeTo="BankPanel" relativePoint="TOPRIGHT" x="35"/>
+			<!-- <Anchor point="CENTER"/> -->
 		</Anchors>
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -35,16 +71,16 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button name="$parent_Close" inherits="UIPanelCloseButton">
+			<Button name="$parentClose" inherits="UIPanelCloseButton">
 				<Anchors><Anchor point="TOPRIGHT" x="0" y="0"/></Anchors>
 				<Scripts>
 					<OnClick>self:GetParent():Hide()</OnClick>
 				</Scripts>
 			</Button>
-			<EditBox name="$parent_Filter" inherits="InputBoxTemplate">
+			<EditBox name="$parentFilter" inherits="InputBoxTemplate">
 				<Size x="155" y="20" />
 				<Anchors>
-					<Anchor point="TOPRIGHT" relativePoint="BOTTOMLEFT" relativeTo="$parent_Close">
+					<Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" relativeTo="$parentClose">
 						<Offset>
 							<AbsDimension x="-10" y="0"/>
 						</Offset>
@@ -55,8 +91,117 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 					<!-- <OnTextChanged>Rested.updateFilter()</OnTextChanged> -->
 				</Scripts>
 			</EditBox>
-			<Button name="$parent_Item_1" inherits="INEED_Item_template">
+			<Button name="$parentItem1" inherits="INEEDItemTemplate">
+				<Size x="40" y="40"/>
+				<Anchors>
+					<Anchor point="TOP" relativeTo="$parentFilter" relativePoint="BOTTOM"/>
+					<Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT"/>
+				</Anchors>
 			</Button>
 		</Frames>
+		<Scripts>
+			<OnShow>INEED.Fulfill_OnShow()</OnShow>
+		</Scripts>
 	</Frame>
 </Ui>
+
+
+<!--
+
+
+<Button name="$parentItem1" inherits="ItemButtonTemplate">
+    <Size x="40" y="40"/>
+    <Anchors>
+        <Anchor point="TOPLEFT" x="16" y="-40"/>
+    </Anchors>
+</Button>
+
+
+
+
+
+
+
+
+<Button parentKey="Item">
+				<Size x="32" y="32"/>
+				<Anchors>
+					<Anchor point="TOPLEFT" x="0" y="0"/>
+				</Anchors>
+				<Layers>
+					<Layer level="BORDER">
+						<Texture parentKey="IconTexture"/>
+						<FontString parentKey="Count" inherits="NumberFontNormal" justifyH="RIGHT" hidden="true">
+							<Anchors>
+								<Anchor point="BOTTOMRIGHT" x="-5" y="2"/>
+							</Anchors>
+						</FontString>
+						<FontString parentKey="Stock" inherits="NumberFontNormalYellow" justifyH="LEFT" hidden="true">
+							<Anchors>
+								<Anchor point="TOPLEFT" x="0" y="-2"/>
+							</Anchors>
+						</FontString>
+					</Layer>
+					<Layer level="OVERLAY">
+						<Texture parentKey="IconBorder" file="Interface\Common\WhiteIconFrame" hidden="true">
+							<Size x="34" y="34"/>
+							<Anchors>
+								<Anchor point="CENTER" x="0" y="0"/>
+							</Anchors>
+							<Color r="0" g="0.8" b="1"/>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY" textureSubLevel="1">
+						<Texture parentKey="IconOverlay" hidden="true">
+							<Size x="34" y="34"/>
+							<Anchors>
+								<Anchor point="CENTER"/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnEnter>
+						local parent = self:GetParent();
+						parent:LockHighlight();
+						if ( parent.itemLink ) then
+							GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+							GameTooltip:SetHyperlink(parent.itemLink);
+						else
+							GameTooltip:Hide();
+						end
+					</OnEnter>
+					<OnLeave>
+						local parent = self:GetParent();
+						parent:UnlockHighlight();
+						GameTooltip:Hide();
+					</OnLeave>
+					<OnClick>
+						if ( IsModifiedClick() ) then
+							HandleModifiedItemClick(self:GetParent().itemLink);
+						else
+							self:GetParent():OnClick(button, down);
+						end
+					</OnClick>
+				</Scripts>
+				<NormalTexture file="Interface\Buttons\UI-Quickslot2">
+					<Size x="60" y="60"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+				</NormalTexture>
+				<PushedTexture file="Interface\Buttons\UI-Quickslot-Depress"/>
+				<HighlightTexture file="Interface\Buttons\ButtonHilight-Square" alphaMode="ADD"/>
+			</Button>
+
+
+
+
+
+
+
+
+
+
+
+            -->

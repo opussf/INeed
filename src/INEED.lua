@@ -950,13 +950,11 @@ function INEED.makeFulfillList()
 	for itemID, _ in pairs( INEED_data ) do
 		local itemLink = select( 2, GetItemInfo( itemID ) )
 		isSoulBound = INEED.itemIsSoulbound( itemLink )
-		print( itemID, itemLink, name, isSoulBound )
+		-- print( itemID, itemLink, name, isSoulBound )
 		if not isSoulBound then
 			for realm, _ in pairs( INEED_data[itemID] ) do
 				for name, data in pairs(INEED_data[itemID][realm] ) do
 					if (name ~= INEED.name) then
-						print( itemID, itemLink, name, isSoulBound )
-
 						local youHaveNum = GetItemCount( itemID, true, nil, true )
 						local neededValue = data.needed - data.total - (data.inMail or 0)
 						if (youHaveNum > 0) and (neededValue > 0) then
