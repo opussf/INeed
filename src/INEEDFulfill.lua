@@ -24,7 +24,7 @@ function INEED.Fulfill_OnShow()
 
 	while count <= #INEED.Fulfill_ItemFrames do
 		itemID = sortedItems[count]
-		print( count, itemID, #INEED.fulfillList[itemID] )
+		print( count, itemID )
 		local itemFrame = INEED.Fulfill_ItemFrames[count]
 		local name, itemLink, icon = nil, nil, nil
 		if itemID then
@@ -84,7 +84,7 @@ function INEED.Fulfill_BuildItemDisplay()
 	if not INEED.Fulfill_ItemFrames then
 		INEED.Fulfill_ItemFrames = {}
 
-		for itemFrameNum = 1, (rowSize * colSize) - 1 do -- rowSize * colSize do
+		for itemFrameNum = 1, rowSize * colSize do -- rowSize * colSize do
 			itemFrame = CreateFrame( "Button", "INEED_FulfillFrameItem"..itemFrameNum, INEED_FulfillFrame, "INEEDItemTemplate" )
 			-- INEED.Fulfill_ItemFrames[itemFrameNum] = itemFrame
 			local col = ((itemFrameNum - 1) % rowSize) + 1
