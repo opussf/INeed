@@ -28,7 +28,6 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 		<Scripts>
 			<OnEnter>
 				self:LockHighlight();
-				print( parent, self, self.itemLink );
 				if ( self.itemLink ) then
 					GameTooltip:SetOwner( self, "ANCHOR_RIGHT");
 					GameTooltip:SetHyperlink( self.itemLink );
@@ -40,6 +39,11 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 				self:UnlockHighlight();
 				GameTooltip:Hide();
 			</OnLeave>
+			<OnClick>
+				if ( IsModifiedClick() ) then
+					HandleModifiedItemClick( self.itemLink );
+				end
+			</OnClick>
 		</Scripts>
 		<!--
 			<Scripts>
