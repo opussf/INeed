@@ -10,7 +10,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 		<Layers>
 			<Layer level="BORDER">
 				<Texture parentKey="Icon">
-					<Size x="50" y="50"/>
+					<Size x="32" y="32"/>
 					<Anchors>
 						<Anchor point="TOPLEFT" x="2" y="-2"/>
 					</Anchors>
@@ -25,11 +25,27 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 				</FontString>
 			</Layer>
 		</Layers>
+		<Scripts>
+			<OnEnter>
+				self:LockHighlight();
+				print( parent, self, self.itemLink );
+				if ( self.itemLink ) then
+					GameTooltip:SetOwner( self, "ANCHOR_RIGHT");
+					GameTooltip:SetHyperlink( self.itemLink );
+				else
+					GameTooltip:Hide();
+				end
+			</OnEnter>
+			<OnLeave>
+				self:UnlockHighlight();
+				GameTooltip:Hide();
+			</OnLeave>
+		</Scripts>
 		<!--
 			<Scripts>
 					<OnEnter>
 						local parent = self:GetParent();
-						parent:LockHighlight();
+						self:LockHighlight();
 						if ( parent.itemLink ) then
 							GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
 							GameTooltip:SetHyperlink(parent.itemLink);
@@ -91,12 +107,12 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 					<!-- <OnTextChanged>Rested.updateFilter()</OnTextChanged> -->
 				</Scripts>
 			</EditBox>
-			<Button name="$parentItem1" inherits="INEEDItemTemplate">
+			<!-- <Button name="$parentItem1" inherits="INEEDItemTemplate">
 				<Anchors>
 					<Anchor point="TOP" relativeTo="$parentFilter" relativePoint="BOTTOM"/>
 					<Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT"/>
 				</Anchors>
-			</Button>
+			</Button> -->
 		</Frames>
 		<Scripts>
 			<OnShow>INEED.Fulfill_OnShow()</OnShow>

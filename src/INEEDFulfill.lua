@@ -17,6 +17,25 @@ end
 function INEED.Fulfill_OnShow()
 	INEED.Fulfill_BuildItemDisplay()
 
+	local count = 1
+	local sortedItems = {}
+	for k in pairs( INEED.fulfillList ) do table.insert(sortedItems, k) end
+	table.sort( sortedItems )
+
+	while count <= #INEED.Fulfill_ItemFrames do
+		itemID = sortedItems[count]
+		print( count, itemID )
+		local itemFrame = INEED.Fulfill_ItemFrames[count]
+		local name, itemLink, _, _, _, _, _, _, _, icon = GetItemInfo( itemID )
+
+		itemFrame.itemLink = itemLink
+		SetItemButtonTexture( itemFrame, icon )
+
+		count = count + 1
+	end
+
+
+
 	-- local count = 0
 
 	-- for itemID, needList in INEED.Sorted( INEED.fulfillList ) do
@@ -62,24 +81,29 @@ function INEED.Fulfill_BuildItemDisplay()
 	if not INEED.Fulfill_ItemFrames then
 		INEED.Fulfill_ItemFrames = {}
 
-		for itemFrameNum = 1, rowSize * colSize do
+		for itemFrameNum = 1, 6 do -- rowSize * colSize do
 			itemFrame = CreateFrame( "Button", "INEED_FulfillFrameItem"..itemFrameNum, INEED_FulfillFrame, "INEEDItemTemplate" )
-			INEED.Fulfill_ItemFrames[itemFrameNum] = itemFrame
-			local col = itemFrameNum % rowSize
-			local row = math.floor( itemFrameNum / rowSize ) + 1
+			-- INEED.Fulfill_ItemFrames[itemFrameNum] = itemFrame
+			local col = ((itemFrameNum - 1) % rowSize) + 1
+			local row = math.floor( (itemFrameNum-1) / rowSize ) + 1
+			local strOut = ""
 
 			if row == 1 then
-				itemFrame:SetPoint( "TOP", "INEED_FulfillFrameFilter", "BOTTOM" )
-			-- else
-			-- 	itemFrame:SetPoint( "TOP", INEED.Fulfill_ItemFrames[itemFrameNum-rowSize], "BOTTOM" )
+				itemFrame:SetPoint( "TOP", INEED_FulfillFrameFilter, "BOTTOM" )
+				strOut = "TOP to Bottom of Filter"
+			else
+				itemFrame:SetPoint( "TOP", INEED.Fulfill_ItemFrames[itemFrameNum-rowSize], "BOTTOM" )
+				strOut = "TOP to Bottom of "..itemFrameNum-rowSize
 			end
 			if col == 1 then
-				itemFrame:SetPoint( "LEFT", "INEED_FulfillFrame", "LEFT" )
+				itemFrame:SetPoint( "LEFT", INEED_FulfillFrame, "LEFT" )
+				strOut = strOut .. ", LEFT to LEFT"
 			else
 				itemFrame:SetPoint( "LEFT", INEED.Fulfill_ItemFrames[itemFrameNum-1], "RIGHT" )
+				strOut = strOut .. ", LEFT to RIGHT of "..itemFrameNum-1
 			end
 			INEED.Fulfill_ItemFrames[itemFrameNum] = itemFrame
-			print( itemFrameNum, col, row )
+			print( itemFrameNum, col, row, strOut )
 		end
 	end
 end
