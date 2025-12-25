@@ -62,24 +62,24 @@ function INEED.Fulfill_BuildItemDisplay()
 			-- INEED.Fulfill_ItemFrames[itemFrameNum] = itemFrame
 			local col = ((itemFrameNum - 1) % rowSize) + 1
 			local row = math.floor( (itemFrameNum-1) / rowSize ) + 1
-			local strOut = ""
+			-- local strOut = ""
 
 			if row == 1 then
 				itemFrame:SetPoint( "TOP", INEED_FulfillFrameFilter, "BOTTOM" )
-				strOut = "TOP to Bottom of Filter"
+				-- strOut = "TOP to Bottom of Filter"
 			else
 				itemFrame:SetPoint( "TOP", INEED.Fulfill_ItemFrames[itemFrameNum-rowSize], "BOTTOM" )
-				strOut = "TOP to Bottom of "..itemFrameNum-rowSize
+				-- strOut = "TOP to Bottom of "..itemFrameNum-rowSize
 			end
 			if col == 1 then
 				itemFrame:SetPoint( "LEFT", INEED_FulfillFrame, "LEFT" )
-				strOut = strOut .. ", LEFT to LEFT"
+				-- strOut = strOut .. ", LEFT to LEFT"
 			else
 				itemFrame:SetPoint( "LEFT", INEED.Fulfill_ItemFrames[itemFrameNum-1], "RIGHT" )
-				strOut = strOut .. ", LEFT to RIGHT of "..itemFrameNum-1
+				-- strOut = strOut .. ", LEFT to RIGHT of "..itemFrameNum-1
 			end
 			INEED.Fulfill_ItemFrames[itemFrameNum] = itemFrame
-			print( itemFrameNum, col, row, strOut )
+			-- print( itemFrameNum, col, row, strOut )
 		end
 	end
 end
