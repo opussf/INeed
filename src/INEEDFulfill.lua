@@ -15,6 +15,7 @@ function INEED.Sorted( t, f )
 end
 
 function INEED.Fulfill_OnShow()
+	INEED_FulfillFrame:RegisterEvent("BAG_UPDATE")
 	INEED.Fulfill_BuildItemDisplay()
 
 	local count = 1
@@ -24,7 +25,7 @@ function INEED.Fulfill_OnShow()
 
 	while count <= #INEED.Fulfill_ItemFrames do
 		itemID = sortedItems[count]
-		print( count, itemID )
+		-- print( count, itemID )
 		local itemFrame = INEED.Fulfill_ItemFrames[count]
 		local name, itemLink, icon = nil, nil, nil
 		if itemID then
@@ -36,50 +37,22 @@ function INEED.Fulfill_OnShow()
 
 		count = count + 1
 	end
-
-
-
-	-- local count = 0
-
-	-- for itemID, needList in INEED.Sorted( INEED.fulfillList ) do
-	-- 	count = count + 1
-	-- 	local itemFrame = INEED.Fulfill_ItemFrames[count]
-	-- 	local icon = GetItemIcon( itemID )
-
-	-- 	SetItemButtonTexture( itemFrame, icon )
-	-- end
-
-	-- for clearNum = count + 1, #INEED.Fulfill_ItemFrames do
-	-- 	SetItemButtonTexture( INEED.Fulfill_ItemFrames[clearNum], nil )
-	-- end
-
----------------
-
-	-- local thing = next( INEED.fulfillList )
-	-- print( thing )
-
-	-- name, _, _, _, _, _, _, _, _, icon = GetItemInfo(thing)
-	-- icon = GetItemIcon(thing)
-
-	-- -- INEED_FulfillFrame_Item_1_Icon:SetTexture( icon )
-
-	-- -- INEED_FulfillFrame_Item_1.icon:SetTexture( thing )
-
-
-	-- SetItemButtonTexture(INEED_FulfillFrameItem1, icon)
-	-- SetItemButtonCount(INEED_FulfillFrameItem1Item1, 5)
-	-- -- SetItemButtonDesaturated(INEED_FulfillFrame_Item1, false)
-
+end
+function INEED.Fulfill_OnHide()
+	print( "OnHide" )
+	INEED_FulfillFrame:UnregisterEvent("BAG_UPDATE")
+end
+function INEED.Fulfill_BAG_UPDATE( self )
+	INEED.Fulfill_OnShow()
 end
 
 function INEED.Fulfill_BuildItemDisplay()
-	local frame = INEED_FulfillFrame
-	local width, height = frame:GetSize()
+	local width, height = INEED_FulfillFrame:GetSize()
 	local rowSize = math.floor( width / 32 )
 	local colSize = math.floor( (height - 50) / 32 )
 	local itemFrame
 
-	print( width, height, rowSize, colSize )
+	-- print( width, height, rowSize, colSize )
 
 	if not INEED.Fulfill_ItemFrames then
 		INEED.Fulfill_ItemFrames = {}

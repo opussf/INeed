@@ -75,7 +75,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 
 
 	<Frame name="INEED_FulfillFrame" parent="UIParent" enableMouse="true" movable="true" hidden="true" resizable="false">
-		<Size x="200" y="200"/>
+		<Size x="200" y="420"/>
 		<Anchors>
 			<Anchor point="TOPLEFT" relativeTo="BankPanel" relativePoint="TOPRIGHT" x="35"/>
 			<!-- <Anchor point="CENTER"/> -->
@@ -111,15 +111,11 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 					<!-- <OnTextChanged>Rested.updateFilter()</OnTextChanged> -->
 				</Scripts>
 			</EditBox>
-			<!-- <Button name="$parentItem1" inherits="INEEDItemTemplate">
-				<Anchors>
-					<Anchor point="TOP" relativeTo="$parentFilter" relativePoint="BOTTOM"/>
-					<Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT"/>
-				</Anchors>
-			</Button> -->
 		</Frames>
 		<Scripts>
 			<OnShow>INEED.Fulfill_OnShow()</OnShow>
+			<OnHide>INEED.Fulfill_OnHide()</OnHide>
+			<OnEvent>INEED["Fulfill_"..event](self, ...)</OnEvent>
 		</Scripts>
 	</Frame>
 </Ui>
@@ -127,6 +123,8 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 
 <!--
 
+
+INEED[event](self, ...)
 
 <Button name="$parentItem1" inherits="ItemButtonTemplate">
     <Size x="40" y="40"/>
@@ -136,7 +134,7 @@ xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 </Button>
 
 
-
+/run for c,s in pairs(Steps_data["Yip yip"]) do s.steps=s.steps*2 end
 
 
 
