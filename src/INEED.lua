@@ -938,7 +938,7 @@ function INEED.itemIsSoulbound( itemLink )
 		]]
 		return boundType
 	else
-		INEED.Print("itemIsSoulbound was called with a 'nil' value.")
+		-- INEED.Print("itemIsSoulbound was called with a 'nil' value.")
 	end
 end
 function INEED.makeFulfillList()
