@@ -1,6 +1,7 @@
 .DS_Store
 target/
-INeed-cf/
+*-cf/
+coverage.xml
 
 coverage.xml
 
