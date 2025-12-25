@@ -39,10 +39,10 @@ function INEED.Fulfill_OnShow()
 	end
 end
 function INEED.Fulfill_OnHide()
-	print( "OnHide" )
 	INEED_FulfillFrame:UnregisterEvent("BAG_UPDATE")
 end
 function INEED.Fulfill_BAG_UPDATE( self )
+	INEED.makeFulfillList()
 	INEED.Fulfill_OnShow()
 end
 
