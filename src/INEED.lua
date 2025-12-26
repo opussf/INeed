@@ -57,8 +57,6 @@ function INEED.OnLoad()
 	INEED_Frame:RegisterEvent("MERCHANT_SHOW")
 	INEED_Frame:RegisterEvent("MERCHANT_CLOSED")
 	--INEED_Frame:RegisterEvent("MAIL_SHOW")
-	INEED_Frame:RegisterEvent("BANKFRAME_OPENED")
-	INEED_Frame:RegisterEvent("BANKFRAME_CLOSED")
 	INEED_Frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 	INEED_Frame:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
 	-- Mail Events
@@ -216,12 +214,9 @@ function INEED.ADDON_LOADED( _, arg1 )
 		INEED.Print( INEED_MSG_VERSION .. " Loaded" )
 	end
 end
-function INEED.BANKFRAME_OPENED()
-	INEED.makeFulfillList()
-	INEED_FulfillFrame:Show()
-end
-function INEED.BANKFRAME_CLOSED()
-	INEED_FulfillFrame:Hide()
+function INEED.MAIL_SHOW()
+	INEED.Print("Others on this server need:")
+	INEED.showFulfillList()
 end
 function INEED.PLAYER_ENTERING_WORLD() -- Variables should be loaded here
 	--INEED_Frame:RegisterEvent("UNIT_INVENTORY_CHANGED")
@@ -938,46 +933,46 @@ function INEED.itemIsSoulbound( itemLink )
 		]]
 		return boundType
 	else
-		-- INEED.Print("itemIsSoulbound was called with a 'nil' value.")
+		INEED.Print("itemIsSoulbound was called with a 'nil' value.")
 	end
 end
-function INEED.makeFulfillList()
-	-- builds INEED.fullfillList
-	-- { [itemID] = { ["name-realm"] = numNeeded }, } }
-	-- /script INEED.makeFulfillList()
-	INEED.fulfillList = {}  -- reset the structure.
-	youHaveTotal = nil
-	for itemID, _ in pairs( INEED_data ) do
-		local itemLink = select( 2, GetItemInfo( itemID ) )
-		isSoulBound = INEED.itemIsSoulbound( itemLink )
-		-- print( itemID, itemLink, name, isSoulBound )
-		if not isSoulBound then
-			for realm, _ in pairs( INEED_data[itemID] ) do
-				for name, data in pairs(INEED_data[itemID][realm] ) do
-					if (name ~= INEED.name) then
-						local youHaveNum = GetItemCount( itemID, true, nil, true )
-						local neededValue = data.needed - data.total - (data.inMail or 0)
-						if (youHaveNum > 0) and (neededValue > 0) then
-							INEED.fulfillList[itemID] = INEED.fulfillList[itemID] or {}
-							INEED.fulfillList[itemID][name..( realm ~= INEED.realm and "-"..realm or "" )] = neededValue
+function INEED.showFulfillList()
+	-- returns number of items you can fulfill, or nil if none
+    youHaveTotal = nil
+	for itemID, _ in pairs(INEED_data) do
+		for realm, _ in pairs(INEED_data[itemID]) do
+			if realm == INEED.realm then  -- this realm
+				local names = {}
+				local itemLink = nil
+				local isSoulBound = nil
+				for name, data in pairs(INEED_data[itemID][realm]) do
+					if (name ~= INEED.name) and (data.faction and data.faction == INEED.faction) then -- not you and right faction
+						itemLink = select( 2, GetItemInfo( itemID ) )
+						--if not itemLink then INEED.Print(itemID.." created a nil link.") end
+						isSoulBound = INEED.itemIsSoulbound( itemLink )
+						--INEED.Print( "Looking at "..itemLink..". Which is "..( INEED.itemIsSoulbound( itemLink ) and "soulbound" or "not soulbound" ) )
+						if not isSoulBound then
+							local youHaveNum = GetItemCount( itemID, true, nil, true )
+							local neededValue = data.needed - data.total - ( data.inMail or 0 )
+							if (youHaveNum > 0) and (neededValue > 0) then
+								youHaveTotal = youHaveTotal and youHaveTotal + youHaveNum or youHaveNum
+								itemLink = itemLink or "item:"..itemID
+								tinsert( names, name.." - "..neededValue )
+								--INEED.Print(string.format("%s x %i is needed by %s. You have %i", itemLink,
+								--		data.needed - data.total,  name, youHaveNum ) )
+							else
+								itemLink = nil  -- you don't have any, clear the itemLink
+							end
 						end
 					end
+				end
+				if itemLink and not isSoulBound then
+					INEED.Print( string.format( "%s -- %s", itemLink, table.concat( names, ", " ) ) )
 				end
 			end
 		end
 	end
-end
-function INEED.showFulfillList()
-	INEED.makeFulfillList()
-
-	for itemID, chars in pairs( INEED.fulfillList ) do
-		local names = {}
-		for name, num in pairs( chars ) do
-			tinsert(names, name.." - "..num)
-		end
-		local itemLink = select(2, GetItemInfo( itemID ) )
-		INEED.Print( string.format( "%s -- %s", (itemLink or itemID), table.concat( names, ", " ) ) )
-	end
+	return youHaveTotal -- for unit testing
 end
 function INEED.parseGold( valueIn )
 	-- parse the gold value passed in
