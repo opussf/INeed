@@ -3,3 +3,4 @@ target/
 *-cf/
 coverage.xml
 
+*.sublime*
