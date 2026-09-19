@@ -230,6 +230,14 @@ function INEED.BAG_UPDATE()
 	local itemFulfilled = false   -- has an item been fulfilled yet?
 	for itemID, _ in pairs(INEED_data) do  -- loop over the stored data structure
 		local iHaveNum = GetItemCount( itemID, true, nil, true ) -- include bank
+
+		local housingItem = C_HousingCatalog.GetCatalogEntryInfoByItem( itemID )
+		local housingTotal
+		if housingItem then
+			housingTotal = housingItem.quantity + housingItem.totalNumPlaced
+		end
+		iHaveNum = iHaveNum + (housingTotal or 0)
+
 		local _, itemLink = GetItemInfo( itemID )
 		if itemLink and INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] then
 			INEED_data[itemID][INEED.realm][INEED.name].faction = INEED.faction -- force update incase faction has changed

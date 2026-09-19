@@ -2549,6 +2549,13 @@ function C_Garrison.GetPendingShipmentInfo( index )
 end
 
 --------
+-- C_HousingCatalog
+--------
+C_HousingCatalog = {}
+function C_HousingCatalog.GetCatalogEntryInfoByItem( itemID )
+end
+
+--------
 -- 12.0.0 stubs
 function issecretvalue( value )
 	return false  -- default to false for now.
