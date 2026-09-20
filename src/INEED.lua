@@ -685,7 +685,7 @@ function INEED.addItem( itemLink, quantity )
 	if itemID and string.len( itemID ) > 0 then
 		local youHave =  INEED.GetItemCountWithHousing( itemID, true, nil, true ) -- include bank
 		local inBags = INEED.GetItemCountWithHousing( itemID, false ) -- only in bags
-		local inAccount = C_Item.INEED.GetItemCountWithHousing( itemID, false, false, false, true ) - inBags
+		local inAccount = INEED.GetItemCountWithHousing( itemID, false, false, false, true ) - inBags
 		if quantity > 0 then
 			local linkString = select( 2, GetItemInfo( itemID ) ) or "item:"..itemID
 			if quantity > youHave then
