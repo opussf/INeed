@@ -1124,14 +1124,6 @@ function GetItemCount( itemID, includeBank, includeUses, includeReagentBank, inc
 	-- print( itemID, myInventory[itemID] )
 	return myInventory[itemID] or 0
 end
-function GetItemInfo( itemIn )
-	-- itemID is number, link or 'item:#####'
-	-- returns name, itemLink
-	local itemID = __getItemID( itemIn )
-	if Items[itemID] then
-		return Items[itemID].name, Items[itemID].link
-	end
-end
 function GetLocale()
 	return myLocale
 end
@@ -2115,6 +2107,14 @@ function C_Item.GetItemID( itemLocation )
 end
 function C_Item.IsBound( itemLocation )
 	return false
+end
+function C_Item.GetItemInfo( itemIn )
+	-- itemID is number, link or 'item:#####'
+	-- returns name, itemLink
+	local itemID = __getItemID( itemIn )
+	if Items[itemID] then
+		return Items[itemID].name, Items[itemID].link
+	end
 end
 
 ----------

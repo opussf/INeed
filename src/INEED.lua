@@ -230,7 +230,7 @@ function INEED.BAG_UPDATE()
 	local itemFulfilled = false   -- has an item been fulfilled yet?
 	for itemID, _ in pairs(INEED_data) do  -- loop over the stored data structure
 		local iHaveNum = INEED.GetItemCountWithHousing( itemID, true, nil, true ) -- include bank
-		local _, itemLink = GetItemInfo( itemID )
+		local _, itemLink = C_Item.GetItemInfo( itemID )
 		if itemLink and INEED_data[itemID][INEED.realm] and INEED_data[itemID][INEED.realm][INEED.name] then
 			INEED_data[itemID][INEED.realm][INEED.name].faction = INEED.faction -- force update incase faction has changed
 			INEED_data[itemID][INEED.realm][INEED.name].link = itemLink  -- update link
@@ -687,7 +687,7 @@ function INEED.addItem( itemLink, quantity )
 		local inBags = INEED.GetItemCountWithHousing( itemID, false ) -- only in bags
 		local inAccount = INEED.GetItemCountWithHousing( itemID, false, false, false, true ) - inBags
 		if quantity > 0 then
-			local linkString = select( 2, GetItemInfo( itemID ) ) or "item:"..itemID
+			local linkString = select( 2, C_Item.GetItemInfo( itemID ) ) or "item:"..itemID
 			if quantity > youHave then
 				INEED.Print( string.format( "Needing: %i/%i %s (item:%s Bags: %i Bank: %i WB: %i)",
 						youHave, quantity, linkString, itemID, inBags, youHave-inBags, inAccount ), false )
@@ -736,7 +736,7 @@ function INEED.addItem( itemLink, quantity )
 		-- 		local toolName = C_TradeSkillUI.GetRecipeTools( recipeID )
 		-- 		if toolName then
 		-- 			INEED.Print( toolName )
-		-- 			local _, toolLink = GetItemInfo( toolName )
+		-- 			local _, toolLink = C_Item.GetItemInfo( toolName )
 		-- 			INEED.addItem( toolLink, 1 )
 		-- 		end
 		return recipeSchematic.outputItemID and "item:"..recipeSchematic.outputItemID or nil-- itemLink -- return done
@@ -888,7 +888,7 @@ function INEED.showList( searchTerm )
 					table.insert( updatedItems, {
 							["updated"] = (data.updated or data.added or 1),
 							["displayStr"] = string.format("%i/%i x %s for %s of %s",
-									data.total, data.needed, (select( 2, GetItemInfo( itemID ) ) or itemID ), name, realm ),
+									data.total, data.needed, (select( 2, C_Item.GetItemInfo( itemID ) ) or itemID ), name, realm ),
 					} )
 				end
 			end
@@ -959,7 +959,7 @@ function INEED.showFulfillList()
 				local isSoulBound = nil
 				for name, data in pairs(INEED_data[itemID][realm]) do
 					if (name ~= INEED.name) and (data.faction and data.faction == INEED.faction) then -- not you and right faction
-						itemLink = select( 2, GetItemInfo( itemID ) )
+						itemLink = select( 2, C_Item.GetItemInfo( itemID ) )
 						--if not itemLink then INEED.Print(itemID.." created a nil link.") end
 						isSoulBound = INEED.itemIsSoulbound( itemLink )
 						--INEED.Print( "Looking at "..itemLink..". Which is "..( INEED.itemIsSoulbound( itemLink ) and "soulbound" or "not soulbound" ) )
@@ -1036,7 +1036,7 @@ function INEED.remove( nameIn )
 					for name, _ in pairs(INEED_data[itemID][realm]) do
 						if string.lower(name) == delName then -- delete this char
 							INEED_data[itemID][realm][name] = nil
-							local linkString = select( 2, GetItemInfo( itemID ) ) or "item:"..itemID
+							local linkString = select( 2, C_Item.GetItemInfo( itemID ) ) or "item:"..itemID
 							INEED.Print("Removing "..linkString.." for "..name.."-"..realm)
 						end
 					end
@@ -1114,7 +1114,7 @@ end
 function INEED.prune( paramIn )
 	local itemID = INEED.getItemIdFromLink( paramIn )
 	if itemID and INEED_data[itemID] then
-		local linkString = select( 2, GetItemInfo( itemID ) ) or "item:"..itemID
+		local linkString = select( 2, C_Item.GetItemInfo( itemID ) ) or "item:"..itemID
 		INEED.Print( "Pruning "..linkString.." from:" )
 		for realm, data in pairs( INEED_data[itemID] ) do
 			for name in pairs( data ) do

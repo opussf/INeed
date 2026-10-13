@@ -77,7 +77,7 @@ function INEED.UIListOnUpdate()
 						 ["id"] = itemID,  -- itemPre..id can be used to get the link.
 						 ["total"] = INEED_data[itemID][INEED.realm][INEED.name].total,
 						 ["needed"] = INEED_data[itemID][INEED.realm][INEED.name].needed,
-						 ["linkStr"] = (select( 2, GetItemInfo( itemID ) ) or "item:"..itemID)
+						 ["linkStr"] = (select( 2, C_Item.GetItemInfo( itemID ) ) or "item:"..itemID)
 				})
 				count = count + 1
 			elseif time() < ( INEED.highestUpdatedTS or 0 ) then
@@ -89,7 +89,7 @@ function INEED.UIListOnUpdate()
 						 ["total"] = INEED_data[itemID][INEED.realm][INEED.name].total,
 						 ["needed"] = INEED_data[itemID][INEED.realm][INEED.name].needed,
 						 ["linkStr"] = SecondsToTime(time()-INEED_data[itemID][INEED.realm][INEED.name].added, true, false, 1)..
-						 			   (select( 2, GetItemInfo( itemID ) ) or "item:"..itemID)
+						 			   (select( 2, C_Item.GetItemInfo( itemID ) ) or "item:"..itemID)
 				})
 				count = count + 1
 			end
@@ -130,7 +130,7 @@ function INEED.UIListOnUpdate()
 				 ["total"] = g.total,
 				 ["needed"] = g.needed,
 				 ["linkStr"] = "",
-				 ["showString"] = GetCoinTextureString(g.total).."/"..GetCoinTextureString(g.needed),
+				 ["showString"] = C_CurrencyInfo.GetCoinTextureString(g.total).."/"..C_CurrencyInfo.GetCoinTextureString(g.needed),
 		})
 		count = count + 1
 	end
@@ -143,7 +143,7 @@ function INEED.UIListOnUpdate()
 				--		(INEED.othersNeed[itemID][INEED.realm][INEED.faction].updated or "noUpdate") )
 			end
 			if updatedTS and ((time() - updatedTS) < (INEED_options["displayUIListDisplaySeconds"] or 0)) then
-				--print( "Maybe show "..(select( 2, GetItemInfo( itemID ) ) or "item:"..itemID ).." in list?" )
+				--print( "Maybe show "..(select( 2, C_Item.GetItemInfo( itemID ) ) or "item:"..itemID ).." in list?" )
 				addThis = true
 				--[[
 				for _, displayItem in pairs( sortedDisplayItems ) do
@@ -157,7 +157,7 @@ function INEED.UIListOnUpdate()
 							 ["id"] = itemID,
 							 ["total"] =  (INEED.othersNeed[itemID].mine or 0) + (INEED.othersNeed[itemID].total or 0),
 							 ["needed"] =  INEED.othersNeed[itemID].needed,
-							 ["linkStr"] = "-->"..( select( 2, GetItemInfo( itemID ) ) or "item:"..itemID ).."<--"
+							 ["linkStr"] = "-->"..( select( 2, C_Item.GetItemInfo( itemID ) ) or "item:"..itemID ).."<--"
 					})
 					count = count + 1
 				end
@@ -214,7 +214,7 @@ function INEED.UIListOnMouseDown()
 			local barTxt = INEED.UIList_bars[i].text:GetText()
 			itemID = INEED.getItemIdFromLink( barTxt )
 			if itemID then
-				_, itemLink = GetItemInfo( itemID )
+				_, itemLink = C_Item.GetItemInfo( itemID )
 				--INEED.Print( itemLink )
 				SetItemRef( "item:"..itemID, itemLink, button )
 				return
